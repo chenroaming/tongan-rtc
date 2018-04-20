@@ -1,0 +1,74 @@
+<!-- LOGIN MODULE -->
+<div class="login">
+  <vue-particles color="#dedede"></vue-particles>
+  <div class="wrap">
+    <!-- SLIDER -->
+    <div class="content">
+      <!-- LOGO -->
+      <div class="logo">
+        <a href="#">
+          <img src="http://court.ptnetwork001.com/dist/images/tu.png" alt="">
+        </a>
+      </div>
+      <!-- SLIDESHOW -->
+      <div id="slideshow">
+        <div class="one">
+          <h2>
+            <span>在线庭审</span>
+          </h2>
+          <p>湖里法院互联网法庭在线庭审可以快速将案件转线上进行审理，通过浏览器输入庭审码即可直接在线使用，实现庭审过程远程庭审和语音识别大大提升当事人参与庭审的便利性，并提升庭审效率</p>
+        </div>
+      </div>
+    </div>
+    <!-- LOGIN FORM -->
+    <div class="user">
+      <div class="form-wrap">
+        <div class="tabs">
+          <h3 class="judge-tab">
+            <a class="log-in" :class="userType == 'judge' ? 'active' : ''" @click="userType = 'judge'">
+              <span>法院工作人员</span>
+            </a>
+          </h3>
+          <h3 class="litigant-tab">
+            <a class="sign-up" :class="userType == 'litigant' ? 'active' : ''" @click="userType = 'litigant'">
+              <span>当事人/律师</span>
+            </a>
+          </h3>
+        </div>
+        <!-- TABS CONTENT -->
+        <div class="tabs-content">
+          <!-- TABS CONTENT LOGIN -->
+          <div id="login-tab-content" :class="userType == 'judge' ? 'active' : ''">
+            <form class="login-form" action="" method="post">
+              <input type="text" class="input" placeholder="请输入用户名">
+              <input type="password" class="input" placeholder="请输入密码">
+              <input type="submit" class="button" value="登录">
+            </form>
+            <!-- <div class="help-action">
+              <p>
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                <a class="forgot" href="#">忘记密码?</a>
+              </p>
+            </div> -->
+          </div>
+          <!-- TABS CONTENT SIGNUP -->
+          <div id="signup-tab-content" :class="userType == 'litigant' ? 'active' : ''">
+            <form class="signup-form" action="" method="post">
+              <input type="email" class="input" placeholder="Email">
+              <input type="text" class="input" placeholder="Username">
+              <input type="password" class="input" placeholder="Password">
+              <input type="submit" class="button" value="登录">
+            </form>
+            <!-- <div class="help-action">
+              <p>By signing up, you agree to our</p>
+              <p>
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                <a class="agree" href="#">Terms of service</a>
+              </p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
