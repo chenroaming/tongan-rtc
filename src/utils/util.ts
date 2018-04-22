@@ -1,13 +1,14 @@
 import axios, { AxiosStatic } from 'axios'
 
 interface UtilShape {
-  axios: AxiosStatic
+  axios?: AxiosStatic
 }
-let Util: UtilShape
 
-Util.axios = axios.create({
-  baseURL: '/api',
-  timeout: 20000
-}) as AxiosStatic
+let Util: UtilShape = {
+  axios: axios.create({
+    baseURL: '/api',
+    timeout: 20000
+  }) as AxiosStatic
+}
 
 export default Util

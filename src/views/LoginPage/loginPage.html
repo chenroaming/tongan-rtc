@@ -39,11 +39,17 @@
         <div class="tabs-content">
           <!-- TABS CONTENT LOGIN -->
           <div id="login-tab-content" :class="userType == 'judge' ? 'active' : ''">
-            <form class="login-form" action="" method="post">
-              <input type="text" class="input" placeholder="请输入用户名">
-              <input type="password" class="input" placeholder="请输入密码">
-              <input type="submit" class="button" value="登录">
-            </form>
+            <div class="login-form">
+              <input v-model="loginForm.username" type="text" class="input" placeholder="请输入用户名">
+              <input v-model="loginForm.password" type="password" class="input" placeholder="请输入密码">
+              <div class="code-form-wrapper">
+                <input v-model="loginForm.code" type="code" class="input" placeholder="请输入验证码">
+                <span class="code-wrapper" @click="changeCode">
+                  <img height="32px" style="vertical-align: middle;" :src="codeSrc" alt="验证码">
+                </span>
+              </div>
+              <div @click="handleLogin" type="submit" class="button">登录</div>
+            </div>
             <!-- <div class="help-action">
               <p>
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
@@ -53,7 +59,7 @@
           </div>
           <!-- TABS CONTENT SIGNUP -->
           <div id="signup-tab-content" :class="userType == 'litigant' ? 'active' : ''">
-            <form class="signup-form" action="" method="post">
+            <form class="login-form" action="" method="post">
               <input type="email" class="input" placeholder="Email">
               <input type="text" class="input" placeholder="Username">
               <input type="password" class="input" placeholder="Password">

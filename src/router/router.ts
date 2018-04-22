@@ -14,10 +14,12 @@ Vue.use(VueRouter)
 
 export const createRoutes: () => RouteConfig[] = () => [
   {
+    name: 'loginPage',
     path: '/',
     component: loginPage
   },
   {
+    name: 'roomPage',
     path: '/roomPage',
     component: roomPage
   }

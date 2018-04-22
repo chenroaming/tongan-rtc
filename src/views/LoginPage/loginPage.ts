@@ -3,6 +3,13 @@ import { Getter, Action } from 'vuex-class'
 import { VueParticles } from '../../components/vue-particles'
 
 import './loginPage.less'
+import { PassThrough } from 'stream'
+
+interface LoginFormShape {
+  username: string
+  password: string
+  code: string
+}
 
 @Component({
   template: require('./loginPage.html'),
@@ -12,28 +19,29 @@ import './loginPage.less'
 })
 
 export class LoginPage extends Vue {
-
-  @Getter('getUserName') name: string
   @Action('login') login: Function
-
+  // 用户类型 judge or litigant
   userType: string = 'judge'
-  hasLogin: boolean = false
+  // 验证码
+  codeSrc: string = '/api/main/code.jhtml'
+  // 用户表单参数
+  loginForm: LoginFormShape = {
+    username: '',
+    password: '',
+    code: ''
+  }
 
-  created () {
-    this.$swal({
-      title: '提示',
-      text: 'hello world',
-      showCancelButton: true,
-      confirmButtonTex: '提交',
-      cancelButtonText: '取消'
+  changeCode () {
+    this.codeSrc = '/api/main/code.jhtml?tm=' + Math.random()
+  }
+
+  handleLogin () {
+    this.login(this.loginForm).then(res => {
+      if (res.data.state === 100) {
+        // this.$router.push({
+        //   name: 'roomPage'
+        // })
+      }
     })
-    console.log(this.name)
-    this.login({ username: 'admin', password: '123456' })
-  }
-  submitLogin () {
-    this.hasLogin = true
-  }
-  backLogin () {
-    this.hasLogin = false
   }
 }

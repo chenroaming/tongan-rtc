@@ -33,6 +33,7 @@
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
     "pili-rtc-web": "^0.1.0",
+    "sweetalert2": "^7.19.0",
     "vue": "~2.5.13",
     "vue-class-component": "~6.1.2",
     "vue-loader": "^14.2.2",

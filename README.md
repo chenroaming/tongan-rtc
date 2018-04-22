@@ -35,3 +35,9 @@ npm run build
 # clean the production build
 npm run clean
 ```
+
+## 主要第三方插件
+### 七牛RTC 
+"pili-rtc-web": "^0.1.0"
+### Sweetalert2
+"sweetalert2": "^7.19.0"
