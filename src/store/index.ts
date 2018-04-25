@@ -1,10 +1,15 @@
 import Vue from 'vue'
 import Vuex, { ActionTree, MutationTree } from 'vuex'
-import user from './modules/user'
+import userModule from './modules/user'
+import caseModule from './modules/case'
+import roomModule from './modules/room'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    user
+    userModule,
+    caseModule,
+    roomModule
   }
 })

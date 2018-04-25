@@ -1,3 +1,4 @@
-<div class="content">
-  <LocalPlayer ref="localplayer" />
+<div class="room-content">
+  <LocalPlayer :stream="localStream" />
+  <RemotePlayer v-for="(item, index) in users" v-if="item.userId !== userId" :id="item.userId" />
 </div>
