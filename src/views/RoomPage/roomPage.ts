@@ -18,14 +18,15 @@ export class RoomPage extends Vue {
   @Getter('getRoomToken') roomToken: string
   @Mutation('SET_USERID') setUserId: Function
   @Getter('getUserId') userId: string
+  @Getter('getMessage') logMessage: Array<any>
 
   localStream: any = new Stream()
-  localPlayer: Vue
-  remotePlayer: Vue
   users: Array<any> = [{
     userId: '',
     published: false
   }]
+  evidenceShow: boolean = false
+  logShow: boolean = false
 
   async mounted () {
     piliRTC.on('user-join', user => {

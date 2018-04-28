@@ -7,19 +7,22 @@ import Sweetalert2 from 'sweetalert2'
 
 interface State {
   roomToken: string,
-  userId: string
+  userId: string,
+  message: Array<any>
 }
 
 // initial state
 const state: State = {
   roomToken: '',
-  userId: ''
+  userId: '',
+  message: []
 }
 
 // getters
 const getters = {
   getRoomToken: (state: State) => state.roomToken,
-  getUserId: (state: State) => state.userId
+  getUserId: (state: State) => state.userId,
+  getMessage: (state: State) => state.message
 }
 
 // action
@@ -45,6 +48,9 @@ const actions = {
         reject(error)
       })
     })
+  },
+  setMessage (context: { commit: Commit, state: State }, message: any) {
+    store.commit(types.SET_MESSAGE, message)
   }
 }
 
@@ -54,6 +60,9 @@ const mutations = {
   },
   [types.SET_USERID] (state: State, userId: string) {
     state.userId = userId
+  },
+  [types.SET_MESSAGE] (state: State, message: any) {
+    state.message.push(message)
   }
 }
 

@@ -1,4 +1,59 @@
 <div class="room-content">
+  <div class="header">
+    <div class="room-logo">湖里区人民法院在线庭审</div>
+    <div class="room-title">（2018）闽0216民初9000号</div>
+    <div class="room-time"> 2018 年 4 月 23 日 10:09:49（北京时间）</div>
+  </div>
   <LocalPlayer :stream="localStream" />
-  <RemotePlayer v-for="(item, index) in users" v-if="item.userId !== userId" :id="item.userId" />
+  <div class="remoteplayer-list">
+    <RemotePlayer v-for="(item, index) in users" v-if="item.userId !== userId" :id="item.userId" :key="index" />
+  </div>
+  <div class="right-bar" :class="evidenceShow ? 'show' : ''">
+    <div class="menu-bar">
+      <div class="hamburger">
+        <img src="../../assets/img/menu.svg" alt="菜单">
+      </div>
+      <div class="record" @click="logShow = !logShow">
+        <img src="../../assets/img/record.svg" alt="记录">
+        <div>记录</div>
+      </div>
+      <div class="keyboard" @click="logShow = !logShow">
+        <img src="../../assets/img/keyboard.svg" alt="输入">
+        <div>输入</div>
+      </div>
+      <div class="evidence" @click="evidenceShow = !evidenceShow">
+        <img src="../../assets/img/evidence.svg" alt="证据">
+        <div>证据</div>
+      </div>
+      <div class="leave">
+        <img src="../../assets/img/leave.svg" alt="离开">
+        <div>离开</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="title">证据列表</div>
+      <ul>
+        <li v-for="item in [1,2,3]" :key="item">
+          <span>文件名</span>
+          <img src="../../assets/img/down.svg" alt="下载">
+        </li>
+      </ul>
+      <div class="upload">
+        <img src="../../assets/img/upload.svg" alt="上传证据"> 上传证据
+      </div>
+    </div>
+  </div>
+  <div class="left-bar" :class="logShow ? 'show' : ''">
+    <div class="content">
+      <ul>
+        <li v-for="item in logMessage">{{ item.result[0] }}</li>
+      </ul>
+    </div>
+    <div class="input-wrapper">
+      <textarea type="text" placeholder="文字输入发送信息"></textarea>
+      <div class="send-wrapper">
+        <img src="../../assets/img/send.svg" alt="发送">
+      </div>
+    </div>
+  </div>
 </div>

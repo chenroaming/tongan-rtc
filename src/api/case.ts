@@ -28,3 +28,12 @@ export function getRoomToken (caseId) {
     params
   })
 }
+
+export function voice (blob) {
+  const data = blob
+  return service({
+    url: '/online/voice.jhtml',
+    method: 'post',
+    data
+  })
+}
