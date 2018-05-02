@@ -27,6 +27,9 @@ export class LocalPlayer extends Vue {
   serverTimeoutObj: any = null
   lockReconnect: boolean = false
   wsUrl: string = 'ws://localhost:8080/api/voice/ws.jhtml'
+  emptyCheckCount: number = 0
+  emptydatacount: number = 0
+  emptyData: boolean = true
 
   @Watch('stream', { immediate: true, deep: true })
   autoPlay (val: string, oldVal: string) {
@@ -42,6 +45,36 @@ export class LocalPlayer extends Vue {
     // 获取语音对象
     navigator.getUserMedia({ audio: true }, function (stream) {
       that.rec = new HZRecorder(stream, {}, that.websocket)
+
+      // 监听语音输入 是否为空
+      that.rec.recorder.onaudioprocess = function (e) {
+        let data = e.inputBuffer.getChannelData(0)
+        that.rec.audioData.input(data)
+        let l = Math.floor(data.length / 10)
+        let vol = 0
+        for (let i = 0; i < l; i++) {
+          vol += Math.abs(data[i * 10])
+        }
+        that.emptyCheckCount++
+        if (vol < 30) {
+          that.emptydatacount++
+          if (that.emptydatacount > 30) {
+            if (!that.emptyData) {
+              console.log('stoped')
+              let blob = that.rec.audioData.encodeWAV()
+              that.rec.audioData.buffer = []
+              that.rec.audioData.size = 0
+              that.websocket.send(blob)
+              that.emptyData = true
+            }
+            return
+          }
+        } else {
+          that.emptydatacount = 0
+          that.emptyData = false
+        }
+        return
+      }
     }, function (error) {
       switch (error.name) {
         case 'PERMISSION_DENIED':
