@@ -1,5 +1,6 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
+import { piliRTC } from '../../utils/pili'
 import { HZRecorder } from '../../utils/recorder/index.js'
 import { voice } from '../../api/case'
 
@@ -18,50 +19,27 @@ export class LocalPlayer extends Vue {
   @Prop()
   stream: any
   rec: any = {}
-  context: any = {}
-  dataArray: any = new Uint8Array(this.FFTS)
-  sumDataArray: number = 0
-  audioes: Array<any> = []
-  drawVisual: number = 0
   timer: any
-  recordSec: number = 0
   recStatus: boolean = false
   websocket: any
+  timeout: number = 6000
+  timeoutObj: any = null
+  serverTimeoutObj: any = null
+  lockReconnect: boolean = false
+  wsUrl: string = 'ws://localhost:8080/api/voice/ws.jhtml'
 
   @Watch('stream', { immediate: true, deep: true })
   autoPlay (val: string, oldVal: string) {
-    if (this.stream.enableVideo) {
+    if (this.stream.userId !== undefined) {
       this.stream.play(this.$refs.video, true)
     }
   }
 
   created () {
     let that = this
-    this.websocket = new WebSocket('ws://192.168.86.117:8080/voice/ws.jhtml')
-    this.websocket.onopen = function (event) {
-      console.log('WebSocket：已连接')
-    }
-    this.websocket.onmessage = function (event) {
-      console.log('WebSocket:收到一条消息', event.data)
-      let result = JSON.parse(event.data)
-      console.log(result)
-      if (result.err_no !== 3301) {
-        that.setMessage(result)
-      }
-    }
-
-    this.websocket.onerror = function (event) {
-      console.log('WebSocket: 发生错误')
-    }
-
-    this.websocket.onclose = function (event) {
-      console.log('WebSocket: 断开链接')
-    }
-
-    // setInterval(function () {
-    //   that.websocket.send('')
-    // }, 5000)
-
+    // 创建语音识别 webSocket
+    this.createWebSocket(this.wsUrl)
+    // 获取语音对象
     navigator.getUserMedia({ audio: true }, function (stream) {
       that.rec = new HZRecorder(stream, {}, that.websocket)
     }, function (error) {
@@ -84,34 +62,87 @@ export class LocalPlayer extends Vue {
       }
     })
   }
+  destroyed () {
+    this.websocket.close()
+    clearInterval(this.timer)
+    if (this.recStatus) {
+      this.stop()
+    }
+  }
 
   handleTrigger (e) {
     if (this.recStatus) {
       this.recStatus = false
-      clearInterval(this.timer)
+      this.stop()
     } else {
       this.start()
       let that = this
-      // this.timer = setInterval(function () {
-      //   that.stop()
-      // }, 10000)
     }
   }
   start () {
     this.recStatus = true
-    const startTime = Date.now()
     console.log('start')
     this.rec.start()
   }
 
   stop () {
     console.log('stop')
-    this.recordSec = 0
-    let blob = this.rec.getBlob()
+    this.rec.stop()
     this.rec.clear()
-    this.rec.start()
-    this.websocket.send(blob)
-    // voice(blob).then(res => { console.log(res) })
-    console.log('stop recording')
+  }
+
+  resetHeart () {
+    clearTimeout(this.timeoutObj)
+    clearTimeout(this.serverTimeoutObj)
+    this.startHeart()
+  }
+
+  startHeart () {
+    let self = this
+    this.timeoutObj = setTimeout(() => {
+      self.websocket.send('')
+      self.serverTimeoutObj = setTimeout(() => {
+        self.websocket.close()
+      }, self.timeout)
+    }, self.timeout)
+  }
+
+  reconnect (url) {
+    if (this.lockReconnect) return
+    this.lockReconnect = true
+    setTimeout(() => {
+      this.createWebSocket(url)
+      this.lockReconnect = false
+    }, 2000)
+  }
+
+  createWebSocket (url) {
+    try {
+      this.websocket = new WebSocket(url)
+      this.initEventHandle()
+    } catch (e) {
+      this.reconnect(url)
+    }
+  }
+
+  initEventHandle () {
+    this.websocket.onclose = () => {
+      this.reconnect(this.wsUrl)
+    }
+    this.websocket.onerror = () => {
+      this.reconnect(this.wsUrl)
+    }
+    this.websocket.onopen = () => {
+      this.resetHeart()
+    }
+    this.websocket.onmessage = (event) => {
+      console.log('WebSocket:收到一条消息', event.data)
+      let result = JSON.parse(event.data)
+      console.log(result)
+      if (result.err_no !== 3301) {
+        this.setMessage(result)
+      }
+      this.resetHeart()
+    }
   }
 }

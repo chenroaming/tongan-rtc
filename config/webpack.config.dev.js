@@ -61,7 +61,13 @@ webpackConfig.devServer = {
       target: 'http://120.78.223.114:8688',
       //路径重写
       pathRewrite: { '^/api': '' },
+      ws: true,
       changeOrigin: true
+    },
+    '/ws': {
+      target: 'http://120.78.223.114:8688/voice/ws.jhtml',
+      changeOrigin: true,
+      ws: true
     }
   }
 }
