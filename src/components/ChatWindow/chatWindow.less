@@ -1,0 +1,166 @@
+.left-bar {
+  width: 400px;
+  height: 85vh;
+  background: rgba(0, 0, 0, .5);
+  color: #fff;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  position: absolute;
+  top: 50%;
+  margin-top: -39vh;
+  left: -400px;
+  z-index: 99;
+  transition: all 1s ease;
+  &.show {
+    left: 0px;
+  }
+  .title {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    font-size: 18px;
+    color: #fff;
+    background: #38b3ff;
+    border-top-right-radius: 15px;
+  }
+  .content {
+    background: none;
+    color: #fff;
+    width: 400px;
+    height: 60vh;
+    overflow: auto;
+    .identifying {
+      padding: 5px 15px;
+      text-align: left;
+      color: #0084ff;
+      &.green {
+        color: #08a53d;
+      }
+      .time {
+        margin-right: 40px;
+      }
+    }
+    .text {
+      padding: 0px 25px;
+      text-align: left;
+      font-size: 16px;
+      word-wrap: break-word;
+      overflow: hidden;
+    }
+  }
+  .input-wrapper {
+    width: 350px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -175px;
+    textarea {
+      width: 350px;
+      height: 60px;
+      padding-left: 10px;
+      padding-top: 10px;
+      padding-right: 60px;
+      background: rgba(0, 0, 0, 0);
+      font-size: 16px;
+      color: #fff;
+      border-radius: 5px;
+      outline: none;
+      &::focus {
+        border: 1px solid #38b3ff;
+      }
+    }
+    .send-wrapper {
+      width: 40px;
+      height: 40px;
+      border-radius: 5px;
+      background: #38b3ff;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      margin-top: -23px;
+      cursor: pointer;
+      img {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -12.5px;
+        margin-left: -12.5px;
+      }
+    }
+  }
+}
+
+.recorder {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  font-size: 15px;
+  height: 178px;
+  overflow: hidden;
+  width: 220px;
+
+  border: 0;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .35);
+}
+
+a {
+  color: #365899;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.recorder-btn {
+  background-color: #f03d25;
+  border-radius: 72px;
+  color: #fff;
+  height: 72px;
+  transition: width .1s, height .1s;
+  width: 72px;
+}
+
+.recorder-btn.active {
+  height: 54px;
+  width: 54px;
+}
+
+.recorder-btn, .frequency {
+    left: 50%;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-title {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn-title.active {
+  background-color: #fff;
+  height: 14px;
+  width: 14px;
+}
+
+.frequency {
+  background-color: #333;
+  border-radius: 50%;
+  opacity: .2;
+}
+
+._3z58 {
+  color: #0084ff;
+  position: absolute;
+  right: 16px;
+  text-align: center;
+  top: 16px;
+}
+
+._3z58:hover {
+  text-decoration: underline;  
+}

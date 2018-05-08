@@ -33,6 +33,7 @@ const actions = {
         if (res.data.state === 100) {
           resolve(res)
           store.commit(types.SET_ROOM_TOKEN, res.data.result)
+          store.commit(types.SET_CASE_ID, caseid)
         } else {
           Sweetalert2({
             type: 'error',

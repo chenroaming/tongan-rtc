@@ -2,15 +2,22 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
 import { LocalPlayer } from '../../components/LocalPlayer'
 import { RemotePlayer } from '../../components/RemotePlayer'
+import { ChatWindow } from '../../components/ChatWindow'
+import { EvidenceWindow } from '../../components/EvidenceWindow'
 import { piliRTC } from '../../utils/pili'
 import { Stream, User, deviceManager } from 'pili-rtc-web'
+import VueUploadComponent from 'vue-upload-component'
+import { userDetail } from '../../api/user'
 import './roomPage.less'
 
 @Component({
   template: require('./roomPage.html'),
   components: {
     LocalPlayer,
-    RemotePlayer
+    RemotePlayer,
+    ChatWindow,
+    EvidenceWindow,
+    FileUpload: VueUploadComponent
   }
 })
 
@@ -24,8 +31,25 @@ export class RoomPage extends Vue {
   users: Array<any> = []
   evidenceShow: boolean = false
   logShow: boolean = false
+  files: Array<any> = []
+  message: string = ''
+  week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+  clock = {
+    date: '',
+    time: '',
+    week: ''
+  }
+  timer: any
+
+  created () {
+    let that = this
+    this.timer = setInterval(function () {
+      that.updateTime()
+    }, 1000)
+  }
 
   async mounted () {
+
     console.log(this.users)
     piliRTC.on('user-join', user => {
       console.log('user-join')
@@ -88,7 +112,12 @@ export class RoomPage extends Vue {
     } catch (e) {
       console.log('本地推流失败!', e)
     }
-    this.users = piliRTC.subscribedUsers
+    this.users = piliRTC.users
+    this.users.map((item, index) => {
+      if (!item.published) {
+        this.users.splice(index, 1)
+      }
+    })
     console.log(this.users)
   }
 
@@ -100,6 +129,7 @@ export class RoomPage extends Vue {
     }).catch(err => {
       console.log(err)
     })
+    clearInterval(this.timer)
   }
 
   async outRoom () {
@@ -109,5 +139,19 @@ export class RoomPage extends Vue {
         name: 'loginPage'
       })
     }).catch(console.error)
+  }
+
+  updateTime () {
+    let cd = new Date()
+    this.clock.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2)
+    this.clock.date = this.zeroPadding(cd.getFullYear(), 4) + '年' + this.zeroPadding(cd.getMonth() + 1, 2) + '月' + this.zeroPadding(cd.getDate(), 2) + '日'
+    this.clock.week = this.week[cd.getDay()]
+  }
+  zeroPadding (num, digit) {
+    let zero = ''
+    for (let i = 0; i < digit; i++) {
+      zero += '0'
+    }
+    return (zero + num).slice(-digit)
   }
 }

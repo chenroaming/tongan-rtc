@@ -3,7 +3,6 @@ import { Getter, Action } from 'vuex-class'
 import { VueParticles } from '../../components/vue-particles'
 
 import './loginPage.less'
-import { PassThrough } from 'stream'
 
 interface LoginFormShape {
   username: string

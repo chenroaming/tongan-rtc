@@ -1,0 +1,15 @@
+<div class="evidence-content">
+  <div class="title">证据列表</div>
+  <ul>
+    <li v-for="(item, index) in eviList" :key="index">
+      <a :href="item.fileAddr" target="_blank">
+        <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div>
+        <div>证据对象:{{ item.prove }}</div>
+        <img src="../../assets/img/down.svg" alt="下载">
+      </a>
+    </li>
+  </ul>
+  <div class="upload" @click="showUpload">
+    <img src="../../assets/img/upload.svg" alt="上传证据"> 上传证据
+  </div>
+</div>

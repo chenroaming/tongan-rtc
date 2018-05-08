@@ -1,0 +1,81 @@
+.timestamp {
+  color: rgba(0, 0, 0, .20);
+  position: absolute;
+  text-align: center;
+  top: 16px;
+  transition: color .1s;
+  width: 100%;
+}
+
+.recorder {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  font-size: 15px;
+  height: 178px;
+  overflow: hidden;
+  width: 220px;
+
+  border: 0;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .35);
+}
+
+a {
+  color: #365899;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.recorder-btn {
+  background-color: #f03d25;
+  border-radius: 72px;
+  color: #fff;
+  height: 72px;
+  transition: width .1s, height .1s;
+  width: 72px;
+}
+
+.recorder-btn.active {
+  height: 54px;
+  width: 54px;
+}
+
+.recorder-btn, .frequency {
+    left: 50%;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.btn-title {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.btn-title.active {
+  background-color: #fff;
+  height: 14px;
+  width: 14px;
+}
+
+.frequency {
+  background-color: #333;
+  border-radius: 50%;
+  opacity: .2;
+}
+
+._3z58 {
+  color: #0084ff;
+  position: absolute;
+  right: 16px;
+  text-align: center;
+  top: 16px;
+}
+
+._3z58:hover {
+  text-decoration: underline;  
+}

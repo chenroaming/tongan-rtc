@@ -1,44 +1,39 @@
 import { Commit } from 'vuex'
 import store from '../index'
 import types from '../types'
-import { caseList } from '../../api/case'
+import { getEviByCaseId } from '../../api/evidence'
 import Vue from 'vue'
 import Sweetalert2 from 'sweetalert2'
 
 interface State {
-  caseList?: CaseListShape
-  caseId?: number
+  eviList: Array<Evidence>
 }
 
-interface CaseListShape {
-  [index: number]: CaseObjectShape
+interface Evidence {
+  dsrName: string
+  dsrStatus: string
+  fileAddr: string
+  fileName: string
+  name: string
+  prove: string
 }
 
-interface CaseObjectShape {
-  id: number,
-  caseNo: string,
-  isOpen: number
-}
-
-// initial state
 const state: State = {
-  caseList: [],
-  caseId: 0
+  eviList: []
 }
 
 // getters
 const getters = {
-  getCaseList: (state: State) => state.caseList,
-  getCaseId: (state: State) => state.caseId
+  getEviList: (state: State) => state.eviList
 }
 
 // action
 const actions = {
-  searchCaseList (context: { commit: Commit, state: State }, caseNo: string) {
+  getEviListApi (context: { commit: Commit, state: State }, caseId: string) {
     return new Promise((resolve, reject) => {
-      caseList(caseNo).then(res => {
+      getEviByCaseId(caseId).then(res => {
         if (res.data.state === 100) {
-          store.commit(types.SET_CASE_LIST, res.data.result)
+          store.commit(types.SET_EVI_LIST, res.data.result)
           resolve(res)
         } else {
           Sweetalert2({
@@ -59,11 +54,8 @@ const actions = {
 }
 
 const mutations = {
-  [types.SET_CASE_LIST] (state: State, caseList: CaseListShape) {
-    state.caseList = caseList
-  },
-  [types.SET_CASE_ID] (state: State, caseId: number) {
-    state.caseId = caseId
+  [types.SET_EVI_LIST] (state: State, eviList: Array<Evidence>) {
+    state.eviList = eviList
   }
 }
 

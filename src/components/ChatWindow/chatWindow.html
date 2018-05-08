@@ -1,0 +1,30 @@
+<div class="left-bar" :class="show ? 'show' : ''">
+  <div class="title">庭审记录</div>
+  <div class="content" ref="content">
+    <ul>
+      <li v-for="item in logMessage">
+        <div class="identifying" :class="item.roleName === '法官' ? '' : 'green' ">
+          <span class="roleName">{{ item.roleName }}</span>:
+          <span>({{ item.name }})</span>
+          <span class="time">{{ item.createDate | formatDate }}</span>
+        </div>
+        <div class="text">
+          {{ item.content }}
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="input-wrapper">
+    <textarea v-model="message" type="text" placeholder="文字输入发送信息" @keyup.enter="sendMessage"></textarea>
+    <div class="send-wrapper" @click="sendMessage">
+      <img src="../../assets/img/send.svg" alt="发送">
+    </div>
+  </div>
+  <div class="recorder">
+    <a href="#" @click="handleTrigger">
+      <div class="recorder-btn" :class="{'active': recStatus}">
+        <span class="btn-title" :class="{'active': recStatus}">{{recStatus ? '' : '錄音'}}</span>
+      </div>
+    </a>
+  </div>
+</div>

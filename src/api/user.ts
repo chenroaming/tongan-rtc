@@ -75,3 +75,18 @@ export function getUserInfo () {
     method: 'get'
   })
 }
+
+/**
+ * [获取用户信息接口]
+ */
+export function userDetail (adminId) {
+  const params = {
+    adminId
+  }
+
+  return service({
+    url: 'online/userDetail.jhtml',
+    method: 'get',
+    params
+  })
+}
