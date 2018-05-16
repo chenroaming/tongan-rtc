@@ -1,6 +1,5 @@
 # Vue-typescript-rtc v0.0.5
-![](http://court.ptnetwork001.com/dist/images/tu-s.png)
-> 公司湖里法院项目，主要功能在线多方视频，语音识别，证据上传同步投屏
+> 主要功能在线多方视频，语音识别，证据上传同步投屏
 
 ## 功能
 1. 七牛WebRTC 实现web端多方在线视频，只需登入网页，无须安装任何插件实现多方在线视频
