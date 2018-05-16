@@ -1,11 +1,10 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
 import { piliRTC } from '../../utils/pili'
-import { HZRecorder } from '../../utils/recorder/index.js'
+import { HZRecorder } from '../../utils/recorder'
 import { voice } from '../../api/case'
 import { formatDate } from '../../utils/date'
 import RWS from '../../utils/rws'
-import Recorder from '../../utils/recorder/Recorder'
 
 import './chatWindow.less'
 
