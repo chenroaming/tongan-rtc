@@ -24,14 +24,16 @@ export function login (username, password, code) {
 
 /**
  * [用户手机登入接口]
- * @param {string} username [用户名]
+ * @param {string} idCard   [身份证号码]
+ * @param {string} password [密码]
  * @param {string} code     [验证码]
  * @returns { state: number, message: string } [state:100 成功；101 失败]
  */
-export function phoneLogin (phone, mcode) {
+export function phoneLogin (idCard, password, code) {
   const data = {
-    phone,
-    mcode
+    idCard,
+    password,
+    code
   }
   return service({
     url: '/main/phoneLogin.jhtml',

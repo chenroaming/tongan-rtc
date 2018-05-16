@@ -6188,9 +6188,9 @@ pify@^3.0.0:
   version "3.0.0"
   resolved "http://registry.npm.taobao.org/pify/download/pify-3.0.0.tgz#e5a4acd2c101fdf3d9a4d07f0dbc4db49dd28176"
 
-pili-rtc-web@0.1.1-beta.7:
-  version "0.1.1-beta.7"
-  resolved "http://registry.npm.taobao.org/pili-rtc-web/download/pili-rtc-web-0.1.1-beta.7.tgz#389f1fd5a68041b10b12d76274e4320377cbc90b"
+pili-rtc-web@^0.1.2-beta.1:
+  version "0.1.2-beta.1"
+  resolved "http://registry.npm.taobao.org/pili-rtc-web/download/pili-rtc-web-0.1.2-beta.1.tgz#2613228667ce0c5189088e1ab943beb19b8250e1"
   dependencies:
     "@types/detect-browser" "^2.0.1"
     "@types/lodash.uniqby" "^4.7.3"

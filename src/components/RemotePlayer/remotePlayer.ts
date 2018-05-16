@@ -1,4 +1,5 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Getter, Action, Mutation } from 'vuex-class'
 import { piliRTC } from '../../utils/pili'
 import { userDetail } from '../../api/user'
 
@@ -13,6 +14,7 @@ interface UserShape {
   template: require('./remotePlayer.html')
 })
 export class RemotePlayer extends Vue {
+  @Action('setVideoSrcObj') setVideoSrcObj: Function
   name: 'RemotePlayer'
 
   @Prop()
@@ -22,10 +24,12 @@ export class RemotePlayer extends Vue {
     name: '',
     roleNmae: ''
   }
+  isfull: boolean = false
 
   @Watch('id', { immediate: true, deep: true })
   async autopPlay (val: string, oldVal: string) {
     if (this.id !== undefined) {
+      console.log(this.id)
       const stream = await piliRTC.subscribe(this.id)
       stream.play(this.$refs.video)
 
@@ -34,5 +38,10 @@ export class RemotePlayer extends Vue {
         this.userInfo = res.data.result
       }
     }
+  }
+
+  openFull () {
+    const localVideo = this.$refs.video as HTMLVideoElement
+    this.setVideoSrcObj(localVideo.srcObject)
   }
 }

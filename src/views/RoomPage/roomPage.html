@@ -1,11 +1,13 @@
 <div class="room-content">
   <div class="header">
-    <div class="room-logo">湖里区人民法院在线庭审</div>
-    <div class="room-title">（2018）闽0216民初9000号</div>
+    <div class="room-logo">
+      <img src="http://court.ptnetwork001.com/dist/images/tu-s.png">湖里区人民法院在线庭审</div>
+    <div class="room-title">{{ caseNo }}</div>
     <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div>
   </div>
-  <LocalPlayer :stream="localStream" />
+  <MainPlayer />
   <div class="remoteplayer-list">
+    <LocalPlayer :stream="localStream" />
     <RemotePlayer v-for="(item, index) in users" v-if="item.userId !== userId" :id="item.userId" :key="index" />
   </div>
   <div class="right-bar" :class="evidenceShow ? 'show' : ''">
@@ -13,9 +15,11 @@
       <div class="hamburger">
         <img src="../../assets/img/menu.svg" alt="菜单">
       </div>
-      <div class="record" @click="logShow = !logShow">
-        <img src="../../assets/img/record.svg" alt="记录">
-        <div>记录</div>
+      <div class="record">
+        <a :href="'/api/online/export.jhtml?caseId=' +  caseId " download="log" style="color: #fff">
+          <img src="../../assets/img/record.svg" alt="记录">
+          <div>记录</div>
+        </a>
       </div>
       <div class="keyboard" @click="logShow = !logShow">
         <img src="../../assets/img/keyboard.svg" alt="输入">

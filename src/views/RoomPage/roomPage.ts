@@ -1,23 +1,23 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
+import { MainPlayer } from '../../components/MainPlayer'
 import { LocalPlayer } from '../../components/LocalPlayer'
 import { RemotePlayer } from '../../components/RemotePlayer'
 import { ChatWindow } from '../../components/ChatWindow'
 import { EvidenceWindow } from '../../components/EvidenceWindow'
 import { piliRTC } from '../../utils/pili'
 import { Stream, User, deviceManager } from 'pili-rtc-web'
-import VueUploadComponent from 'vue-upload-component'
 import { userDetail } from '../../api/user'
 import './roomPage.less'
 
 @Component({
   template: require('./roomPage.html'),
   components: {
+    MainPlayer,
     LocalPlayer,
     RemotePlayer,
     ChatWindow,
-    EvidenceWindow,
-    FileUpload: VueUploadComponent
+    EvidenceWindow
   }
 })
 
@@ -26,6 +26,8 @@ export class RoomPage extends Vue {
   @Mutation('SET_USERID') setUserId: Function
   @Getter('getUserId') userId: string
   @Getter('getMessage') logMessage: Array<any>
+  @Getter('getCaseNo') caseNo: string
+  @Getter('getCaseId') caseId: number
 
   localStream: any = new Stream()
   users: Array<any> = []
@@ -42,23 +44,31 @@ export class RoomPage extends Vue {
   timer: any
 
   created () {
+    this.$swal({
+      title: '庭审须知',
+      text: '庭审保持安静，不得随意站立、走动，不得让无关人员进入视频，不得采取过激语言等；若破坏法庭铁序、妨害诉讼活动顺利进行的，依法追究法律责任',
+      imageUrl: 'http://court.ptnetwork001.com/dist/images/tu-s.png',
+      confirmButtonText: '明白',
+      allowOutsideClick: false
+    })
     let that = this
     this.timer = setInterval(function () {
       that.updateTime()
     }, 1000)
-  }
-
-  async mounted () {
-
-    console.log(this.users)
     piliRTC.on('user-join', user => {
       console.log('user-join')
-      console.log(user)
+      console.log(this.users)
+      this.users.map((item, index) => {
+        if (!item.published) {
+          this.users.splice(index, 1)
+        }
+      })
     })
     piliRTC.on('user-publish', user => {
       console.log('user-publish')
       console.log(user)
       this.users.push(user)
+      console.log(this.users)
     })
     piliRTC.on('user-unpublish', user => {
       console.log('user-unpublish')
@@ -70,7 +80,9 @@ export class RoomPage extends Vue {
       })
       console.log(this.users)
     })
+  }
 
+  async mounted () {
     try {
       this.localStream = await deviceManager.getLocalStream({
         audio: {
@@ -78,7 +90,8 @@ export class RoomPage extends Vue {
         },
         video: {
           enabled: true,
-          bitrate: 1200,
+          bitrate: 720,
+          frameRate: 30,
           width: 1280,
           height: 720
         }
@@ -122,23 +135,17 @@ export class RoomPage extends Vue {
   }
 
   destroyed () {
-    piliRTC.unpublish().then(res => {
-      console.log('destroyed')
-      console.log(res)
-      piliRTC.leaveRoom()
-    }).catch(err => {
-      console.log(err)
-    })
+    piliRTC.leaveRoom()
     clearInterval(this.timer)
+    piliRTC.removeAllListeners('user-join')
+    piliRTC.removeAllListeners('user-publish')
+    piliRTC.removeAllListeners('user-unpublish')
   }
 
   async outRoom () {
-    piliRTC.unpublish().then(() => {
-      piliRTC.leaveRoom()
-      this.$router.push({
-        name: 'loginPage'
-      })
-    }).catch(console.error)
+    this.$router.push({
+      name: 'loginPage'
+    })
   }
 
   updateTime () {

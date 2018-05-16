@@ -6,7 +6,7 @@ import './loginPage.less'
 
 interface LoginFormShape {
   username: string
-  password?: string
+  password: string
   code: string
 }
 
@@ -42,6 +42,7 @@ export class LoginPage extends Vue {
   @Action('logout') logout: Function
   @Action('searchCaseList') searchCaseList: Function
   @Action('getRoomToken') getRoomToken: Function
+  @Action('setCaseNo') setCaseNo: Function
 
   // 用户类型 judge or litigant
   userType: string = 'judge'
@@ -56,6 +57,7 @@ export class LoginPage extends Vue {
 
   litigantLoginForm: LoginFormShape = {
     username: '',
+    password: '',
     code: ''
   }
 
@@ -113,9 +115,11 @@ export class LoginPage extends Vue {
     this.searchCaseList(this.searchForm.caseNo)
   }
 
-  roomToken (id) {
-    this.getRoomToken(id).then(res => {
-      console.log(res)
+  roomToken (obj) {
+    // 记录选择的caseNo
+    this.setCaseNo(obj.caseNo)
+    // 查询房间token
+    this.getRoomToken(obj.caseId).then(res => {
       if (res.data.state === 100) {
         this.$router.push({
           name: 'roomPage'

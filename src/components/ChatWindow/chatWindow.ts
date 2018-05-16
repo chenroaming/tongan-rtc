@@ -9,12 +9,19 @@ import Recorder from '../../utils/recorder/Recorder'
 
 import './chatWindow.less'
 
+interface UserInfoShape {
+  id: number,
+  name: string,
+  role: string
+}
+
 @Component({
   template: require('./chatWindow.html')
 })
 export class ChatWindow extends Vue {
   name: 'ChatWindow'
   @Getter('getMessage') logMessage: Array<any>
+  @Getter('getUserInfo') userInfo: UserInfoShape
   @Action('setMessage') setMessage: Function
   @Prop()
   show: boolean
@@ -54,6 +61,8 @@ export class ChatWindow extends Vue {
       that.rec.recorder.onaudioprocess = function (e) {
         let data = e.inputBuffer.getChannelData(0)
         that.rec.audioData.input(data)
+        let blob = that.rec.audioData.encodeWAV()
+        that.rws.send(blob)
         let l = Math.floor(data.length / 10)
         let vol = 0
         for (let i = 0; i < l; i++) {
@@ -65,10 +74,10 @@ export class ChatWindow extends Vue {
           if (that.emptydatacount > 20) {
             if (!that.emptyData) {
               console.log('stoped')
-              let blob = that.rec.audioData.encodeWAV()
+              // let blob = that.rec.audioData.encodeWAV()
               that.rec.audioData.buffer = []
               that.rec.audioData.size = 0
-              that.rws.send(blob)
+              // that.rws.send(blob)
               that.emptyData = true
             }
             return
@@ -107,6 +116,7 @@ export class ChatWindow extends Vue {
     } else {
       this.start()
       let that = this
+      // piliRTC.setDefaultMergeStream(1280, 720)
     }
   }
   start () {
@@ -123,7 +133,6 @@ export class ChatWindow extends Vue {
 
   createWebSocket (url) {
     try {
-      // this.websocket = new WebSocket(url)
       this.rws = new RWS(this.wsUrl)
       this.initEventHandle()
     } catch (e) {

@@ -4,6 +4,7 @@ import userModule from './modules/user'
 import caseModule from './modules/case'
 import roomModule from './modules/room'
 import evidenceModule from './modules/evidence'
+import playerModule from './modules/player'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     userModule,
     caseModule,
     roomModule,
-    evidenceModule
+    evidenceModule,
+    playerModule
   }
 })

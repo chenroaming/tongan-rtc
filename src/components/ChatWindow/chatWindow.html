@@ -14,16 +14,16 @@
       </li>
     </ul>
   </div>
-  <div class="input-wrapper">
+  <div class="input-wrapper" v-if="userInfo.role === 'judge'">
     <textarea v-model="message" type="text" placeholder="文字输入发送信息" @keyup.enter="sendMessage"></textarea>
     <div class="send-wrapper" @click="sendMessage">
       <img src="../../assets/img/send.svg" alt="发送">
     </div>
   </div>
   <div class="recorder">
-    <a href="#" @click="handleTrigger">
+    <a @click="handleTrigger">
       <div class="recorder-btn" :class="{'active': recStatus}">
-        <span class="btn-title" :class="{'active': recStatus}">{{recStatus ? '' : '錄音'}}</span>
+        <span class="btn-title" :class="{'active': recStatus}">{{recStatus ? '' : '开始庭审'}}</span>
       </div>
     </a>
   </div>

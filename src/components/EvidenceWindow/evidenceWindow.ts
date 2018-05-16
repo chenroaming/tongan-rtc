@@ -32,21 +32,30 @@ export class EvidenceWindow extends Vue {
         formdata.append('lawCaseId', String(this.caseId))
         formdata.append('eviprove', text)
         this.$swal.insertQueueStep({
-          title: '上传文件',
-          input: 'file',
-          confirmButtonText: '上传',
-          preConfirm: (file) => {
-            formdata.append('file', file)
-            return uploadEvi(formdata).then(res => {
-              if (res.data.state === 100) {
-                this.$swal.insertQueueStep({
-                  type: 'success',
-                  title: '上传成功'
-                })
-              } else {
-                this.$swal.insertQueueStep({
-                  type: 'error',
-                  title: res.data.message
+          title: '证据名称',
+          text: '请输入证据名称',
+          input: 'text',
+          confirmButtonText: '下一步',
+          preConfirm: (text) => {
+            formdata.append('eviname', text)
+            this.$swal.insertQueueStep({
+              title: '上传文件',
+              input: 'file',
+              confirmButtonText: '上传',
+              preConfirm: (file) => {
+                formdata.append('file', file)
+                return uploadEvi(formdata).then(res => {
+                  if (res.data.state === 100) {
+                    this.$swal.insertQueueStep({
+                      type: 'success',
+                      title: '上传成功'
+                    })
+                  } else {
+                    this.$swal.insertQueueStep({
+                      type: 'error',
+                      title: res.data.message
+                    })
+                  }
                 })
               }
             })

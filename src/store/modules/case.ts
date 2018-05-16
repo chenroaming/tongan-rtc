@@ -8,6 +8,7 @@ import Sweetalert2 from 'sweetalert2'
 interface State {
   caseList?: CaseListShape
   caseId?: number
+  caseNo?: string
 }
 
 interface CaseListShape {
@@ -23,13 +24,15 @@ interface CaseObjectShape {
 // initial state
 const state: State = {
   caseList: [],
-  caseId: 0
+  caseId: 0,
+  caseNo: ''
 }
 
 // getters
 const getters = {
   getCaseList: (state: State) => state.caseList,
-  getCaseId: (state: State) => state.caseId
+  getCaseId: (state: State) => state.caseId,
+  getCaseNo: (state: State) => state.caseNo
 }
 
 // action
@@ -55,15 +58,20 @@ const actions = {
         reject(error)
       })
     })
+  },
+  setCaseNo (context: { commit: Commit, state: State }, caseNo: string) {
+    store.commit(types.SET_CASE_NO, caseNo)
   }
 }
-
 const mutations = {
   [types.SET_CASE_LIST] (state: State, caseList: CaseListShape) {
     state.caseList = caseList
   },
   [types.SET_CASE_ID] (state: State, caseId: number) {
     state.caseId = caseId
+  },
+  [types.SET_CASE_NO] (state: State, caseNo: string) {
+    state.caseNo = caseNo
   }
 }
 

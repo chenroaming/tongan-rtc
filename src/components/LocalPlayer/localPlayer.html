@@ -1,4 +1,6 @@
 <div class="localPlayer">
-  <div class="title"></div>
+  <div class="title">{{ roleName }}:{{ name }}
+    <img @click="openFull" src="../../assets/img/full.svg" alt="放大">
+  </div>
   <video autoPlay ref="video" class="video" />
 </div>

@@ -24,7 +24,7 @@ interface LoginForm {
 
 // initial state
 const state: State = {
-  hasLogin: true,
+  hasLogin: false,
   userInfo: {
     id: 1,
     name: '',
@@ -35,7 +35,8 @@ const state: State = {
 // getters
 const getters = {
   getUserName: (state: State) => state.userInfo.name,
-  getLoginState: (state: State) => state.hasLogin
+  getLoginState: (state: State) => state.hasLogin,
+  getUserInfo: (state: State) => state.userInfo
 }
 
 // action
@@ -72,7 +73,7 @@ const actions = {
   },
   phoneLogin (context: { commit: Commit, state: State }, loginForm: LoginForm) {
     return new Promise((resolve, reject) => {
-      phoneLogin(loginForm.username, loginForm.code).then(res => {
+      phoneLogin(loginForm.username, loginForm.password, loginForm.code).then(res => {
         if (res.data.state === 100) {
           Sweetalert2({
             type: 'success',
@@ -137,6 +138,8 @@ const actions = {
           }
           store.commit(types.SET_USER_INFO, userInfo)
           store.commit(types.SET_LOGIN, true)
+        } else {
+          store.commit(types.SET_LOGIN, false)
         }
       })
     })
