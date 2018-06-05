@@ -52,6 +52,9 @@ const actions = {
   },
   setMessage (context: { commit: Commit, state: State }, message: any) {
     store.commit(types.SET_MESSAGE, message)
+  },
+  cleanMessage (context: { commit: Commit, state: State }) {
+    state.message = []
   }
 }
 

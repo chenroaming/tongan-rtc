@@ -15,6 +15,7 @@ interface UserShape {
 })
 export class RemotePlayer extends Vue {
   @Action('setVideoSrcObj') setVideoSrcObj: Function
+  @Action('setMainInfo') setMainInfo: Function
   name: 'RemotePlayer'
 
   @Prop()
@@ -43,5 +44,6 @@ export class RemotePlayer extends Vue {
   openFull () {
     const localVideo = this.$refs.video as HTMLVideoElement
     this.setVideoSrcObj(localVideo.srcObject)
+    this.setMainInfo(this.userInfo)
   }
 }

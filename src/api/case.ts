@@ -37,3 +37,10 @@ export function voice (blob) {
     data
   })
 }
+
+export function finish () {
+  return service({
+    url: '/online/finish.jhtml',
+    method: 'get'
+  })
+}

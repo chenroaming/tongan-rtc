@@ -1,7 +1,11 @@
 <div class="left-bar" :class="show ? 'show' : ''">
-  <div class="title">庭审记录</div>
+  <div class="handle-bar" @click="show = !show">
+    语音识别
+    <div id="triangle-right"></div>
+  </div>
   <div class="content" ref="content">
     <ul>
+      <div class="clean" @click="cleanMessage">清空</div>
       <li v-for="item in logMessage">
         <div class="identifying" :class="item.roleName === '法官' ? '' : 'green' ">
           <span class="roleName">{{ item.roleName }}</span>:
@@ -11,6 +15,7 @@
         <div class="text">
           {{ item.content }}
         </div>
+        <img v-if="item.wav !== ''" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(item.wav)">
       </li>
     </ul>
   </div>
@@ -22,8 +27,13 @@
   </div>
   <div class="recorder">
     <a @click="handleTrigger">
-      <div class="recorder-btn" :class="{'active': recStatus}">
-        <span class="btn-title" :class="{'active': recStatus}">{{recStatus ? '' : '开始庭审'}}</span>
+      <div class="recorder-btn-begin" v-show="!recStatus">
+        <span class="btn-title">{{ userInfo.role === 'judge' ? '开始庭审' : '语音识别' }}</span>
+      </div>
+    </a>
+    <a @click="handleTrigger">
+      <div class="recorder-btn-stop" v-show="recStatus">
+        <span :class="userInfo.role === 'judge' ? 'btn-title' : 'btn-title-square' " v-show="recStatus">{{ userInfo.role === 'judge' ? '休庭' : '' }}</span>
       </div>
     </a>
   </div>

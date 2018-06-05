@@ -1,9 +1,16 @@
 <div class="room-content">
   <div class="header">
     <div class="room-logo">
-      <img src="http://court.ptnetwork001.com/dist/images/tu-s.png">湖里区人民法院在线庭审</div>
+      <img src="/dist/images/tu-s.png">湖里区人民法院在线庭审</div>
     <div class="room-title">{{ caseNo }}</div>
-    <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div>
+    <div class="export-log" v-if="userInfo.role === 'judge'" @click="exportlog">导出庭审记录</div>
+    <div class="leave" @click="outRoom">
+      <img src="../../assets/img/leave.svg" alt="离开">
+    </div>
+    <div @click="endCourt" v-if="userInfo.role === 'judge'">
+      <div class="end-court">结束庭审</div>
+    </div>
+    <!-- <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div> -->
   </div>
   <MainPlayer />
   <div class="remoteplayer-list">
@@ -12,29 +19,12 @@
   </div>
   <div class="right-bar" :class="evidenceShow ? 'show' : ''">
     <div class="menu-bar">
-      <div class="hamburger">
-        <img src="../../assets/img/menu.svg" alt="菜单">
-      </div>
-      <div class="record">
-        <a :href="'/api/online/export.jhtml?caseId=' +  caseId " download="log" style="color: #fff">
-          <img src="../../assets/img/record.svg" alt="记录">
-          <div>记录</div>
-        </a>
-      </div>
-      <div class="keyboard" @click="logShow = !logShow">
-        <img src="../../assets/img/keyboard.svg" alt="输入">
-        <div>输入</div>
-      </div>
       <div class="evidence" @click="evidenceShow = !evidenceShow">
         <img src="../../assets/img/evidence.svg" alt="证据">
         <div>证据</div>
       </div>
-      <div class="leave" @click="outRoom">
-        <img src="../../assets/img/leave.svg" alt="离开">
-        <div>离开</div>
-      </div>
     </div>
     <EvidenceWindow />
   </div>
-  <ChatWindow :show="logShow" />
+  <ChatWindow />
 </div>

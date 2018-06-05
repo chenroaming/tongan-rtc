@@ -17,6 +17,8 @@ interface UserInfoShape {
 export class LocalPlayer extends Vue {
   @Getter('getUserInfo') userInfo: UserInfoShape
   @Action('setVideoSrcObj') setVideoSrcObj: Function
+  @Action('setMainInfo') setMainInfo: Function
+  @Action('websocketSend') send: Function
 
   name: string = ''
   roleName: string = ''
@@ -33,6 +35,9 @@ export class LocalPlayer extends Vue {
       const localVideo = this.$refs.video as HTMLVideoElement
       this.stream.play(localVideo, true)
       this.setVideoSrcObj(localVideo.srcObject)
+      // this.stream.onAudioBuffer(buffer => {
+      //   this.send(buffer)
+      // }, 2048)
     }
   }
   mounted () {
@@ -41,6 +46,7 @@ export class LocalPlayer extends Vue {
       if (res.data.state === 100) {
         this.name = res.data.result.name
         this.roleName = res.data.result.roleName
+        this.setMainInfo({ name: this.name, roleName: this.roleName })
       }
     })
   }
@@ -48,5 +54,6 @@ export class LocalPlayer extends Vue {
   openFull () {
     const localVideo = this.$refs.video as HTMLVideoElement
     this.setVideoSrcObj(localVideo.srcObject)
+    this.setMainInfo({ name: this.name, roleName: this.roleName })
   }
 }

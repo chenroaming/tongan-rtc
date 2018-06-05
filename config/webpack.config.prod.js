@@ -16,6 +16,8 @@ const extractSass = new ExtractTextPlugin({
   disable: process.env.NODE_ENV === 'development'
 })
 
+webpackConfig.output.publicPath = '/rtc/'
+
 webpackConfig.module.rules = [...webpackConfig.module.rules,
 {
   test: /\.less$/,

@@ -21,3 +21,15 @@ export function getEviByCaseId (lawCaseId) {
     params
   })
 }
+
+export function examineEvi (evidenceId, exm) {
+  const params = {
+    evidenceId,
+    exm
+  }
+  return service({
+    url: '/qtw/out/evi/examineEvi.jhtml',
+    method: 'get',
+    params
+  })
+}

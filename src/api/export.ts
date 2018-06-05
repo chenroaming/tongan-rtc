@@ -12,3 +12,14 @@ export function caseList (caseNo) {
     params
   })
 }
+
+export function exportLog (caseId) {
+  const params = {
+    caseId
+  }
+  return service({
+    url: '/online/export.jhtml',
+    method: 'get',
+    params
+  })
+}

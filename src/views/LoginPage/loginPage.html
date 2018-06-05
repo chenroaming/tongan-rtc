@@ -1,6 +1,9 @@
 <!-- LOGIN MODULE -->
 <div class="login">
   <vue-particles color="#dedede"></vue-particles>
+  <div class="loading-wrapper" v-show="loading">
+    <atom-spinner :animation-duration="1000" :size="120" color="#40a9ff" />
+  </div>
   <div class="wrap" v-show="!hasLogin">
     <!-- SLIDER -->
     <div class="content">

@@ -182,10 +182,10 @@ export default class RWS extends EventEmitter {
     throw new Error('INVALID_STATE_ERR')
   }
 
-  close (code = this.DEFAULT_CODE, reason) {
+  close () {
     this.forcedClose = true
     if (this.ws) {
-      this.ws.close(code, reason)
+      this.ws.close()
     }
   }
 

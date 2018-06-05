@@ -8,7 +8,17 @@ import { EvidenceWindow } from '../../components/EvidenceWindow'
 import { piliRTC } from '../../utils/pili'
 import { Stream, User, deviceManager } from 'pili-rtc-web'
 import { userDetail } from '../../api/user'
+import { exportLog } from '../../api/export'
+import { finish } from '../../api/case'
+import RWS from '../../utils/rws'
+
 import './roomPage.less'
+
+interface UserInfoShape {
+  id: number,
+  name: string,
+  role: string
+}
 
 @Component({
   template: require('./roomPage.html'),
@@ -28,12 +38,14 @@ export class RoomPage extends Vue {
   @Getter('getMessage') logMessage: Array<any>
   @Getter('getCaseNo') caseNo: string
   @Getter('getCaseId') caseId: number
+  @Getter('getUserInfo') userInfo: UserInfoShape
+  @Action('cleanMessage') cleanMsg: Function
+  @Getter('getWebsocket') websocket: RWS
 
-  localStream: any = new Stream()
+  localStream: MediaStream = new Stream()
   users: Array<any> = []
   evidenceShow: boolean = false
   logShow: boolean = false
-  files: Array<any> = []
   message: string = ''
   week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   clock = {
@@ -47,38 +59,35 @@ export class RoomPage extends Vue {
     this.$swal({
       title: '庭审须知',
       text: '庭审保持安静，不得随意站立、走动，不得让无关人员进入视频，不得采取过激语言等；若破坏法庭铁序、妨害诉讼活动顺利进行的，依法追究法律责任',
-      imageUrl: 'http://court.ptnetwork001.com/dist/images/tu-s.png',
+      imageUrl: '/dist/images/tu-s.png',
       confirmButtonText: '明白',
       allowOutsideClick: false
     })
-    let that = this
-    this.timer = setInterval(function () {
-      that.updateTime()
+
+    // 情况语音列表
+    this.cleanMsg()
+
+    this.timer = setInterval(() => {
+      this.updateTime()
     }, 1000)
+
     piliRTC.on('user-join', user => {
       console.log('user-join')
-      console.log(this.users)
       this.users.map((item, index) => {
-        if (!item.published) {
-          this.users.splice(index, 1)
-        }
+        if (!item.published) this.users.splice(index, 1)
       })
     })
+
     piliRTC.on('user-publish', user => {
       console.log('user-publish')
-      console.log(user)
       this.users.push(user)
-      console.log(this.users)
     })
+
     piliRTC.on('user-unpublish', user => {
       console.log('user-unpublish')
-      console.log(user)
       this.users.map((item, index) => {
-        if (item.userId === user.userId) {
-          this.users.splice(index, 1)
-        }
+        if (item.userId === user.userId) this.users.splice(index, 1)
       })
-      console.log(this.users)
     })
   }
 
@@ -127,9 +136,7 @@ export class RoomPage extends Vue {
     }
     this.users = piliRTC.users
     this.users.map((item, index) => {
-      if (!item.published) {
-        this.users.splice(index, 1)
-      }
+      if (!item.published) this.users.splice(index, 1)
     })
     console.log(this.users)
   }
@@ -137,14 +144,63 @@ export class RoomPage extends Vue {
   destroyed () {
     piliRTC.leaveRoom()
     clearInterval(this.timer)
+    this.websocket.close()
     piliRTC.removeAllListeners('user-join')
     piliRTC.removeAllListeners('user-publish')
     piliRTC.removeAllListeners('user-unpublish')
   }
 
+  async endCourt () {
+    this.$swal({
+      title: '确认结束庭审',
+      text: '结束庭审后案件将进入结案状态，无法再次开庭',
+      type: 'warning',
+      showCancelButton: true,
+      cancelButtonText: '取消',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '结束'
+    }).then(res => {
+      if (res.value) {
+        finish().then(res => {
+          if (res.data.state === 100) {
+            this.$router.push({
+              name: 'loginPage'
+            })
+          } else {
+            this.swal({
+              type: 'error',
+              title: res.data.message
+            })
+          }
+        })
+      }
+    })
+  }
+
   async outRoom () {
     this.$router.push({
       name: 'loginPage'
+    })
+  }
+  exportlog () {
+    exportLog(this.caseId).then(res => {
+      if (res.data.state === 100) {
+        let eleLink = document.createElement('a')
+        let arr = res.data.result.split('/')
+        eleLink.download = arr[arr.length - 1]
+        eleLink.style.display = 'none'
+        eleLink.href = 'https://court1.ptnetwork001.com' + res.data.result
+        // 触发点击
+        document.body.appendChild(eleLink)
+        eleLink.click()
+        // 然后移除
+        // document.body.removeChild(eleLink)
+      } else {
+        this.$swal({
+          type: 'error',
+          title: res.data.message
+        })
+      }
     })
   }
 

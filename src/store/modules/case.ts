@@ -50,12 +50,6 @@ const actions = {
           })
           resolve(res)
         }
-      }).catch(error => {
-        Sweetalert2({
-          type: 'error',
-          title: '连接超时，请稍后再试'
-        })
-        reject(error)
       })
     })
   },

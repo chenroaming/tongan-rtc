@@ -7,6 +7,10 @@ import Sweetalert2 from 'sweetalert2'
 
 interface State {
   eviList: Array<Evidence>
+  eviListFormat: {
+    'plaintiff': Array<Evidence>
+    'defendant': Array<Evidence>
+  }
 }
 
 interface Evidence {
@@ -19,12 +23,17 @@ interface Evidence {
 }
 
 const state: State = {
-  eviList: []
+  eviList: [],
+  eviListFormat: {
+    'plaintiff': [],
+    'defendant': []
+  }
 }
 
 // getters
 const getters = {
-  getEviList: (state: State) => state.eviList
+  getEviList: (state: State) => state.eviList,
+  getEviListFormat: (state: State) => state.eviListFormat
 }
 
 // action
@@ -34,6 +43,18 @@ const actions = {
       getEviByCaseId(caseId).then(res => {
         if (res.data.state === 100) {
           store.commit(types.SET_EVI_LIST, res.data.result)
+          let obj = {
+            'plaintiff': [],
+            'defendant': []
+          }
+          res.data.result.map(item => {
+            if (item.dsrStatus === '原告') {
+              obj.plaintiff.push(item)
+            } else {
+              obj.defendant.push(item)
+            }
+          })
+          store.commit(types.SET_EVI_LIST_FORMAT, obj)
           resolve(res)
         } else {
           Sweetalert2({
@@ -56,6 +77,9 @@ const actions = {
 const mutations = {
   [types.SET_EVI_LIST] (state: State, eviList: Array<Evidence>) {
     state.eviList = eviList
+  },
+  [types.SET_EVI_LIST_FORMAT] (state: State, eviListFormat) {
+    state.eviListFormat = eviListFormat
   }
 }
 

@@ -1,15 +1,42 @@
 <div class="evidence-content">
-  <div class="title">证据列表</div>
-  <ul>
-    <li v-for="(item, index) in eviList" :key="index">
-      <a :href="item.fileAddr" target="_blank">
-        <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div>
-        <div>证据对象:{{ item.prove }}</div>
-        <img src="../../assets/img/down.svg" alt="下载">
+  <!-- <div class="title">证据列表</div> -->
+  <div class="tab-wrapper">
+    <div :class="showPlaintiff ? 'active' : '' " @click="showPlaintiff = true">原告</div>
+    <div :class="showPlaintiff ? '' : 'active' " @click="showPlaintiff = false">被告</div>
+  </div>
+  <ul v-show="showPlaintiff">
+    <li v-for="(item, index) in eviListFormat.plaintiff" :key="index">
+      <a @click="openEvi(item.fileAddr)">
+        <!-- <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div> -->
+        <div>证据名称：{{item.name}}</div>
+        <div>证明对象：{{ item.prove }}</div>
+        <div>证据来源：{{ item.source }}</div>
+        <div v-if="item.exmType === -1" style="color: #ee1414">(已驳回)</div>
+        <img src="../../assets/img/down.svg" alt="下载 ">
       </a>
+      <div v-if="item.exmType===0 && userInfo.role==='judge'" class="operation">
+        <span @click="examineEvi(item.evidenceId,1) ">通过</span>
+        <span @click="examineEvi(item.evidenceId,-1) ">驳回</span>
+      </div>
     </li>
   </ul>
-  <div class="upload" @click="showUpload">
-    <img src="../../assets/img/upload.svg" alt="上传证据"> 上传证据
+  <ul v-show="!showPlaintiff">
+    <li v-for="(item, index) in eviListFormat.defendant" :key="index">
+      <a @click="openEvi(item.fileAddr)">
+        <!-- <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div> -->
+        <div>证据名称：{{item.name}}</div>
+        <div>证明对象：{{ item.prove }}</div>
+        <div>证据来源：{{ item.source }}</div>
+        <div v-if="item.exmType === -1" style="color: #ee1414">(已驳回)</div>
+        <img src="../../assets/img/down.svg" alt="下载 ">
+      </a>
+      <div v-if="item.exmType===0 && userInfo.role==='judge'" class="operation">
+        <span @click="examineEvi(item.evidenceId,1) ">通过</span>
+        <span @click="examineEvi(item.evidenceId,-1) ">驳回</span>
+      </div>
+    </li>
+  </ul>
+  <div v-if="userInfo.role!=='judge'" class="upload" @click="showUpload ">
+    <img src="../../assets/img/upload.svg" alt="上传证据 "> 上传证据
   </div>
 </div>

@@ -5,6 +5,7 @@ import caseModule from './modules/case'
 import roomModule from './modules/room'
 import evidenceModule from './modules/evidence'
 import playerModule from './modules/player'
+import websocketModule from './modules/websocket'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     caseModule,
     roomModule,
     evidenceModule,
-    playerModule
+    playerModule,
+    websocketModule
   }
 })

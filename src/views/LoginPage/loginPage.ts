@@ -1,6 +1,8 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { Getter, Action } from 'vuex-class'
 import { VueParticles } from '../../components/vue-particles'
+import { AtomSpinner } from 'epic-spinners'
+import RWS from '../../utils/rws'
 
 import './loginPage.less'
 
@@ -29,7 +31,8 @@ const TIME_COUNT: number = 60
 @Component({
   template: require('./loginPage.html'),
   components: {
-    VueParticles
+    VueParticles,
+    AtomSpinner
   }
 })
 
@@ -43,6 +46,10 @@ export class LoginPage extends Vue {
   @Action('searchCaseList') searchCaseList: Function
   @Action('getRoomToken') getRoomToken: Function
   @Action('setCaseNo') setCaseNo: Function
+  @Getter('getWebsocket') websocket: RWS
+  @Action('setWebsocket') setWebsocket: Function
+
+  loading: boolean = false
 
   // 用户类型 judge or litigant
   userType: string = 'judge'
@@ -69,23 +76,44 @@ export class LoginPage extends Vue {
     caseNo: ''
   }
 
+  mounted () {
+    if (this.hasLogin) {
+      this.searchCaseList(this.searchForm.caseNo)
+    }
+  }
+
   changeCode () {
     this.codeSrc = '/api/main/code.jhtml?tm=' + Math.random()
   }
 
   handleLogin () {
+    this.loading = true
     switch (this.userType) {
       case 'judge':
         this.login(this.judgeLoginForm).then(res => {
+          this.loading = false
           if (res.data.state === 100) {
-            // this.$router.push({
-            //   name: 'roomPage'
-            // })
+            this.searchCaseList(this.searchForm.caseNo)
+          } else {
+            this.$swal({
+              type: 'error',
+              title: res.data.message
+            })
           }
         })
         break
       case 'litigant':
-        this.phoneLogin(this.litigantLoginForm)
+        this.phoneLogin(this.litigantLoginForm).then(res => {
+          this.loading = false
+          if (res.data.state === 100) {
+            this.searchCaseList(this.searchForm.caseNo)
+          } else {
+            this.$swal({
+              type: 'error',
+              title: res.data.message
+            })
+          }
+        })
         break
     }
   }
@@ -118,11 +146,20 @@ export class LoginPage extends Vue {
   roomToken (obj) {
     // 记录选择的caseNo
     this.setCaseNo(obj.caseNo)
+    this.loading = true
     // 查询房间token
     this.getRoomToken(obj.caseId).then(res => {
+      this.loading = false
       if (res.data.state === 100) {
+        this.setWebsocket()
+        // this.websocket.refresh()
         this.$router.push({
           name: 'roomPage'
+        })
+      } else {
+        this.$swal({
+          type: 'error',
+          title: res.data.message
         })
       }
     })
