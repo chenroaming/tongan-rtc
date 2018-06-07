@@ -14,7 +14,7 @@
   </div>
   <MainPlayer />
   <div class="remoteplayer-list">
-    <LocalPlayer :stream="localStream" />
+    <LocalPlayer />
     <RemotePlayer v-for="(item, index) in users" v-if="item.userId !== userId" :id="item.userId" :key="index" />
   </div>
   <div class="right-bar" :class="evidenceShow ? 'show' : ''">

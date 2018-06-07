@@ -42,7 +42,6 @@ export class RoomPage extends Vue {
   @Action('cleanMessage') cleanMsg: Function
   @Getter('getWebsocket') websocket: RWS
 
-  localStream: MediaStream = new Stream()
   users: Array<any> = []
   evidenceShow: boolean = false
   logShow: boolean = false
@@ -92,8 +91,16 @@ export class RoomPage extends Vue {
   }
 
   async mounted () {
+    // 进入房间
     try {
-      this.localStream = await deviceManager.getLocalStream({
+      console.log('joinRoomWithToken')
+      const roomInfo = await piliRTC.joinRoomWithToken(this.roomToken)
+      console.log(roomInfo)
+    } catch (e) {
+      console.log('加入房间失败!', e)
+    }
+    try {
+      const localStream = await deviceManager.getLocalStream({
         audio: {
           enabled: true
         },
@@ -105,6 +112,16 @@ export class RoomPage extends Vue {
           height: 720
         }
       })
+
+      // 本地推流
+      try {
+        console.log('publish')
+        const publishInfo = await piliRTC.publish(localStream)
+        console.log(publishInfo)
+        this.setUserId(publishInfo.userId)
+      } catch (e) {
+        console.log('本地推流失败!', e)
+      }
     } catch (e) {
       switch (e.name) {
         case 'NotAllowedError':
@@ -115,24 +132,6 @@ export class RoomPage extends Vue {
         default:
           console.log(`无法获取摄像头数据，错误代码${e.name}`)
       }
-    }
-    // 进入房间
-    try {
-      console.log('joinRoomWithToken')
-      const roomInfo = await piliRTC.joinRoomWithToken(this.roomToken)
-      console.log(roomInfo)
-    } catch (e) {
-      console.log('加入房间失败!', e)
-    }
-
-    // 本地推流
-    try {
-      console.log('publish')
-      const publishInfo = await piliRTC.publish(this.localStream)
-      console.log(publishInfo)
-      this.setUserId(publishInfo.userId)
-    } catch (e) {
-      console.log('本地推流失败!', e)
     }
     this.users = piliRTC.users
     this.users.map((item, index) => {

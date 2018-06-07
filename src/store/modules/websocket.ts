@@ -18,7 +18,7 @@ const getters = {
 
 const actions = {
   setWebsocket (context: { commit: Commit, state: State }) {
-    store.commit(types.SET_WEBSOCKET, new RWS('wss://court1.ptnetwork001.com/api/voice/ws.jhtml'))
+    store.commit(types.SET_WEBSOCKET, new RWS('ws://localhost:8080/api/voice/ws.jhtml'))
   },
   websocketSend (context: { commit: Commit, state: State }, content: any) {
     state.websocket.send(content)

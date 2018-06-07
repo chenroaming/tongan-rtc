@@ -25,6 +25,7 @@ export class MainPlayer extends Vue {
     const localVideo = this.$refs.video as HTMLVideoElement
     if (val.active) {
       this.$nextTick(() => {
+        console.log(this.videoSrcObj)
         localVideo.srcObject = this.videoSrcObj
       })
     }

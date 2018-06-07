@@ -30,9 +30,9 @@ export class RemotePlayer extends Vue {
   @Watch('id', { immediate: true, deep: true })
   async autopPlay (val: string, oldVal: string) {
     if (this.id !== undefined) {
-      console.log(this.id)
       const stream = await piliRTC.subscribe(this.id)
-      stream.play(this.$refs.video)
+      const containerElement = this.$refs.videoWrapper as HTMLElement
+      stream.play(containerElement)
 
       const res = await userDetail(this.id)
       if (res.data.state === 100) {
@@ -42,7 +42,8 @@ export class RemotePlayer extends Vue {
   }
 
   openFull () {
-    const localVideo = this.$refs.video as HTMLVideoElement
+    const containerElement = this.$refs.videoWrapper as HTMLElement
+    const localVideo = containerElement.children[1] as HTMLVideoElement
     this.setVideoSrcObj(localVideo.srcObject)
     this.setMainInfo(this.userInfo)
   }

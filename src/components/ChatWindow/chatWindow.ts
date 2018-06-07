@@ -117,6 +117,9 @@ export class ChatWindow extends Vue {
     if (this.recStatus) {
       this.recStatus = false
       this.stop()
+      if (this.userInfo.role === 'judge') {
+        piliRTC.stopMergeStream()
+      }
     } else {
       this.start()
       if (this.userInfo.role === 'judge') {
@@ -155,7 +158,6 @@ export class ChatWindow extends Vue {
       if (result.type !== 3) {
         this.setMessage(result)
       }
-      console.log(result.type)
       if (result.type === 2) {
         // 更新证据目录
         this.getEviListApi(this.caseId)
@@ -213,7 +215,12 @@ export class ChatWindow extends Vue {
   }
 
   destroyed () {
-    this.recStatus = false
-    this.stop()
+    if (this.recStatus) {
+      if (this.userInfo.role === 'judge') {
+        piliRTC.stopMergeStream()
+      }
+      this.recStatus = false
+      this.stop()
+    }
   }
 }
