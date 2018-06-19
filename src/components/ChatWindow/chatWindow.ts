@@ -68,7 +68,7 @@ export class ChatWindow extends Vue {
         that.emptyCheckCount++
         if (vol < 20) {
           that.emptydatacount++
-          if (that.emptydatacount > 20) {
+          if (that.emptydatacount > 10) {
             if (!that.emptyData) {
               console.log('stoped')
               let blob = that.rec.audioData.encodeWAV()
@@ -184,16 +184,31 @@ export class ChatWindow extends Vue {
         return true
       }
     }
-
+    function checkPDF (filename) {
+      let index = filename.indexOf('.')
+      filename = filename.substring(index)
+      if (filename !== '.pdf') {
+        return false
+      } else {
+        return true
+      }
+    }
     if (checkImg(filename)) {
-      const src = 'https://court1.ptnetwork001.com' + fileAddr
+      const src = fileAddr
       swal({
         html: `<img src="${src}" width="600px" />`,
         width: '750px',
         confirmButtonText: '关闭'
       })
+    } else if (checkPDF(filename)) {
+      const src = fileAddr
+      swal({
+        html: `<iframe src="${src}" width="650" height="400" frameborder="0" style="object-fit: fill;"></iframe>`,
+        width: '750px',
+        confirmButtonText: '关闭'
+      })
     } else {
-      const src = 'https://view.officeapps.live.com/op/view.aspx?src=https://court1.ptnetwork001.com' + fileAddr
+      const src = 'https://view.officeapps.live.com/op/view.aspx?src=https://dq.hlcourt.gov.cn' + fileAddr
       swal({
         html: `<iframe src="${src}" width="650" height="400" frameborder="0" style="object-fit: fill;"></iframe>`,
         width: '750px',
@@ -203,7 +218,7 @@ export class ChatWindow extends Vue {
   }
 
   openWAV (path) {
-    this.audio.src = 'https://court1.ptnetwork001.com' + path
+    this.audio.src = path
     this.audio.play()
   }
 

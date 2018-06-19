@@ -1,6 +1,6 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
-import { uploadEvi, examineEvi } from '../../api/evidence'
+import { uploadEvi, examineEvi, getEviNote } from '../../api/evidence'
 import swal from 'sweetalert2'
 import RWS from '../../utils/rws'
 
@@ -52,15 +52,32 @@ export class EvidenceWindow extends Vue {
       }
     }
 
+    function checkPDF (filename) {
+      let index = filename.indexOf('.')
+      filename = filename.substring(index)
+      if (filename !== '.pdf') {
+        return false
+      } else {
+        return true
+      }
+    }
+
     if (checkImg(filename)) {
-      const src = 'https://court1.ptnetwork001.com' + fileAddr
+      const src = 'https://dq.hlcourt.gov.cn' + fileAddr
       swal({
         html: `<img src="${src}" width="600px" />`,
         width: '750px',
         confirmButtonText: '关闭'
       })
+    } else if (checkPDF(filename)) {
+      const src = fileAddr
+      swal({
+        html: `<iframe src="${src}" width="650" height="400" frameborder="0" style="object-fit: fill;"></iframe>`,
+        width: '750px',
+        confirmButtonText: '关闭'
+      })
     } else {
-      const src = 'https://view.officeapps.live.com/op/view.aspx?src=https://court1.ptnetwork001.com' + fileAddr
+      const src = 'https://view.officeapps.live.com/op/view.aspx?src=https://dq.hlcourt.gov.cn' + fileAddr
       swal({
         html: `<iframe src="${src}" width="650" height="400" frameborder="0" style="object-fit: fill;"></iframe>`,
         width: '750px',
@@ -72,6 +89,26 @@ export class EvidenceWindow extends Vue {
     let sendObj = { 'name': '', 'roleName': '', 'type': 3, 'wav': '', 'content': fileAddr, 'createDate': '' }
     let sendJSON = JSON.stringify(sendObj)
     this.send(sendJSON)
+  }
+
+  downEviNote () {
+    getEviNote(this.caseId).then(res => {
+      if (res.data.state === 100) {
+        let src = res.data.result.path
+        swal({
+          html: `<iframe src="${src}" width="650" height="400" frameborder="0" style="object-fit: fill;"></iframe>`,
+          width: '750px',
+          confirmButtonText: '关闭'
+        })
+      } else {
+        swal({
+          title: '提示',
+          text: res.data.message,
+          type: 'warning',
+          confirmButtonText: '关闭'
+        })
+      }
+    })
   }
 
   showUpload () {

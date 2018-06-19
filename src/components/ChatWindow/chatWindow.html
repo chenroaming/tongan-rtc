@@ -1,4 +1,4 @@
-<div class="left-bar" :class="show ? 'show' : ''">
+<div class="left-bar" :class="userInfo.role === 'judge' ? show ? 'bigger show' : 'bigger' : show ? 'show' : ''">
   <div class="handle-bar" @click="show = !show">
     语音识别
     <div id="triangle-right"></div>
@@ -11,11 +11,11 @@
           <span class="roleName">{{ item.roleName }}</span>:
           <span>({{ item.name }})</span>
           <span class="time">{{ item.createDate | formatDate }}</span>
+          <img v-if="item.wav !== ''" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(item.wav)">
         </div>
         <div class="text">
           {{ item.content }}
         </div>
-        <img v-if="item.wav !== ''" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(item.wav)">
       </li>
     </ul>
   </div>

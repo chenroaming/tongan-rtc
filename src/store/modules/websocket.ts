@@ -1,7 +1,6 @@
 import { Commit } from 'vuex'
 import store from '../index'
 import types from '../types'
-import Vue from 'vue'
 import RWS from '../../utils/rws'
 
 interface State {
@@ -18,7 +17,7 @@ const getters = {
 
 const actions = {
   setWebsocket (context: { commit: Commit, state: State }) {
-    store.commit(types.SET_WEBSOCKET, new RWS('ws://localhost:8080/api/voice/ws.jhtml'))
+    store.commit(types.SET_WEBSOCKET, new RWS('wss://dq.hlcourt.gov.cn/api/voice/ws.jhtml'))
   },
   websocketSend (context: { commit: Commit, state: State }, content: any) {
     state.websocket.send(content)

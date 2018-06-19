@@ -56,8 +56,15 @@ export class RoomPage extends Vue {
 
   created () {
     this.$swal({
-      title: '庭审须知',
-      text: '庭审保持安静，不得随意站立、走动，不得让无关人员进入视频，不得采取过激语言等；若破坏法庭铁序、妨害诉讼活动顺利进行的，依法追究法律责任',
+      title: '庭审纪律',
+      html: `
+        <div style="text-align:left;margin-bottom:5px;text-indent:2em;">全体人员在庭审活动中应当服从审判长或独任审判员的指挥，尊重司法礼仪，遵守法庭纪律：</div>
+        <div style="text-align:left;margin-bottom:5px;text-indent:2em;">(一)不得鼓掌、喧哗；</div>
+        <div style="text-align:left;margin-bottom:5px;text-indent:2em;">(二)不得吸烟、进食；</div>
+        <div style="text-align:left;margin-bottom:5px;text-indent:2em;">(三)不得拨打或接听电话；</div>
+        <div style="text-align:left;margin-bottom:5px;text-indent:2em;">(四)不得对庭审活动进行录音、录像、拍照或使用移动通信工具等传播庭审活动；</div>
+        <div style="text-align:left;margin-bottom:5px;text-indent:2em;">(五)不得实施其他危害法庭安全或妨害法庭秩序的行为。诉讼参与人发言或提问，应当经审判长或独任审判员许可。旁听人员不得进入审判活动区，不得随意站立、走动，不得发言和提问。</div>
+      `,
       imageUrl: '/dist/images/tu-s.png',
       confirmButtonText: '明白',
       allowOutsideClick: false
@@ -188,7 +195,7 @@ export class RoomPage extends Vue {
         let arr = res.data.result.split('/')
         eleLink.download = arr[arr.length - 1]
         eleLink.style.display = 'none'
-        eleLink.href = 'https://court1.ptnetwork001.com' + res.data.result
+        eleLink.href = 'https://dq.hlcourt.gov.cn' + res.data.result
         // 触发点击
         document.body.appendChild(eleLink)
         eleLink.click()

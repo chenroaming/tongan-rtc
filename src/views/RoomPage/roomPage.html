@@ -13,7 +13,7 @@
     <!-- <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div> -->
   </div>
   <MainPlayer />
-  <div class="remoteplayer-list">
+  <div :class="userInfo.role === 'judge' ? 'bigger remoteplayer-list' : 'remoteplayer-list' ">
     <LocalPlayer />
     <RemotePlayer v-for="(item, index) in users" v-if="item.userId !== userId" :id="item.userId" :key="index" />
   </div>

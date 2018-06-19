@@ -5,12 +5,19 @@ import { userDetail } from '../../api/user'
 
 import './mainPlayer.less'
 
+interface UserInfoShape {
+  id: number,
+  name: string,
+  role: string
+}
+
 @Component({
   template: require('./mainPlayer.html')
 })
 export class MainPlayer extends Vue {
   @Getter('getVideoSrcObj') videoSrcObj: MediaStream
   @Getter('getMainInfo') mainInfo: any
+  @Getter('getUserInfo') userInfo: UserInfoShape
 
   week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
   clock = {
@@ -32,6 +39,7 @@ export class MainPlayer extends Vue {
   }
 
   created () {
+    console.log(this.userInfo)
     this.timer = setInterval(() => {
       this.updateTime()
     }, 1000)

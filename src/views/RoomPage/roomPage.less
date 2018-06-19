@@ -96,6 +96,35 @@ a {
     left: 0;
     right: 0;
     text-align: left;
+    &.bigger {
+      height: 260px;
+      .remotePlayer {
+        display: inline-block;
+        width: 450px;
+        height: 260px;
+        .title{
+          width: 450px;
+        }
+        .qnrtc-stream-player {
+          width: 450px;
+          height: 260px;
+          object-fit: fill;
+        }
+      }
+      .localPlayer {
+        display: inline-block;
+        width: 450px;
+        height: 260px;
+        .title{
+          width: 450px;
+        }
+        .qnrtc-stream-player {
+          width: 450px;
+          height: 260px;
+          object-fit: fill;
+        }
+      }
+    }
   }
   .remotePlayer {
     display: inline-block;

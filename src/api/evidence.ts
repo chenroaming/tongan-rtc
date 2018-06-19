@@ -33,3 +33,14 @@ export function examineEvi (evidenceId, exm) {
     params
   })
 }
+
+export function getEviNote (lawCaseId) {
+  const params = {
+    lawCaseId
+  }
+  return service({
+    url: '/court/case/getEvidenceNote.jhtml',
+    method: 'get',
+    params
+  })
+}

@@ -9,6 +9,12 @@
   left: -400px;
   z-index: 90;
   transition: all 1s ease;
+  &.bigger {
+    bottom: 260px;
+    .handle-bar {
+      bottom: 260px;
+    }
+  }
   &.show {
     left: 0px;
     .handle-bar {
@@ -61,14 +67,14 @@
       padding-right: 15px;
     }
     .identifying {
-      padding: 5px 15px;
+      padding: 5px 0px 5px 15px;
       text-align: left;
       color: #0084ff;
       &.green {
         color: #08a53d;
       }
       .time {
-        margin-right: 40px;
+        margin-right: 0px;
       }
     }
     .text {
@@ -82,9 +88,7 @@
       position: relative;
     }
     .voice-icon {
-      position: absolute;
-      top: 4px;
-      right: 124px;
+      vertical-align: middle;
       cursor: pointer;
     }
   }

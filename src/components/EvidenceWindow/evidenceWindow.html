@@ -36,6 +36,9 @@
       </div>
     </li>
   </ul>
+  <div v-if="userInfo.role=='judge'" class="upload" @click="downEviNote ">
+    查看质证笔录
+  </div>
   <div v-if="userInfo.role!=='judge'" class="upload" @click="showUpload ">
     <img src="../../assets/img/upload.svg" alt="上传证据 "> 上传证据
   </div>
