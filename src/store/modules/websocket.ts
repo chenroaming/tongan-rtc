@@ -17,7 +17,18 @@ const getters = {
 
 const actions = {
   setWebsocket (context: { commit: Commit, state: State }) {
-    store.commit(types.SET_WEBSOCKET, new RWS('wss://dq.hlcourt.gov.cn/api/voice/ws.jhtml'))
+    var protocolStr = document.location.protocol;
+    if(protocolStr == "http:")
+    {
+       console.log("protocol = " + protocolStr);
+       store.commit(types.SET_WEBSOCKET, new RWS('ws://' + location.host + '/api/voice/ws.jhtml'))
+    }
+    else if(protocolStr == "https:")
+    {
+       console.log("protocol = " + protocolStr);
+       store.commit(types.SET_WEBSOCKET, new RWS('wss://' + location.host + '/api/voice/ws.jhtml'))
+    }
+    // store.commit(types.SET_WEBSOCKET, new RWS('wss://' + location.host + '/api/voice/ws.jhtml'))
   },
   websocketSend (context: { commit: Commit, state: State }, content: any) {
     state.websocket.send(content)

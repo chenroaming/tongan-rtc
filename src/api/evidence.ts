@@ -16,7 +16,7 @@ export function getEviByCaseId (lawCaseId) {
     lawCaseId
   }
   return service({
-    url: '/qtw/out/evi/getEviByCaseId.jhtml',
+    url: '/qtw/evi/getEviByCaseIds.jhtml',
     method: 'get',
     params
   })

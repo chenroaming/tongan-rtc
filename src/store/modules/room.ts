@@ -27,18 +27,24 @@ const getters = {
 
 // action
 const actions = {
-  getRoomToken (context: { commit: Commit, state: State }, caseid: number) {
+  getRoomToken (context: { commit: Commit, state: State }, parmas:{caseid : number , roomType : number} ) {
     return new Promise((resolve, reject) => {
-      getRoomToken(caseid).then(res => {
+      getRoomToken(parmas.caseid,parmas.roomType).then(res => {
         if (res.data.state === 100) {
           resolve(res)
           store.commit(types.SET_ROOM_TOKEN, res.data.result)
-          store.commit(types.SET_CASE_ID, caseid)
+          store.commit(types.SET_CASE_ID, parmas.caseid)
         } else {
-          Sweetalert2({
-            type: 'error',
-            title: res.data.message
-          })
+          
+          if(parmas.caseid.indexOf(',') != -1){
+
+          }else{
+            Sweetalert2({
+              type: 'error',
+              title: res.data.message
+            })
+          }
+          
           resolve(res)
         }
       }).catch(error => {

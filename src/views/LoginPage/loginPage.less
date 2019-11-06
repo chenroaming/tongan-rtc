@@ -74,6 +74,26 @@ a.button:hover {
   height: 100%;
   min-height: 100vh;
 }
+.sButton{
+  margin: 0 .3125em;
+  padding: .625em 2em;
+  font-weight: 500;
+  box-shadow: none;
+  border: 0;
+  border-radius: .25em;
+  background: initial;
+  background-color: #fff;
+  color: #2d8cf0;
+  font-size: 1.0625em;
+  margin-top: 10px;
+  border: 1px dashed #2d8cf0;
+  outline:none;
+  cursor: pointer;
+}
+.sel{
+  border: 1px solid #19be6b;
+  color: #19be6b;
+}
 
 /* LOGO */
 .logo {
@@ -255,6 +275,16 @@ input {
     }
   }
 }
+.user{
+  position: relative;
+  .faceWrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -150px;
+    margin-left: -200px;
+  }
+}
 .help-action {
   padding: .4em 0 0;
   font-size: .93em;
@@ -277,8 +307,8 @@ input {
 }
 .form-wrap .login-form .button {
   margin: 1em 0;
-  padding: .2em 3em;
-  width: 110px;
+  padding: .4em 3em;
+  width: 130px;
   text-align: center;
   display: block;
   background-color: #40a9ff;
@@ -515,8 +545,8 @@ input {
 @media only screen and (min-width: 60em) {
   /* WRAP */
   .wrap {
-      width: 900px;
-      height: 550px;
+      width: 1000px;
+      height: 600px;
   }
   /* CONTENT */
   .content, .content.full {
@@ -639,7 +669,35 @@ transform: scale(1) translate3d(0,0,0);
           margin-left: -15px;
         }
       }
+      
     }
+    .selectedStyle{
+      position: absolute;
+      left: 45px;
+      bottom: 20px
+    }
+    .pageStyle{
+      margin-top: 10px;
+    }
+    .selectedBtn{
+      position: absolute;
+      right: 70px;
+      bottom: 20px
+    }
+  }
+  .scrollStyle::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+}
+  .scrollStyle::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+      background: #535353;
+  }
+  .scrollStyle::-webkit-scrollbar-track {/*滚动条里面轨道*/
+      -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      background: #EDEDED;
   }
   .container {
     height: 460px;

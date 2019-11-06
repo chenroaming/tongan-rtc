@@ -1,39 +1,54 @@
-<div class="left-bar" :class="userInfo.role === 'judge' ? show ? 'bigger show' : 'bigger' : show ? 'show' : ''">
-  <div class="handle-bar" @click="show = !show">
+<div class="left-bar" :class="userInfo.role === '法官' ? show ? 'bigger show' : 'bigger' : show ? 'show' : ''">
+  <div class="handle-bar" @click="show = !show" v-if=windowIsShow>
     语音识别
     <div id="triangle-right"></div>
   </div>
-  <div class="content" ref="content">
-    <ul>
+  <div class="content" style="overflow: inherit;">
       <div class="clean" @click="cleanMessage">清空</div>
+  <div class="content scrollStyle" ref="content">
+    <ul>
       <li v-for="item in logMessage">
         <div class="identifying" :class="item.roleName === '法官' ? '' : 'green' ">
           <span class="roleName">{{ item.roleName }}</span>:
           <span>({{ item.name }})</span>
           <span class="time">{{ item.createDate | formatDate }}</span>
-          <img v-if="item.wav !== ''" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(item.wav)">
+          <!-- <img v-if="item.wav !== ''" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(item.wav)"> -->
+          <!-- <img v-for="(it,dex) in item.wavs" v-if="it.wav !== '' && dex <3 && item.shotShow" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(it.wav)">
+          <img v-for="(it,dex) in item.wavs" v-if="it.wav !== '' && !item.shotShow" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(it.wav)">
+          <span v-if="item.wavs.length > 2" style="cursor:pointer" @click="showMore(item)">{{item.shotShow ? '>>>' : '<<<'}}</span> -->
         </div>
         <div class="text">
-          {{ item.content }}
+          <span v-for="(it,dex) in item.wavContent">
+            <!-- <img  v-if="it.wav !== ''" class="voice-icon" src="../../assets/img/voice-icon.svg" alt="" @click="openWAV(it.wav)"> -->
+            {{it.content}}
+            <!-- <br/> -->
+          </span>  
+          <!-- {{ item.content }} -->
         </div>
       </li>
     </ul>
   </div>
-  <div class="input-wrapper" v-if="userInfo.role === 'judge'">
+  </div>
+  <div class="input-wrapper" v-if="userInfo.role === '法官'">
     <textarea v-model="message" type="text" placeholder="文字输入发送信息" @keyup.enter="sendMessage"></textarea>
     <div class="send-wrapper" @click="sendMessage">
       <img src="../../assets/img/send.svg" alt="发送">
     </div>
   </div>
-  <div class="recorder">
+  <div id="switch">
+    <div class="diamond"></div>
+    <div class="choice" :class="AIType === 1 ? 'on' : ''" @click="changeAIType(1)">阿里</div>
+    <div class="choice" :class="AIType === 2 ? 'on' : ''" @click="changeAIType(2)">讯飞</div>
+  </div>
+  <div class="recorder" v-show="userInfo.role === '法官'">
     <a @click="handleTrigger">
       <div class="recorder-btn-begin" v-show="!recStatus">
-        <span class="btn-title">{{ userInfo.role === 'judge' ? '开始庭审' : '语音识别' }}</span>
+        <span class="btn-title">{{ userInfo.role === '法官' && !recStae ? '开庭' : '语音识别' }}</span>
       </div>
     </a>
     <a @click="handleTrigger">
       <div class="recorder-btn-stop" v-show="recStatus">
-        <span :class="userInfo.role === 'judge' ? 'btn-title' : 'btn-title-square' " v-show="recStatus">{{ userInfo.role === 'judge' ? '休庭' : '' }}</span>
+        <span :class="userInfo.role === '法官' ? 'btn-title' : 'btn-title-square' " v-show="recStatus">{{ userInfo.role === '法官' ? '正在庭审' : '' }}</span>
       </div>
     </a>
   </div>

@@ -1,0 +1,14 @@
+<div>
+  <div id="container">
+    <video id="video" ref="video" width="400" height="300" autoplay>
+      您的浏览器不支持video标签
+    </video>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <canvas id="catchCanvas" width="400" height="300"></canvas>
+  </div>
+  <div class="btn-wrapper" v-show="failTimes > 5">
+    抱歉！人脸识别失败
+    <div @click="startTrack">重新匹配</div>
+    <div @click="logout">更换账号</div>
+  </div>
+</div>

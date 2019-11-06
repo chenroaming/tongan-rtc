@@ -9,7 +9,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "target": "es5",
-    "sourceMap": true,
+    "sourceMap": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,

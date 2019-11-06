@@ -21,7 +21,13 @@ webpackConfig.module.rules = [...webpackConfig.module.rules,
 },
 {
   test: /\.css$/,
-  loader: 'css-loader'
+  use: [{
+    loader: 'style-loader'
+  },
+  {
+    loader: 'css-loader'
+  },
+  ]
 },
 {
   test: /\.(jpg|png|gif|eot|svg|ttf|woff|woff2)$/,
@@ -44,9 +50,10 @@ webpackConfig.devServer = {
   port: 8080,
   host: 'localhost',
   historyApiFallback: {
-    rewrites: [
-      { from: /.*/, to: path.posix.join('/', 'index.html') },
-    ],
+    rewrites: [{
+      from: /.*/,
+      to: path.posix.join('/', 'index.html')
+    },],
   },
   watchOptions: {
     aggregateTimeout: 300,
@@ -58,14 +65,19 @@ webpackConfig.devServer = {
     //匹配代理的url
     '/api': {
       // 目标服务器地址
-      target: 'http://120.78.223.114:8688',
+      target:'http://47.112.14.54:8688',
+      // target: 'http://120.78.223.114:8688',
+    //   target: 'http://47.105.189.44:8780',
       //路径重写
-      pathRewrite: { '^/api': '' },
+      pathRewrite: {
+        '^/api': ''
+      },
       ws: true,
       changeOrigin: true
     },
     '/ws': {
-      target: 'http://120.78.223.114:8688/voice/ws.jhtml',
+      // target: 'http://120.78.223.114:8688/voice/ws.jhtml',
+      target: 'http://47.112.14.54:8688/voice/ws.jhtml',
       changeOrigin: true,
       ws: true
     }

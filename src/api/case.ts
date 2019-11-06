@@ -7,9 +7,10 @@ let service = Util.axios
  * @param {string} caseNo [案号]
  * @returns { state: number, message: string } [state:100 成功；101 失败]
  */
-export function caseList (caseNo) {
+export function caseList (caseNo,pageNumber) {
   const params = {
-    caseNo
+    caseNo,
+    pageNumber
   }
   return service({
     url: '/online/caseList.jhtml',
@@ -18,9 +19,10 @@ export function caseList (caseNo) {
   })
 }
 
-export function getRoomToken (caseId) {
+export function getRoomToken (caseId,roomType) {
   const params = {
-    caseId
+    caseId,
+    roomType
   }
   return service({
     url: '/online/getRoomToken.jhtml',
@@ -44,3 +46,9 @@ export function finish () {
     method: 'get'
   })
 }
+export function createImg () {
+    return service({
+      url: '/online/createImg.jhtml',
+      method: 'get'
+    })
+  }

@@ -50,7 +50,13 @@ webpackConfig.module.rules = [...webpackConfig.module.rules,
 },
 {
   test: /\.css$/,
-  loader: 'css-loader'
+  use: [{
+    loader: 'style-loader'
+  },
+  {
+    loader: 'css-loader'
+  },
+  ]
 },
 {
   test: /\.(jpg|png|gif)$/,
@@ -64,7 +70,7 @@ webpackConfig.module.rules = [...webpackConfig.module.rules,
 },
 {
   test: /\.(eot|svg|ttf|woff|woff2)$/,
-  loader: 'file-loader',
+  loader: 'url-loader',
   options: {
     regExp: /(fonts\/.*)/,
     name: '[name].[ext]',
@@ -118,10 +124,10 @@ new HtmlWebpackPlugin({
     minifyURLs: true
   }
 }),
-new UglifyJsPlugin({
-  include: /\.js$/,
-  minimize: true
-}),
+// new UglifyJsPlugin({
+//   include: /\.js$/,
+//   minimize: true
+// }),
 new CompressionPlugin({
   asset: '[path].gz[query]',
   test: /\.js$/

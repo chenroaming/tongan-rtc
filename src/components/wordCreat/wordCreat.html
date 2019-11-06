@@ -1,0 +1,197 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<title>WebOffice控件打开一个WORD文件</title> 
+<style>
+	.btn{
+		padding: 6px 15px;
+		font-size: 12px;
+		border-radius: 4px;
+		cursor: pointer;
+		color: #fff;
+		background-color: #40a9ff;
+		border-color: #40a9ff;
+		border: 1px solid transparent;
+	}
+	.input{
+		display: inline-block;
+		/* width: 100%; */
+		height: 32px;
+		line-height: 1.5;
+		padding: 0px 7px;
+		font-size: 12px;
+		border: 1px solid #dddee1;
+		border-radius: 4px;
+		color: #495060;
+		background-color: #fff;
+		background-image: none;
+		position: relative;
+		cursor: text;
+	}
+</style>
+<script type="text/javascript" src="./js/jquery-1.8.3.min.js"></script>
+<script language=javascript> 
+	$(document).ready(function () {
+		var caseNo = GetRequest('caseNo');
+		var diplomsName = GetRequest('diplomsName');
+		var applyName = GetRequest('applyName');
+		let pat = localStorage.getItem("path");
+		$(document).attr('title',GetRequest('diplomsName')); 
+		if(pat){
+			$('#path').val(pat);
+		}
+		
+	});
+	function GetRequest(value) {
+		//url例子：www.bicycle.com?id="123456"&Name="bicycle"；  
+		var url = decodeURI(location.search); //?id="123456"&Name="bicycle";
+		var object = {};
+		if (url.indexOf("?") != -1)//url中存在问号，也就说有参数。  
+		{
+			var str = url.substr(1);  //得到?后面的字符串
+			var strs = str.split("&");  //将得到的参数分隔成数组[id="123456",Name="bicycle"];
+			for (var i = 0; i < strs.length; i++) {
+				object[strs[i].split("=")[0]] = strs[i].split("=")[1]
+			}
+		}
+		return object[value];
+	}
+var pfile='20161108144356.doc'; //word的文件名 
+var varpath = decodeURI(window.location.pathname);
+var strRoot = varpath.substring(1,varpath.lastIndexOf('/')+1);//取得打开、保存路径 
+if (strRoot =='')strRoot = varpath.substring(1,varpath.lastIndexOf('\\')+1);
+// var strOpenUrl = strRoot + "file/" + pfile ; //取得打开路径和文件名
+// var strSaveUrl = strRoot + "file/" + pfile ; //取得保存路径和文件名
+var strOpenUrl = "http://court2.ptnetwork001.com/upload/downloadWord/送达证_20180912101645.docx";
+var strSaveUrl = "D:\\123.docx";
+strSmartUrl = "WebOffice://|Officectrl|" + window.location.href;//开启智能窗模式
+
+
+function loadD(){
+	window.open('/upload/sqPlugn/sqPlugns.zip')
+} 
+function WebOpen()
+{
+	$.ajax({ 
+		type: "get", 
+		url: "/api/sq/document/bulidDiploms2.jhtml", 
+		// dataType: "jsonp", 
+		data: {
+			caseNo:GetRequest('caseNo'),	//案件id
+			diplomsName:GetRequest('diplomsName'),	//文书名称
+			applyName:GetRequest('applyName'),	//申请人
+			registerNo:GetRequest('registerNo'),	//登字号
+			makePeaceName:GetRequest('makePeaceName'),	//调解人员姓名
+			makePeacePhone:GetRequest('makePeacePhone'),	//调解人员联系电话
+		},
+		// timeout:1000,
+		success: function (data) { 
+			let msg = JSON.parse(data);
+			if(msg.state == 100){
+				var strOpenUrl = "https://court1.ptnetwork001.com/" + msg.path;
+				strOpenUrl.substring(strOpenUrl.lastIndexOf(".",strOpenUrl.length))
+				let str = strOpenUrl.split('/');
+				$('#fileName').val(str[str.length-1]);
+				obj = document.getElementById('WebOffice');//获得控件对象
+				if (obj)setTimeout(openfile(strOpenUrl),100);//等待控件初始化完毕，时间可以根据网络速度设定。
+			}else{
+				alert(msg.message)
+			}
+		}, 
+		error: function(err) {
+			console.log(err)
+		}
+	})
+    
+}
+
+function openfile(strOpenUrl)
+{
+	 console.log(strOpenUrl)
+	document.getElementById('WebOffice').Open(encodeURI(strOpenUrl),true,"Word.Document","","");
+}
+function WebSave(value,path)
+{  
+	// let patAry = path.split("\\");
+	// console.log(patAry)
+	// let strSaveUrl = '';
+	// for(let i=0;i<patAry.length;i++){
+	// 	strSaveUrl = strSaveUrl + patAry
+	// }
+	// let strSaveUrl = "D:\\diplomas\\" + value;
+	
+	let strSaveUrl = path+ '\\'+ value;
+	console.log(strSaveUrl)
+	var isSuccess = 0;
+	try {
+		document.getElementById('WebOffice').ActiveDocument.SaveAs(strSaveUrl);
+		
+	}catch (e) {
+		console.log(e.message);
+		if(e.message == 'Error calling method on NPObject.'){
+			alert('保存失败，请检查保存路径是否正确！')
+		}else{
+			alert('保存失败')
+		}
+		isSuccess = 1;
+	}
+	if(isSuccess == 0){
+		alert('文档保存成功!路径为：'+strSaveUrl);
+		localStorage.setItem("path",path);
+	}
+	
+	location.reload(); 
+} 
+function SmartOpen()
+{
+	location.href=strSmartUrl;
+}
+// function browseFolder(path) {
+//     try {
+//         var Message = "\u8bf7\u9009\u62e9\u6587\u4ef6\u5939"; //选择框提示信息
+//         var Shell = new ActiveXObject("Shell.Application");
+//         var Folder = Shell.BrowseForFolder(0, Message, 64, 17); //起始目录为：我的电脑
+//         //var Folder = Shell.BrowseForFolder(0, Message, 0); //起始目录为：桌面
+//         if (Folder != null) {
+//             Folder = Folder.items(); // 返回 FolderItems 对象
+//             Folder = Folder.item(); // 返回 Folderitem 对象
+//             Folder = Folder.Path; // 返回路径
+//             if (Folder.charAt(Folder.length - 1) != "\\") {
+//                 Folder = Folder + "\\";
+//             }
+//             document.getElementById(path).value = Folder;
+//             return Folder;
+//         }
+//     }
+//     catch (e) {
+//         alert(e.message);
+//     }
+// }
+
+// function test (){
+// 	$(":file").click();
+// 	$(":text").val($(":file").val());
+// }
+</script> 
+</head>
+<body topmargin=0 leftmargin=0 onload="javascript:WebOpen();">
+<div style="text-align:left;font-size:15px;">
+<!-- <input id="path" type="text" name="path" size="30"> -->
+<!-- <input type="text" id="path" /> -->
+<!-- <input type="button" onclick="test();" value="选择文件" /> -->
+<!-- <input type="file" style="display:none" /> -->
+
+<form style="padding-left: 20px;line-height: 55px;">
+存储路径：<input id="path" class="input" type="text" value="D:\diplomas" name="path" size="30">
+<input type="text" id="fileName" style="display:none">
+<input type="button"  class="button btn" value="保存本地" style="width:80px" onclick="WebSave(fileName.value,path.value);"/>
+<input type="button"  class="button btn" value="插件下载" style="width:80px;margin-left:10px" onclick="loadD();"/>
+</form>
+<!-- <script language=javascript src="js/webofficetip.js" charset="utf-8"></script> -->
+<!-- <a href="javascript:SmartOpen();">智能窗口链接</a> -->
+</div>
+<script language=javascript src="js/webofficeocx.js" charset="utf-8"></script>
+
+<script language=javascript src="cssjs/copyright.js" charset="utf-8"></script>
+</body></html>

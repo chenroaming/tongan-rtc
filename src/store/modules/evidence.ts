@@ -45,15 +45,67 @@ const actions = {
           store.commit(types.SET_EVI_LIST, res.data.result)
           let obj = {
             'plaintiff': [],
-            'defendant': []
+            'defendant': [],
           }
-          res.data.result.map(item => {
-            if (item.dsrStatus === '原告') {
-              obj.plaintiff.push(item)
-            } else {
-              obj.defendant.push(item)
-            }
+
+          //2019-8-08新增---开始---
+          let caseNoAry =  res.data.result.map(item => {
+            return item.caseNo
           })
+          caseNoAry = uniq(caseNoAry);
+          let onecaseNoAry = []
+          for(let y=0;y<caseNoAry.length;y++){
+            let caseObj = {
+              caseNo:caseNoAry[y],
+              eviAry:[]
+            }
+            for(let i=0;i<res.data.result.length;i++){ 
+              if(res.data.result[i].caseNo == caseNoAry[y]){
+                if(res.data.result[i].evidence){
+                  res.data.result[i].evidence.map(tt => {
+                    caseObj.eviAry.push(tt)
+                  })
+                }   
+              }
+            }
+            onecaseNoAry.push(caseObj)
+          }
+          console.log(onecaseNoAry)
+          onecaseNoAry.map(item => {
+            let bj = {
+              caseNo:item.caseNo,
+              eviAry:[]
+            }
+            item.eviAry.map((it,dex) => {
+              if(it.dsrStatus == '原告'){
+                bj.eviAry.push(it)
+              }
+            })
+            obj.plaintiff.push(bj);
+          })
+           onecaseNoAry.map(item => {
+            let bj = {
+              caseNo:item.caseNo,
+              eviAry:[]
+            }
+            item.eviAry.map((it,dex) => {
+              if(it.dsrStatus == '被告'){
+                bj.eviAry.push(it)
+              }
+            })
+            obj.defendant.push(bj);
+          })
+          //2019-8-08新增---结束---
+
+          // res.data.result.map(item => {
+          //   if (item.dsrStatus === '原告') {
+          //     obj.plaintiff.push(item)
+          //   } else{
+          //       obj.defendant.push(item)
+          //   }
+          // })
+          console.log(222222222222222)
+          console.log(obj)
           store.commit(types.SET_EVI_LIST_FORMAT, obj)
           resolve(res)
         } else {
@@ -72,6 +124,16 @@ const actions = {
       })
     })
   }
+}
+
+function uniq(array){
+  var temp = []; //一个新的临时数组
+  for(var i = 0; i < array.length; i++){
+      if(temp.indexOf(array[i]) == -1){
+          temp.push(array[i]);
+      }
+  }
+  return temp;
 }
 
 const mutations = {

@@ -1,0 +1,89 @@
+[33mcommit 4828c7758d35b78f7bf32c8e6e63b09e7c4d9e06[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: tclyjy <330365043@qq.com>
+Date:   Tue Jun 19 09:44:00 2018 +0800
+
+    video change
+
+[33mcommit 1463d4f9e8bafa07d6b9c4295eb7866553f74df6[m
+Author: tclyjy <330365043@qq.com>
+Date:   Thu Jun 7 10:09:00 2018 +0800
+
+    rtc 0.2.0
+
+[33mcommit 2aee2c850bac0a4a917f4a173d5e83ec0e15d04a[m
+Author: tclyjy <330365043@qq.com>
+Date:   Tue Jun 5 17:55:49 2018 +0800
+
+    websocket 优化
+
+[33mcommit c103c501478422361c0a1c8514ad77513624dfe2[m
+Author: tclyjy <330365043@qq.com>
+Date:   Wed May 16 18:10:58 2018 +0800
+
+    readme.md
+
+[33mcommit 2beac9f64f99231a51204aba3e8bf1588758ef68[m
+Author: tclyjy <330365043@qq.com>
+Date:   Wed May 16 17:54:01 2018 +0800
+
+    remove
+
+[33mcommit 5f963b42152541e825c5d350ecfe22ad2d2dbf83[m
+Author: tclyjy <330365043@qq.com>
+Date:   Wed May 16 17:29:36 2018 +0800
+
+    updata README.md
+
+[33mcommit bbeb61aaa5657ddb242236eb8811f0ee1a0ae3a2[m
+Author: tclyjy <330365043@qq.com>
+Date:   Wed May 16 15:38:04 2018 +0800
+
+    主屏副屏切换，优化代码
+
+[33mcommit 47e01e6525b12d0cde581b8ca434380e02bfe240[m
+Author: tclyjy <330365043@qq.com>
+Date:   Tue May 8 17:19:22 2018 +0800
+
+    语音识别优化
+
+[33mcommit 4d2a4d23d297666c6e0807cd0dc421bf58dbf4e4[m
+Author: tclyjy <330365043@qq.com>
+Date:   Wed May 2 11:38:07 2018 +0800
+
+    监听语音输入判断是否为空
+
+[33mcommit 147c5c34218fa6cf31851721128768cc153e6dcb[m
+Author: tclyjy <330365043@qq.com>
+Date:   Wed May 2 10:51:18 2018 +0800
+
+    rtc unpush & websocket
+
+[33mcommit 918531d0b4acadc01ca124cacfd7c6e68a78a4d9[m
+Author: tclyjy <330365043@qq.com>
+Date:   Sat Apr 28 14:13:32 2018 +0800
+
+    语音识别
+
+[33mcommit d1897726272aa5f69d2071e066fbb3d6e2993752[m
+Author: tclyjy <330365043@qq.com>
+Date:   Wed Apr 25 09:51:28 2018 +0800
+
+    localPlayer\remotePlayer
+
+[33mcommit 782abec804e7732348da0f71d21140add8af4bdf[m
+Author: tclyjy <330365043@qq.com>
+Date:   Sun Apr 22 14:52:15 2018 +0800
+
+    login API
+
+[33mcommit eb24c7b511f997b883f1bc07c0bdfc912b08ef0e[m
+Author: tclyjy <330365043@qq.com>
+Date:   Fri Apr 20 14:14:02 2018 +0800
+
+    Vue-TypeScript 基础环境
+
+[33mcommit abae60831905f88be65dcec1691ffa188aac0cc9[m
+Author: tclyjy <330365043@qq.com>
+Date:   Fri Apr 20 14:10:22 2018 +0800
+
+    Vue-TypeScript 基础环境

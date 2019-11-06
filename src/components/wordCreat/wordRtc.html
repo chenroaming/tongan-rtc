@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<title>WebOffice控件打开一个WORD文件</title> 
+<style>
+	.btn{
+		padding: 6px 15px;
+		font-size: 12px;
+		border-radius: 4px;
+		cursor: pointer;
+		color: #fff;
+		background-color: #40a9ff;
+		border-color: #40a9ff;
+		border: 1px solid transparent;
+	}
+	.input{
+		display: inline-block;
+		/* width: 100%; */
+		height: 32px;
+		line-height: 1.5;
+		padding: 0px 7px;
+		font-size: 12px;
+		border: 1px solid #dddee1;
+		border-radius: 4px;
+		color: #495060;
+		background-color: #fff;
+		background-image: none;
+		position: relative;
+		cursor: text;
+	}
+	.scrollStyle::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+    .scrollStyle::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: #535353;
+    }
+    .scrollStyle::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        background: #EDEDED;
+    }
+</style>
+<script type="text/javascript" src="./js/jquery-1.8.3.min.js"></script>
+<script language=javascript> 
+	$(document).ready(function () {
+		let pat = localStorage.getItem("path");
+		console.log(pat)
+		if(pat){
+			console.log(1151515)
+			$('#path').val(pat);
+		}
+		
+	});
+	function GetRequest(value) {
+		//url例子：www.bicycle.com?id="123456"&Name="bicycle"；  
+		var url = decodeURI(location.search); //?id="123456"&Name="bicycle";
+		var object = {};
+		if (url.indexOf("?") != -1)//url中存在问号，也就说有参数。  
+		{
+			var str = url.substr(1);  //得到?后面的字符串
+			var strs = str.split("&");  //将得到的参数分隔成数组[id="123456",Name="bicycle"];
+			for (var i = 0; i < strs.length; i++) {
+				object[strs[i].split("=")[0]] = strs[i].split("=")[1]
+			}
+		}
+		return object[value];
+	}
+var pfile='20161108144356.doc'; //word的文件名 
+var varpath = decodeURI(window.location.pathname);
+var strRoot = varpath.substring(1,varpath.lastIndexOf('/')+1);//取得打开、保存路径 
+if (strRoot =='')strRoot = varpath.substring(1,varpath.lastIndexOf('\\')+1);
+var strSaveUrl = "D:\\123.docx";
+strSmartUrl = "WebOffice://|Officectrl|" + window.location.href;//开启智能窗模式
+var fileId = ""
+var WebOffice;
+var filePaths;
+
+
+function loadD(){
+	window.open('/upload/sqPlugn/sqPlugns.zip')
+} 
+
+
+function WebOpen()
+{
+	$.ajax({ 
+		type: "get", 
+		url: "/api/online/getTrialRecord.jhtml", 
+		// dataType: "jsonp", 
+		data: {
+			caseId:GetRequest('caseNo'),	//案件id
+		},
+		// timeout:1000,
+		success: function (data) { 
+			let msg = JSON.parse(data);
+			if(msg.state == 100){
+				fileId = msg.fileId;
+				console.log(999595)
+				var domain = document.domain;
+				var strOpenUrl = "https://"+domain + msg.result[0].path;
+				// WebOffice.Open(strOpenUrl,false,"Word.Document");
+				filePaths = msg.result[0].path;
+				strOpenUrl.substring(strOpenUrl.lastIndexOf(".",strOpenUrl.length))
+				let str = strOpenUrl.split('/');
+				$('#fileName').val(str[str.length-1]);
+				WebOffice = document.getElementById('WebOffice');//获得控件对象
+				if (WebOffice)setTimeout(openfile(strOpenUrl),500);//等待控件初始化完毕，时间可以根据网络速度设定。
+			}else{
+				alert(msg.message)
+			}
+		}, 
+		error: function(err) {
+			console.log(err)
+		}
+	})
+    
+}
+onmessage=function(e){
+	e=e||event;
+	if(e.data == 'justUp'){
+		upFilss()
+	}else if(e.data == 'justSave'){
+		WebSave()
+	}else if(e.data == 'showOpen'){
+		WebOpen()
+	}
+}
+
+function upFilss()
+{
+	console.log(fileId)
+	console.log(WebOffice)
+	// WebOffice.Save('https://court1.ptnetwork001.com/api/online/uploadTrialRecord.jhtml');
+	console.log('http://120.78.223.114:8688/saveDoc.jsp?file=' + encodeURI(filePaths))
+	var msg = WebOffice.Save('http://120.78.223.114:8688/saveDoc.jsp?file=' + encodeURI(filePaths));
+	// var msg = WebOffice.Save('http://120.78.223.114:8688/online/uploadTrialRecord.jhtml?file=' + encodeURI(filePaths));
+	// alert(msg)
+	console.log(msg)
+}
+
+function openfile(strOpenUrl)
+{
+	 console.log(strOpenUrl)
+	//  document.getElementById('WebOffice').Open(encodeURI(strOpenUrl),false,"Word.Document");
+	document.getElementById('WebOffice').Open(encodeURI(strOpenUrl),true,"Word.Document","","");
+}
+function WebSave(value,path)
+{  	
+	console.log($("#fileName").val())
+	let strSaveUrl = $("#path").val()+ '\\'+ $("#fileName").val();
+	console.log(strSaveUrl)
+	var isSuccess = 0;
+	try {
+		document.getElementById('WebOffice').ActiveDocument.SaveAs(strSaveUrl);
+		
+	}catch (e) {
+		console.log(e.message);
+		if(e.message == 'Error calling method on NPObject.'){
+			alert('保存失败，请检查保存路径是否正确！')
+		}else{
+			alert('保存失败')
+		}
+		isSuccess = 1;
+	}
+	if(isSuccess == 0){
+		alert('文档保存成功!路径为：'+strSaveUrl);
+		localStorage.setItem("path",$("#path").val());
+	}
+	
+	location.reload(); 
+} 
+function SmartOpen()
+{
+	location.href=strSmartUrl;
+}
+
+
+</script> 
+</head>
+<body topmargin=0 leftmargin=0 onload="javascript:WebOpen();" class="scrollStyle">
+<div style="text-align:left;font-size:15px;">
+
+<form style="padding-left: 20px;line-height: 55px;color:white">
+存储路径：<input id="path" class="input" type="text" value="D:\diplomas" name="path" size="30">
+<input type="text" id="fileName" style="display:none">
+<!-- <input type="button"  class="button btn" value="保存本地" style="width:80px" onclick="WebSave(fileName.value,path.value);"/>
+<input type="button"  class="button btn" value="插件下载" style="width:80px;margin-left:10px" onclick="loadD();"/> -->
+</form>
+<!-- <script language=javascript src="js/webofficetip.js" charset="utf-8"></script> -->
+<!-- <a href="javascript:SmartOpen();">智能窗口链接</a> -->
+</div>
+<script language=javascript src="./js/webofficeocx.js" charset="utf-8"></script>
+
+<!-- <script language=javascript src="cssjs/copyright.js" charset="utf-8"></script> -->
+</body></html>

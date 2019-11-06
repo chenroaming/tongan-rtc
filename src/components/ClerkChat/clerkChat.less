@@ -1,0 +1,324 @@
+.left-bar2 {
+  width: 400px;
+  background: rgba(0, 0, 0, .5);
+  color: #fff;
+  border-bottom-right-radius: 15px;
+  position: absolute;
+  top: 60px;
+  bottom: 0px;
+  left: -400px;
+  z-index: 90;
+  transition: all 1s ease;
+  &.bigger {
+    bottom: 260px;
+    .handle-bar {
+      bottom: 260px;
+    }
+  }
+  &.show {
+    left: 0px;
+    .handle-bar {
+      #triangle-right {
+        transform:rotate(-180deg);
+        -ms-transform:rotate(-180deg); 	/* IE 9 */
+        -moz-transform:rotate(-180deg); 	/* Firefox */
+        -webkit-transform:rotate(-180deg); /* Safari 和 Chrome */
+        -o-transform:rotate(-180deg); 	/* Opera */ 
+      }
+    }
+  }
+  .handle-bar {
+    width: 40px;
+    line-height: 60px;
+    font-size: 25px;
+    color: #fff;
+    background: #38b3ff;
+    position: fixed;
+    top: 60px;
+    bottom: 200px;
+    left: 0;
+    padding-top: 90px;
+    z-index: 999;
+    cursor: pointer;
+    #triangle-right {
+      position: absolute;
+      left: 50%;
+      margin-left: -10px;
+      width: 0; 
+      height: 0; 
+      border-top: 10px solid transparent; 
+      border-left: 20px solid #fff; 
+      border-bottom: 10px solid transparent;
+      transition: all 1s ease-in;
+    }
+  }
+  .content {
+    color: #fff;
+    width: 360px;
+    padding-left: 20px;
+    padding-bottom: 50px;
+    height: calc(100% - 45px);
+    overflow: auto;
+    background: none;
+    border-radius: inherit;
+    .clean {
+      text-align: right;
+      margin-top: 5px;
+      cursor: pointer;
+      padding-right: 15px;
+    }
+    .identifying {
+      padding: 5px 0px 5px 15px;
+      text-align: left;
+      color: #0084ff;
+      &.green {
+        color: #08a53d;
+      }
+      .time {
+        margin-right: 0px;
+      }
+    }
+    .text {
+      padding: 0px 25px;
+      text-align: left;
+      font-size: 16px;
+      word-wrap: break-word;
+      overflow: hidden;
+    }
+    li {
+      position: relative;
+    }
+    .voice-icon {
+      vertical-align: middle;
+      cursor: pointer;
+    }
+  }
+  .scrollStyle::-webkit-scrollbar {/*滚动条整体样式*/
+      width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+      height: 1px;
+  }
+  .scrollStyle::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+      background: #535353;
+  }
+  .scrollStyle::-webkit-scrollbar-track {/*滚动条里面轨道*/
+      -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      background: #EDEDED;
+  }
+  .input-wrapper2 {
+    width: 400px;
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    // left: 50%;
+    // margin-left: -130px;
+    z-index: 99;
+    textarea {
+      width: 370px;
+      height: 60px;
+      padding-left: 10px;
+      padding-top: 10px;
+      padding-right: 60px;
+      background: rgba(0, 0, 0, 0);
+      font-size: 16px;
+      color: #fff;
+      border-radius: 5px;
+      outline: none;
+      &::focus {
+        border: 1px solid #38b3ff;
+      }
+    }
+    .send-wrapper {
+      width: 40px;
+      height: 40px;
+      border-radius: 5px;
+      background: #38b3ff;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      margin-top: -23px;
+      cursor: pointer;
+      img {
+        width: 25px;
+        height: 25px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -12.5px;
+        margin-left: -12.5px;
+      }
+    }
+  }
+}
+@dark: #38b3ff;
+@light: #58bdfc;
+@grey: #82909b;
+@width: 75px;
+@height: 23px;
+@padding-switch: 2px;
+@padding-choice: 2px;
+
+.transition {
+  -webkit-transition: all 0.2s ease; 
+    -moz-transition: all 0.2s ease; 
+    -ms-transition: all 0.2s ease; -o-transition: all 0.2s ease; transition: all 0.2s ease;
+}
+
+.rotate(@angle:-45deg) {
+  -webkit-transform: rotate(@angle);
+  -moz-transform: rotate(@angle);
+  -ms-transform: rotate(@angle);
+  -o-transform: rotate(@angle);
+  transform: rotate(@angle);
+}
+
+#switch {
+  font-size: 0;
+  background-color: @light;
+  display: inline-block;
+  color: @grey;
+  padding: @padding-switch;
+  vertical-align: middle;
+  position: fixed;
+  right: 180px;
+  top: 15px;
+  height: 30px;
+  overflow: hidden;
+  width: 80px;
+  .choice {
+    font-size: 12px;
+    width: @width / 2;
+    height: @height;
+    line-height: @height;
+    text-align: center;
+    padding: @padding-choice;
+    display: inline-block;
+    cursor: pointer;
+    .transition;
+    vertical-align: middle;
+    
+    
+    &.on {
+     color: #fff;
+     background-color: @dark; 
+    }
+  }
+  
+  .or {
+    font-size: 10px;
+    color: #fff; 
+    position: absolute;
+    margin-top: (@height / 2) + @padding-switch;
+    margin-left: (@width / 2) + @padding-choice;
+    z-index: 1;
+  }
+  
+  .diamond {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    // margin-top: (@height / 2) + @padding-switch;
+    // margin-left: (@width / 2) + (2 * @padding-choice);
+    margin-top: 11.5px;
+    margin-left: 39px;
+    background: @light;
+    .rotate();
+    -webkit-transform-origin: 0 100%;
+    -moz-transform-origin: 0 100%;
+    -ms-transform-origin: 0 100%;
+    -o-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+  }
+}
+.recorder {
+  position: fixed;
+  right: 110px;
+  top: 5px;
+  font-size: 15px;
+  height: 52px;
+  overflow: hidden;
+  width: 52px;
+}
+
+a {
+  color: #365899;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.recorder-btn-begin {
+  background-color: #1bd815;
+  font-size: 14px;
+  line-height: 18px;
+  border-radius: 52px;
+  color: #fff;
+  height: 52px;
+  transition: width .1s, height .1s;
+  width: 52px;
+}
+
+.recorder-btn-stop {
+  background-color: #f03d25;
+  font-size: 12px;
+  line-height: 18px;
+  border-radius: 52px;
+  color: #fff;
+  height: 52px;
+  transition: width .1s, height .1s;
+  width: 52px;
+}
+
+.recorder-btn-begin, .recorder-btn-stop, .frequency {
+    left: 50%;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.recorder-btn-begin {
+  .btn-title {
+    width: 35px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.recorder-btn-stop {
+  .btn-title {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .btn-title-square {
+    width: 15px;
+    height: 15px;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+  }
+}
+
+.frequency {
+  background-color: #333;
+  border-radius: 50%;
+  opacity: .2;
+}
+
+._3z58 {
+  color: #0084ff;
+  position: absolute;
+  right: 16px;
+  text-align: center;
+  top: 16px;
+}
+
+._3z58:hover {
+  text-decoration: underline;  
+}

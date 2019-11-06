@@ -1,15 +1,17 @@
 a {
   color: #000;
 }
-
+html{
+    min-width: 1280px
+}
 .room-content {
-  background: #000;
+  // background: #000;
   height: 100vh;
   overflow: auto;
   .header {
     height: 60px;
     display: grid;
-    grid-template-columns: 30% 40% 30%;
+    grid-template-columns: 20% 20% 20% 25% 15%;
     background-color: #38b3ff;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250' viewBox='0 0 20 20'%3E%3Cg %3E%3Cpolygon fill='%2340a9ff' points='20%2C10 10%2C0 0%2C0 20%2C20'/%3E%3Cpolygon fill='%2340a9ff' points='0%2C10 0%2C20 10%2C20'/%3E%3C/g%3E%3C/svg%3E");
     .room-logo {
@@ -17,10 +19,11 @@ a {
       grid-column-end: 2;
       height: 100%;
       line-height: 60px;
-      font-size: 20px;
+      font-size: 22px;
+      font-weight: bold;
       color: #fff;
       img {
-        width: 40px;
+        width: 48px;
         vertical-align: middle;
         margin-right: 15px;
       }
@@ -30,7 +33,23 @@ a {
       grid-column-end: 3;
       height: 100%;
       line-height: 60px;
-      font-size: 24px;
+      font-size: 16px;
+      color: #fff;
+    }
+    .mainInfo {
+      grid-column-start: 3;
+      grid-column-end: 4;
+      height: 100%;
+      line-height: 60px;
+      font-size: 16px;
+      color: #fff;
+    }
+    .room-time {
+      grid-column-start: 4;
+      grid-column-end: 5;
+      height: 100%;
+      line-height: 60px;
+      font-size: 16px;
       color: #fff;
     }
     .export-log {
@@ -57,7 +76,7 @@ a {
       width: 50px;
       height: 50px;
       padding: 5px 10px;
-      font-size: 13px;
+      font-size: 14px;
       line-height: 20px;
       color: #fff;
       border-radius: 50%;
@@ -65,6 +84,10 @@ a {
       position: absolute;
       top: 6px;
       right: 55px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
     }
   }
   .mainPlayer {
@@ -81,45 +104,52 @@ a {
   }
   .localPlayer {
     display: inline-block;
-    width: 350px;
-    height: 200px;
+    width: 20%;
+    // max-width: 450px;
+    min-width: 240px;
+    height: 260px;
     .qnrtc-stream-player {
-      width: 350px;
-      height: 200px;
+        width: 24%;
+        max-width: 450px;
+        min-width: 240px;
+      height: 260px;
       object-fit: fill;
     }
   }
   .remoteplayer-list {
+    padding-right: 30px;
+    padding-left: 30px;
     position: absolute;
-    height: 200px;
+    text-align: center;
+    height: 260px;
     bottom: 0;
     left: 0;
     right: 0;
-    text-align: left;
     &.bigger {
       height: 260px;
       .remotePlayer {
         display: inline-block;
-        width: 450px;
+        // width: 450px;
         height: 260px;
         .title{
-          width: 450px;
+        //   width: 450px;
+          height: auto;
         }
         .qnrtc-stream-player {
-          width: 450px;
+        //   width: 450px;
           height: 260px;
           object-fit: fill;
         }
       }
       .localPlayer {
         display: inline-block;
-        width: 450px;
+        // width: 450px;
         height: 260px;
         .title{
-          width: 450px;
+        //   width: 450px;
         }
         .qnrtc-stream-player {
-          width: 450px;
+        //   width: 450px;
           height: 260px;
           object-fit: fill;
         }
@@ -128,22 +158,24 @@ a {
   }
   .remotePlayer {
     display: inline-block;
-    width: 350px;
-    height: 200px;
+    width: 20%;
+    // max-width: 450px;
+    min-width: 240px;
     .qnrtc-stream-player {
-      width: 350px;
+        width: 24%;
+        max-width: 450px;
+        min-width: 240px;
       height: 200px;
       object-fit: fill;
     }
   }
   .right-bar {
     width: 360px;
-    height: 85vh;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
     position: absolute;
-    top: 50%;
-    margin-top: -39vh;
+    top: 60px;
+    bottom: 250px;
     right: -300px;
     z-index: 99;
     transition: all 1s ease;
@@ -154,16 +186,17 @@ a {
   .right-bar {
     .menu-bar {
       width: 60px;
-      height: 60px;
-      border-top-left-radius: 15px;
-      border-bottom-left-radius: 15px;
-      background: #40a9ff;
       position: absolute;
       left: 0;
       .evidence {
         width: 100%;
-        position: absolute;
-        top: 5px;
+        height:  85px;
+        border-top-left-radius: 15px;
+        border-bottom-left-radius: 15px;
+        background: #40a9ff;
+        padding: 8px 10px;
+        margin-top: 15%;
+        box-sizing: border-box;
         color: #fff;
         font-size: 16px;
         text-align: center;
@@ -172,7 +205,19 @@ a {
           display: block;
           margin: 0 auto;
         }
+        div {
+          line-height: 20px;
+        }
       }
     }
   }
 }
+.show{
+    display: inline-block!important;
+}
+.disabled{
+    background-color: #ddd;
+    border-color: #ddd;
+    color:#57a3f3;
+    cursor: not-allowed; // 鼠标变化
+   }

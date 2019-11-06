@@ -1,0 +1,17 @@
+<div class="court-content">
+  <ul>
+    <li v-for="(item,index) in resultList" :key="index">
+      <a @click="openResult(item.id)" class="show">
+        <div>标题：{{item.fileName}}</div>
+        <div class="courtContent">内容：{{item.content}}</div>
+      </a>
+      <div v-if="userInfo.role=='法官'" class="operation-wrapper">
+        <span class="operation" @click="editResult(item.id)">编辑</span>
+        <span class="operation del" @click="delResult(item.id)">删除</span>
+      </div>
+    </li>
+  </ul>
+  <div v-if="userInfo.role==='法官'" class="edit" @click="editCourtNote">
+    编辑文本
+  </div>
+</div>

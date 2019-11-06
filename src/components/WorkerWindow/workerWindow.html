@@ -1,0 +1,14 @@
+<div class="worker-content">
+  <!-- <div class="worker-item">
+    <img width=110px height=160px :src="judge.imagePath===''? '/images/none.jpg' : judge.imagePath" alt="法官照片">
+    <div class="title">审判员:{{judge.name}}</div>
+  </div> -->
+  <div class="worker-item" style="display:none">
+    <img width=110px height=160px :src="assistant.imagePath===''? '/images/none.jpg' : assistant.imagePath" alt="法官助理">
+    <div class="title">法官助理:{{assistant.name}}</div>
+  </div>
+  <div class="worker-item">
+    <img width=110px height=160px :src="clerk.imagePath===''? '/images/none.jpg' : clerk.imagePath" alt="法官照片">
+    <div class="title">书记员:{{clerk.name}}</div>
+  </div>
+</div>

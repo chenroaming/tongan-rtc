@@ -5,41 +5,60 @@
     <div :class="showPlaintiff ? '' : 'active' " @click="showPlaintiff = false">被告</div>
   </div>
   <ul v-show="showPlaintiff">
-    <li v-for="(item, index) in eviListFormat.plaintiff" :key="index">
-      <a @click="openEvi(item.fileAddr)">
-        <!-- <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div> -->
-        <div>证据名称：{{item.name}}</div>
-        <div>证明对象：{{ item.prove }}</div>
-        <div>证据来源：{{ item.source }}</div>
-        <div v-if="item.exmType === -1" style="color: #ee1414">(已驳回)</div>
-        <img src="../../assets/img/down.svg" alt="下载 ">
-      </a>
-      <div v-if="item.exmType===0 && userInfo.role==='judge'" class="operation">
-        <span @click="examineEvi(item.evidenceId,1) ">通过</span>
-        <span @click="examineEvi(item.evidenceId,-1) ">驳回</span>
-      </div>
-    </li>
+    <div v-for="(item1, index1) in eviListFormat.plaintiff">
+        <li @click="showEvi(item1.caseNo,true,'plaintiff')" style="background: #40A9FF;" v-show="isOpen && openCase==item1.caseNo && nowType=='plaintiff'">{{item1.caseNo}}<span style="float:right">收起▲</span></li>
+        <li @click="showEvi(item1.caseNo,false,'plaintiff')" style="background: #40A9FF;" v-show="!isOpen || openCase!=item1.caseNo">{{item1.caseNo}}<span style="float:right">展开▼</span></li>
+      <li v-for="(it,dex) in item1.eviAry" :key="dex" v-show="isOpen && openCase==item1.caseNo && nowType=='plaintiff'">
+        <a @click="openEvi(it.file)">
+          <!-- <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div> -->
+          <div>语音快捷序号：{{index1*10+dex+1}}</div>
+          <div>证据名称：{{it.name}}</div>
+          <div>证明对象：{{ it.prove }}</div>
+          <div>有无原件：{{ it.origianl==1?'有':'无'}}</div>
+          <!-- <div>证据来源：{{ item.source }}</div>
+          <div>附件：{{item.file.length}} -->
+            <!-- <span class="disputable">争议性：</span> -->
+          <!-- </div> -->
+          <div v-if="it.exmType === -1" style="color: #ee1414">(已驳回)</div>
+          <!-- <img src="../../assets/img/down.svg" alt="下载 "> -->
+        </a>
+        <div v-if="it.exmType===0 && userInfo.role==='法官'" class="operation">
+          <span @click="examineEvi(it.evidenceId,1) ">通过</span>
+          <span @click="examineEvi(it.evidenceId,-1) ">驳回</span>
+        </div>
+      </li>
+    </div>
   </ul>
   <ul v-show="!showPlaintiff">
-    <li v-for="(item, index) in eviListFormat.defendant" :key="index">
-      <a @click="openEvi(item.fileAddr)">
-        <!-- <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div> -->
-        <div>证据名称：{{item.name}}</div>
-        <div>证明对象：{{ item.prove }}</div>
-        <div>证据来源：{{ item.source }}</div>
-        <div v-if="item.exmType === -1" style="color: #ee1414">(已驳回)</div>
-        <img src="../../assets/img/down.svg" alt="下载 ">
-      </a>
-      <div v-if="item.exmType===0 && userInfo.role==='judge'" class="operation">
-        <span @click="examineEvi(item.evidenceId,1) ">通过</span>
-        <span @click="examineEvi(item.evidenceId,-1) ">驳回</span>
-      </div>
-    </li>
+    <div v-for="(item1, index1) in eviListFormat.defendant">
+      <li @click="showEvi(item1.caseNo,true,'defendant')" style="background: #40A9FF;" v-show="isOpen2 && openCase2==item1.caseNo && nowType2=='defendant'">{{item1.caseNo}}<span style="float:right">收起▲</span></li>
+      <li @click="showEvi(item1.caseNo,false,'defendant')" style="background: #40A9FF;" v-show="!isOpen2 || openCase2!=item1.caseNo ">{{item1.caseNo}}<span style="float:right">展开▼</span></li>
+      <li v-for="(it,dex) in item1.eviAry" :key="dex" v-show="isOpen2 && openCase2==item1.caseNo && nowType2=='defendant'">
+        <a @click="openEvi(it.file)">
+          <!-- <div>{{ item.dsrStatus }}: {{ item.dsrName }}</div> 111-->
+          <div>语音快捷序号：{{(eviListFormat.plaintiff.length+index1)*10+dex+1}}}</div>
+          <div>证据名称：{{it.name}}</div>
+          <div>证明对象：{{ it.prove }}</div>
+          <div>有无原件：{{ it.origianl==1?'有':'无'}}</div>
+          <!-- <div>证据来源：{{ item.source }}</div>
+          <div>附件：{{item.file.length}} -->
+            <!-- <span class="disputable">争议性：</span> 111-->
+          <!-- </div> -->
+          <div v-if="it.exmType === -1" style="color: #ee1414">(已驳回)</div>
+          <!-- <img src="../../assets/img/down.svg" alt="下载 "> -->
+        </a>
+        <div v-if="it.exmType===0 && userInfo.role==='法官'" class="operation">
+          <span @click="examineEvi(it.evidenceId,1) ">通过</span>
+          <span @click="examineEvi(it.evidenceId,-1) ">驳回</span>
+        </div>
+      </li>
+    </div>
   </ul>
-  <div v-if="userInfo.role=='judge'" class="upload" @click="downEviNote ">
-    查看质证笔录
+  <div v-if="userInfo.role=='法官'" class="upload" @click="downEviNote">
+    查看庭前会议笔录
   </div>
-  <div v-if="userInfo.role!=='judge'" class="upload" @click="showUpload ">
+  <div v-if="userInfo.role!=='法官'" class="upload" @click="showUpload ">
     <img src="../../assets/img/upload.svg" alt="上传证据 "> 上传证据
   </div>
+  
 </div>

@@ -9,14 +9,43 @@ let service = Util.axios
  * @param {string} code     [验证码]
  * @returns { state: number, message: string } [state:100 成功；101 失败]
  */
-export function login (username, password, code) {
-  const data = {
+export function login (username, password, code,loginType) {
+  const params = {
     username,
     password,
-    code
+    code,
+    loginType
   }
   return service({
     url: '/main/login.jhtml',
+    method: 'post',
+    params
+  })
+}
+/**
+ * [用户登入接口]
+ * @param {string} roleType [角色类型]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function optionRole (roleType) {
+  const params = {
+    roleType
+  }
+  return service({
+    url: '/main/optionRole.jhtml',
+    method: 'post',
+    params
+  })
+}
+
+
+
+export function faceResult (base64) {
+  const data = {
+    base64
+  }
+  return service({
+    url: '/main/faceResult.jhtml',
     method: 'post',
     data
   })
@@ -29,11 +58,12 @@ export function login (username, password, code) {
  * @param {string} code     [验证码]
  * @returns { state: number, message: string } [state:100 成功；101 失败]
  */
-export function phoneLogin (idCard, password, code) {
+export function phoneLogin (idCard, password, code,loginType) {
   const data = {
     idCard,
     password,
-    code
+    code,
+    loginType
   }
   return service({
     url: '/main/phoneLogin.jhtml',

@@ -1,9 +1,6 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
-import { Stream, User, deviceManager } from 'pili-rtc-web'
-import { piliRTC } from '../../utils/pili'
 import { userDetail } from '../../api/user'
-import RWS from '../../utils/rws'
 import './localPlayer.less'
 
 interface UserInfoShape {
@@ -11,12 +8,17 @@ interface UserInfoShape {
   name: string,
   role: string
 }
+interface UserInfoShapeMain {
+    name: string,
+    roleName: string
+  }
 
 @Component({
   template: require('./localPlayer.html')
 })
 export class LocalPlayer extends Vue {
   @Getter('getUserInfo') userInfo: UserInfoShape
+  @Getter('getMainInfo') mainInfo: UserInfoShapeMain
   @Mutation('SET_USERID') setUserId: Function
   @Action('setVideoSrcObj') setVideoSrcObj: Function
   @Action('setMainInfo') setMainInfo: Function
@@ -25,71 +27,69 @@ export class LocalPlayer extends Vue {
 
   name: string = ''
   roleName: string = ''
+  address: string = ''
   isfull: boolean = false
+  windowIsshow: boolean = true
+  position: string = 'leftWindow'
   // rws: any = ''
   // wsUrl: string = 'ws://localhost:8080/api/voice/ws.jhtml'
 
-  // @Prop()
-  // stream: any
+//   @Prop()
+//   windowIsshow: any
 
-  // @Watch('stream', { immediate: true, deep: true })
-  // autoPlay (val: string, oldVal: string) {
-  //   if (this.stream.userId !== undefined) {
-  //     const containerElement = this.$refs.videoWrapper as HTMLElement
-  //     this.stream.play(containerElement, true)
-  //     const localVideo = containerElement.children[1] as HTMLVideoElement
-  //     this.setVideoSrcObj(localVideo.srcObject)
-  //   }
-  // }
-  async mounted () {
-    // this.rws = new RWS(this.wsUrl)
-    userDetail(this.userInfo.id).then(res => {
-      if (res.data.state === 100) {
-        this.name = res.data.result.name
-        this.roleName = res.data.result.roleName
-        this.setMainInfo({ name: this.name, roleName: this.roleName })
+//   @Watch('mainInfo', { immediate: true, deep: true })
+//   autoPlay (val: any, oldVal: any) {
+//     console.log(val)
+//     if (Object.keys(val).length !== 0) {
+//       const containerElement = this.$refs.videoWrapper as HTMLElement
+//       val.play(containerElement, true)
+//       this.setVideoSrcObj(val.mediaStream)
+//     }
+//   }
+@Watch('mainInfo')
+  onChildChanged(val: any, oldVal: any) { 
+      console.log(val)
+      console.log(oldVal)
+      if (this.roleName=='法官'&&val.roleName=='法官') {
+        this.windowIsshow=false
+      }else{
+        this.windowIsshow=true
       }
-    })
-
-    try {
-      const localStream = await deviceManager.getLocalStream({
-        audio: {
-          enabled: true
-        },
-        video: {
-          enabled: true,
-          bitrate: 720,
-          frameRate: 30,
-          width: 1280,
-          height: 720
-        }
-      })
-      const containerElement = this.$refs.videoWrapper as HTMLElement
-      await localStream.play(containerElement, true)
-      const localVideo = containerElement.children[1] as HTMLVideoElement
-      // console.log(localVideo.srcObject)
-      this.setVideoSrcObj(localVideo.srcObject)
-    } catch (e) {
-      switch (e.name) {
-        case 'NotAllowedError':
-          console.log('获取摄像头权限被拒绝，请手动打开摄像头权限后重新进入页面')
-          break
-        case 'TypeError':
-          break
-        default:
-          console.log(`无法获取摄像头数据，错误代码${e.name}`)
-      }
+  }
+    async mounted () {
+        userDetail(this.userInfo.id).then(res => {
+            if (res.data.state === 100) {
+                this.name = res.data.result.name
+                this.roleName = res.data.result.roleName
+                this.address = res.data.result.address
+                if (this.roleName=='法官') {
+                    this.position='mindleWindow'
+                }else if (this.roleName=='被告') {
+                    this.position='rightWindow'
+                }else if (this.roleName=='原告') {
+                    this.position='leftWindow'
+                }else{
+                    this.position='leftWindow'
+                }
+                this.setMainInfo({ name: this.name, roleName: this.roleName })
+            }
+        })
     }
-  }
 
-  openFull () {
-    const containerElement = this.$refs.videoWrapper as HTMLElement
-    const localVideo = containerElement.children[1] as HTMLVideoElement
-    this.setVideoSrcObj(localVideo.srcObject)
-    this.setMainInfo({ name: this.name, roleName: this.roleName })
-  }
+    openFull () {
+        const containerElement = this.$refs.videoWrapper as HTMLElement
+        const localVideo = containerElement.children[1] as HTMLVideoElement
+        this.setVideoSrcObj(localVideo.srcObject)
+        this.setMainInfo({ name: this.name, roleName: this.roleName })
+        // if (this.roleName=='法官') {
+        //     this.windowIsshow=false
+        // }else{
+        //     this.windowIsshow=true
+        // }
+        // console.log(this.mainInfo)
+    }
 
-  destroyed () {
-    this.setVideoSrcObj(new MediaStream())
-  }
+    destroyed () {
+        this.setVideoSrcObj(new MediaStream())
+    }
 }

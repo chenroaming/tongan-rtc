@@ -3,15 +3,17 @@
     position: relative;
     vertical-align: top;
     margin-right: 5px;
-    background: #000;
+    // background: #000;
     // transition: all 1s ease;
     .title {
       width: 100%;
+      text-align: left;
+      height: auto;
       position: absolute;
       top: 0px;
       left: 0px;
       padding: 5px;
-      font-size: 20px;
+      font-size: 14px;
       color: #fff;
       background: rgba(0, 0, 0, 0.5);
       z-index: 99;
@@ -23,6 +25,7 @@
         cursor: pointer;
       }
     }
+    position: relative;
   }
   .remotePlayer.full {
     position: fixed;
@@ -32,4 +35,17 @@
     margin-left: -500px;
   }
 }
+.leftWindow{
+    float: left;
+}
+.rightWindow{
+    float: right;
+    // margin-right:60px!important;
+}
+@width:175px;
+.mindleWindow{
+    position: absolute!important;
+    left: calc(~'50% - @{width}')
+}
+
 

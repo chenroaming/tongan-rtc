@@ -1,5 +1,6 @@
-<div class="localPlayer" ref="videoWrapper">
-  <div class="title">{{ roleName }}:{{ name }}
-    <img @click="openFull" src="../../assets/img/full.svg" alt="放大">
-  </div>
+<div class="localPlayer" ref="videoWrapper" v-show=windowIsshow :class=position>
+    <div class="title" >{{ roleName }}{{ name }}
+        <span style="float: right;margin-right: 40px;">{{address}}</span>
+        <img @click="openFull" src="../../assets/img/full.svg" alt="放大">
+    </div>
 </div>

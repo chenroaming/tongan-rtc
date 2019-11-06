@@ -25,6 +25,7 @@ let config = {
     }
   },
   module: {
+    // noParse: /pili-rtc-web/,
     rules: [{
       test: /\.vue$/,
       loader: 'vue-loader',
@@ -32,7 +33,7 @@ let config = {
     {
       test: /\.js$/,
       loader: 'babel-loader',
-      include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+      include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')],
     },
     {
       test: /\.ts$/,

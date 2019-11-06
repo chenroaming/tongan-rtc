@@ -1,0 +1,30 @@
+<div>
+    <el-dialog
+    title="批量开庭房间"
+    :visible.sync="dialogShow"
+    width="30%"
+    :close-on-click-modal="false"
+    :before-close="handleClose">
+
+    <el-tabs tab-position="left" v-model="nowSelTab" style="height: 200px;">
+        <el-tab-pane v-for="(item, index) in selectList" :name="item[0].roomKey" :label="'批量开庭房间' + (index+1)">
+            <el-table
+            :data="item"
+            border
+            style="width: 100%">
+            <el-table-column
+                prop="caseNo"
+                label="案号"
+                align="center"
+                fixed
+            >
+            </el-table-column>
+            </el-table>
+            
+        </el-tab-pane>
+    </el-tabs>
+    <div slot="footer" class="dialog-footer">
+        <el-button  type="primary" @click="openCourt('rtc')">进入房间</el-button>
+    </div>
+  </el-dialog>
+</div>

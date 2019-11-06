@@ -1,0 +1,28 @@
+
+
+<div :class="mainClassd">
+    <el-tabs type="border-card" v-model="nowCase" style="background:none !important;" :before-leave="beforeChange" >
+      <el-tab-pane v-for="(item,index) in clerkRooms" :name="item.caseId" :label="item.caseNo" style="">
+        
+
+      </el-tab-pane>
+    </el-tabs>
+    <div style="height:100%;width:100%;" :class="shouwup" v-show="isShowDoc">
+        <iframe :src="callPhone" id="iframe" ref="iframe" frameborder="0"  width="100%" height="600px"></iframe>
+        <div class="btnD" >
+          <div  class="edit" @click="upFile" >
+            上传笔录
+          </div>
+          <div  class="edit" @click="saveFile">
+            保存笔录
+          </div>
+        </div>
+    </div>
+<!--   
+  <div class="smalla" v-show="isShowDoc" @click="cloaseDoc">
+      <img src="../../assets//img/small.jpg" alt="">
+  </div>
+  <div class="biggers"  v-show="!isShowDoc" @click="showDoc">
+      <img src="../../assets//img/bigger.jpg" alt="">
+  </div> -->
+</div>
