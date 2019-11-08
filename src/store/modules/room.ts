@@ -27,7 +27,7 @@ const getters = {
 
 // action
 const actions = {
-  getRoomToken (context: { commit: Commit, state: State }, parmas:{caseid : number , roomType : number} ) {
+  getRoomToken (context: { commit: Commit, state: State }, parmas:{caseid : any , roomType : number} ) {
     return new Promise((resolve, reject) => {
       getRoomToken(parmas.caseid,parmas.roomType).then(res => {
         if (res.data.state === 100) {

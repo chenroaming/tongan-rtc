@@ -69,6 +69,8 @@ a.button:hover {
 
 /* LOGIN */
 .login {
+  background-color: #FFF;
+  background-image: url(../../assets/img/bg.png);
   margin: 0;
   width: 100%;
   height: 100%;
@@ -120,6 +122,36 @@ a.button:hover {
   }
 }
 
+.logo-box {
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 25px 0;
+  width: 100%;
+  height: 70px;
+  background-image: url(../../assets/img/yilitangLOGO.png);
+}
+
+.form-item {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  position: relative;
+  margin: 20px 0;
+  box-shadow: 1px 3px 5px #DEDEDE;
+  .code-wrapper {
+    position: absolute;
+    top: 4px;
+    right: 7px;
+    cursor: pointer;
+  }
+  .login-icon {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+  }
+}
+
 .loading-wrapper {
   position: absolute;
   top: 50%;
@@ -139,10 +171,11 @@ a.button:hover {
   width: 100%;
   height: 100vh;
   overflow: auto;
-  background: -moz-linear-gradient(48deg, rgba(42,46,54,1) 0%, rgba(97,107,125,1) 100%);
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(42,46,54,1)), color-stop(100%, rgba(97,107,125,1)));
-  background: -webkit-linear-gradient(48deg, rgba(42,46,54,1) 0%, rgba(97,107,125,1) 100%);
-  background: linear-gradient(42deg, rgba(42,46,54,1) 0%, rgba(97,107,125,1) 100%);
+  background-color: rgba(255,255,255,0.5);
+  // background: -moz-linear-gradient(48deg, rgba(42,46,54,1) 0%, rgba(97,107,125,1) 100%);
+  // background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(42,46,54,1)), color-stop(100%, rgba(97,107,125,1)));
+  // background: -webkit-linear-gradient(48deg, rgba(42,46,54,1) 0%, rgba(97,107,125,1) 100%);
+  // background: linear-gradient(42deg, rgba(42,46,54,1) 0%, rgba(97,107,125,1) 100%);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -269,8 +302,8 @@ input {
     position: relative;
     .code-wrapper {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 4px;
+      right: 7px;
       cursor: pointer;
     }
   }
@@ -293,31 +326,33 @@ input {
 .form-wrap .login-form .input {
   margin: 0 0 .8em 0;
   padding: .8em 2em 10px 0;
-  width: 100%;
+  width: 80%;
   display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 70px;
   background: transparent;
   border: 0;
-  border-bottom: 1px solid #5A6374;
   outline: 0;
+  height:100%;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   color: inherit;
   font-family: inherit;
-  color: #fff;
+  color: #093C7B;
 }
 .form-wrap .login-form .button {
   margin: 1em 0;
   padding: .4em 3em;
-  width: 130px;
+  width: 100%;
   text-align: center;
   display: block;
-  background-color: #40a9ff;
+  background-color: #093C7B;
   border: none;
   color: #fff;
   cursor: pointer;
   font-size: .8em;
-  border-radius: 30px;
-  background: #40a9ff;
+  border-radius: 6px;
   -webkit-box-shadow: 0px 0px 37px -9px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 0px 37px -9px rgba(0,0,0,0.75);
   box-shadow: 0px 0px 37px -9px rgba(0,0,0,0.75);
@@ -484,14 +519,19 @@ input {
   }
   /* USER (FORM WRAPPER) */
   .user {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
       padding-top: 0;
-      float: left;
-      width: 50%;
+      width: 40%;
       height: 500px;
       -webkit-box-shadow: -3px 0px 45px -6px rgba(56,75,99,0.61);
       -moz-box-shadow: -3px 0px 45px -6px rgba(56,75,99,0.61);
       box-shadow: -3px 0px 45px -6px rgba(56,75,99,0.61);
-      border-radius: 0 10px 10px 0;
+      border-radius: 25px;
       border: 0;
   }
   .user .actions {
@@ -565,10 +605,10 @@ input {
   }
   /* USER (FORM WRAPPER) */
   .user {
-      height: 550px;
+      height: 435px;
   }
   .form-wrap {
-      margin: 5em auto 0;
+      margin: 0em auto 0;
   }
   .form-wrap .tabs-content {
       padding: 1.5em 4.9em;
@@ -593,9 +633,8 @@ transform: scale(1) translate3d(0,0,0);
 
 // case-list
 .case-list-wrapper {
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, #2a2e36), color-stop(100%, #616b7d));
-  background: -webkit-linear-gradient(48deg, #2a2e36 0%, #616b7d 100%);
-  background: linear-gradient(42deg, #2a2e36 0%, #616b7d 100%);
+  background-color:rgba(255,255,255,0.5);
+  box-shadow: 0px 8px 5px #DEDEDE;
   .back {
     position: absolute;
     top: 25px;
@@ -615,26 +654,23 @@ transform: scale(1) translate3d(0,0,0);
       bottom: 0;
       padding: 15px;
       z-index: 5;
-      background: #40a9ff;
+      background: #1F4D87;
       border-bottom-right-radius: 10px;
       border-bottom-left-radius: 10px;
       box-shadow: 0 2px 8px rgba(41, 10, 77, 0.5);
       input {
         font-family: Arial;
         margin: 0 auto;
-        width: 80%;
+        width: 50%;
         font-size: 1rem;
         text-align: center;
         height: 50px;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        border-top-right-radius: 25px;
-        border-bottom-right-radius: 25px;
+        border-radius: 25px;
         padding-right: 70px;
         box-sizing: border-box;
-        background: rgba(255, 255, 255, 0.2);
+        background: #FFF;
         border: none;
-        color: #fdfdfd;
+        color: #DEDEDE;
         text-indent: 2%;
         outline: none;
         -webkit-appearance: none;
@@ -652,13 +688,11 @@ transform: scale(1) translate3d(0,0,0);
         width: 50px;
         height: 50px;
         background: #fff;
-        border-radius: 50%;
         position: absolute;
         top: 15px;
-        right: 100px;
+        left:281px;
         z-index: 999;
         cursor: pointer;
-        box-shadow: -2px 2px 5px rgba(41, 10, 77, 0.5);
         img {
           width: 30px;
           height: 30px;
@@ -708,12 +742,14 @@ transform: scale(1) translate3d(0,0,0);
     list-style: none;
     li {
       background: #fff;
-      color: #40a9ff;
+      width: 90%;
+      color: #1F4D87;
+      font-weight: 700;
       text-align: left;
       padding: 15px;
-      margin: 15px 15px 15px 15px;
-      border-radius: 8px 0 8px 0;
-      box-shadow: -2px 2px 4px rgba(41, 10, 77, 0.5);
+      margin: 15px auto;
+      border-radius: 5px;
+      box-shadow:  1px 5px 10px #DEDEDE;
       transition: all 0.2s ease-in;
       transition: opacity 0.3s ease-out;
       transition: opacity 0.2s ease-in;

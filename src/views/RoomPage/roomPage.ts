@@ -56,7 +56,7 @@ export class RoomPage extends Vue {
 
 
   dialogShow: boolean =false
-
+  isActive:any = '1'
   users: Array<any> = []
   evidenceShow: boolean = false
   workerShow: boolean = false
@@ -103,9 +103,9 @@ created () {
         this.content = '明白'
     }
     },1000)
-    this.timer = setInterval(() => {
-      this.updateTime()
-    }, 1000)
+    // this.timer = setInterval(() => {
+    //   this.updateTime()
+    // }, 1000)
 
     piliRTC.on('user-join', user => {
       console.log('user-join')
@@ -244,6 +244,9 @@ created () {
       }
     })
   }
+  choice(id){
+    this.isActive = id;
+  }
   opens(){
     this.dialogShow = true;
   }
@@ -274,12 +277,12 @@ created () {
       }
     })
   }
-  updateTime () {
-    let cd = new Date()
-    this.clock.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2)
-    this.clock.date = this.zeroPadding(cd.getFullYear(), 4) + '年' + this.zeroPadding(cd.getMonth() + 1, 2) + '月' + this.zeroPadding(cd.getDate(), 2) + '日'
-    this.clock.week = this.week[cd.getDay()]
-  }
+  // updateTime () {
+  //   let cd = new Date()
+  //   this.clock.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2)
+  //   this.clock.date = this.zeroPadding(cd.getFullYear(), 4) + '年' + this.zeroPadding(cd.getMonth() + 1, 2) + '月' + this.zeroPadding(cd.getDate(), 2) + '日'
+  //   this.clock.week = this.week[cd.getDay()]
+  // }
   zeroPadding (num, digit) {
     let zero = ''
     for (let i = 0; i < digit; i++) {

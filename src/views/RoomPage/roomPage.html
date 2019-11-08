@@ -1,25 +1,44 @@
 <div class="room-content">
     <div class="header">
         <div class="room-logo">
-            <img src="/dist/images/tantu-s.png">在线调解</div>
-        <div class="room-title">{{ caseNo }}</div>
+            莲花镇云阳村
+        </div>
+        <div class="room-title">议理堂在线调解</div>
         <div class="mainInfo">当前主屏：{{ mainInfo.roleName }} — {{ mainInfo.name }}</div>
-        <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div>
         <div class="leave" @click="outRoom" style="color: #fff;">
             <!-- <img src="../../assets/img/leave.svg" alt="离开"> -->
             退出
         </div>
-        <div @click="endCourt" v-if="userInfo.role === '法官'">
-            <div class="end-court">休庭</div>
+        <div v-if="userInfo.role === '法官'">
+            <!-- <div @click="endCourt" class="end-court">休庭</div> -->
+            <div class="end-court">
+                <el-dropdown trigger="click">
+                    <span class="el-dropdown-link text">
+                        调解控制<i class="el-icon-arrow-down el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item @click="endCourt">开始调解</el-dropdown-item>
+                        <el-dropdown-item>结束调解</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
         </div>
     <!-- <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div> -->
+    </div>
+    <div class="right-content">
+        <div class="right-content-up" :class="{active:isActive == '1'}" @click="choice('1')">
+            调解协议
+        </div>
+        <div class="right-content-down" :class="{active:isActive == '2'}" @click="choice('2')">
+            基础信息
+        </div>
     </div>
     <MainPlayer ref="mainPlayer" />
     <div :class="userInfo.role === '法官' ? 'bigger remoteplayer-list' : 'remoteplayer-list' ">
         <LocalPlayer ref="localPlayer" :stream="stream" />
         <RemotePlayer v-for="(item, index) in users" :class=windowIsShowClass v-if="item.userId !== userId" :id="item.userId" :key="index" />
     </div>
-    <div class="right-bar" :class="(evidenceShow || workerShow || courtShow || logShow) ? 'show' : ''">
+    <!-- <div class="right-bar" :class="(evidenceShow || workerShow || courtShow || logShow) ? 'show' : ''">
         <div class="menu-bar">
             <div class="evidence" @click="workerShow = !workerShow;evidenceShow=false;courtShow=false;targetShow='worker';logShow = false;">
                 <img src="../../assets/img/worker.svg" alt="审辅人员">
@@ -42,18 +61,18 @@
                 <img src="../../rtc/assets/img/svg1.svg" alt="签名确认">
                 <div>签名确认</div>
             </div>
-        <!-- <div class="evidence" v-if="userInfo.role === '法官'" @click="jumpBigData">
+        <div class="evidence" v-if="userInfo.role === '法官'" @click="jumpBigData">
             <img src="../../assets/img/video.svg" alt="庭审视频">
             <div>庭审视频</div>
-        </div> -->
+        </div>
         </div>
         <EvidenceWindow v-show="!workerShow && !courtShow && targetShow==='evidence' && !logShow" @opens="opens"/>
         <CourtWindow v-show="!workerShow && !evidenceShow && targetShow==='court' && !logShow" />
         <WorkerWindow v-show="!evidenceShow && !courtShow && targetShow==='worker' && !logShow"  />
         <logWindow v-show="!evidenceShow && !courtShow && targetShow==='logS' && !workerShow" />
-    </div>
-    <ChatWindow />
-    <div v-if='isReadWindow' class="swal2-container swal2-center swal2-shown" style="overflow-y: auto;">
+    </div> -->
+    <!-- <ChatWindow /> -->
+    <!-- <div v-if='isReadWindow' class="swal2-container swal2-center swal2-shown" style="overflow-y: auto;">
         <div  class="swal2-popup swal2-modal swal2-show" style="display:block;margin-left: -16rem;top: 5%;left:50%;z-index: 9999;">
             <div class="swal2-header">
                 <h2 class="swal2-title" id="swal2-title" style="display: flex;">庭审纪律</h2>
@@ -75,8 +94,8 @@
             </div>
             <div class="swal2-actions"  style="display: flex;"><button type="button" @click='closeIsRead' :class="{disabled:!this.content=='明白'}" class="swal2-styled swal2-confirm" aria-label="" style="border-left-color: rgb(48, 133, 214); border-right-color: rgb(48, 133, 214);">{{content}}</button></div>
         </div>
-    </div>
-    <el-dialog
+    </div> -->
+    <!-- <el-dialog
     title="案件列表"
     :visible.sync="dialogShow"
     width="30%"
@@ -106,5 +125,5 @@
     <div slot="footer" class="dialog-footer">
       <el-button  @click="clearAll">关闭</el-button>
     </div>
-  </el-dialog>
+  </el-dialog> -->
 </div>

@@ -16,7 +16,7 @@ const extractSass = new ExtractTextPlugin({
   disable: process.env.NODE_ENV === 'development'
 })
 
-webpackConfig.output.publicPath = '/rtc/'
+webpackConfig.output.publicPath = '/tartctest/'
 
 webpackConfig.module.rules = [...webpackConfig.module.rules,
 {
@@ -25,7 +25,7 @@ webpackConfig.module.rules = [...webpackConfig.module.rules,
     use: [{
       loader: 'css-loader',
       options: {
-        minimize: false,
+        // minimize: false,
         sourceMap: false,
         importLoaders: 2
       }
@@ -49,7 +49,7 @@ webpackConfig.module.rules = [...webpackConfig.module.rules,
   })
 },
 {
-  test: /\.css$/,
+  test: /\.css$/i,
   use: [{
     loader: 'style-loader'
   },
@@ -65,7 +65,7 @@ webpackConfig.module.rules = [...webpackConfig.module.rules,
     regExp: /(img\/.*)/,
     name: '[name].[ext]',
     publicPath: '../',
-    outputPath: 'assets/img/'
+    outputPath: '/assets/img/'
   }
 },
 {

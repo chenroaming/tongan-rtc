@@ -71,10 +71,10 @@ export class RemotePlayer extends Vue {
     const localVideo = containerElement.children[1] as HTMLVideoElement
     this.setVideoSrcObj(localVideo.srcObject)
     this.setMainInfo(this.userInfo)
-    if (this.userInfo.roleName=='法官') {
-        this.windowIsshow=false
-    }else{
-        this.windowIsshow=true
-    }
+    // if (this.userInfo.roleName=='法官') {
+    //     this.windowIsshow=false
+    // }else{
+    //     this.windowIsshow=true
+    // }
   }
 }

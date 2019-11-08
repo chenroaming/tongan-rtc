@@ -50,11 +50,11 @@ export class LocalPlayer extends Vue {
   onChildChanged(val: any, oldVal: any) { 
       console.log(val)
       console.log(oldVal)
-      if (this.roleName=='法官'&&val.roleName=='法官') {
-        this.windowIsshow=false
-      }else{
-        this.windowIsshow=true
-      }
+      // if (this.roleName=='法官'&&val.roleName=='法官') {
+      //   this.windowIsshow=false
+      // }else{
+      //   this.windowIsshow=true
+      // }
   }
     async mounted () {
         userDetail(this.userInfo.id).then(res => {

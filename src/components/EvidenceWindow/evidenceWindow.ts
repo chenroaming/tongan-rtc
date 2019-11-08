@@ -17,7 +17,7 @@ interface UserInfoShape {
 })
 export class EvidenceWindow extends Vue {
   name: 'EvidenceWindow'
-  @Getter('getCaseId') caseId: number
+  @Getter('getCaseId') caseId: any
   @Getter('getEviList') eviList: Array<any>
   @Getter('getEviListFormat') eviListFormat: Object
   @Getter('getWebsocket') websocket: RWS

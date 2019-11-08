@@ -95,6 +95,7 @@ export class LoginPage extends Vue {
     @Action('setSelectAllRes') setSelectAllRes: Function
     @Action('setclerkRooms') setclerkRooms: Function
 
+    totalPage: number = 9
     loading: boolean = false
     isSel: boolean = false
     nowSelTab:string = ''
@@ -112,7 +113,7 @@ export class LoginPage extends Vue {
         password: '',
         code: '',
         loginType:'court',
-  }
+    }
   
   
 
@@ -122,7 +123,14 @@ export class LoginPage extends Vue {
     code: '',
     loginType:'litigant',
   }
-
+  caseList2: Array<any> =  [
+    {id:'1',name:'莲花村',isOpen:true},
+    {id:'2',name:'莲花村',isOpen:false},
+    {id:'3',name:'莲花村',isOpen:true},
+    {id:'4',name:'莲花村',isOpen:false},
+    {id:'5',name:'莲花村',isOpen:true},
+    {id:'6',name:'莲花村',isOpen:false},
+  ]
   
   
   show: boolean = true
@@ -146,8 +154,9 @@ export class LoginPage extends Vue {
     }
     getUserInfo().then(res => {
       if(res.data.state == 100){
-        console.log(2222)
-        this.loginrole = res.data.roleName;
+        this.hasLogin = true;
+      }else{
+        this.hasLogin = false;
       }
     })
   }
@@ -157,99 +166,44 @@ export class LoginPage extends Vue {
 
   handleLogin () {
     this.loading = true
-    switch (this.userType) {
-      case 'judge':
-        this.login(this.judgeLoginForm).then(res => {
-          this.loading = false;
-          if (res.data.state === 100) {
-            
-            if(res.data.data.roles.length == 1){
-              this.optionRole(res.data.data.roles[0].type).then(ress => {
-                if(ress.data.state === 100){
-                  localStorage.setItem('roleIdToken',res.data.data.roles[0].id);
-                  this.searchForm.pageNumber = 1;
-                  this.getNowPageContent();
-                  // this.searchCaseList(this.searchForm)
-                  if (ress.data.data.isFace) {
-                    let child = this.$refs.faceChild as any
-                    child.startTrack()
-                  }
-                  getUserInfo().then(res => {
-                    if(res.data.state == 100){
-                      console.log(59595959595959595 + res.data.roleName)
-                      this.loginrole = res.data.roleName;
-                    }
-                  })
-                }
-              })
-            }else{
-              this.rList = res.data.data.roles;
-              this.isSel = true;
+    this.login(this.judgeLoginForm).then(res => {
+      this.loading = false;
+      if (res.data.state === 100) {
+        // this.$swal({
+        //   type: 'success',
+        //   title: res.data.message
+        // })
+        this.optionRole(res.data.data.roles[0].type).then(ress => {
+          if(ress.data.state === 100){
+            localStorage.setItem('roleIdToken',res.data.data.roles[0].id);
+            this.searchForm.pageNumber = 1;
+            this.getNowPageContent();
+            // this.searchCaseList(this.searchForm)
+            if (ress.data.data.isFace) {
+              let child = this.$refs.faceChild as any
+              child.startTrack()
             }
-          }  else if (res.data.state === 103) {
-            this.$swal({
-              title: '请用微信扫码进行实名认证',
-              imageUrl: res.data.data.imagePath,
-              imageWidth: 300,
-              imageHeight: 300,
-              confirmButtonText: "好的"
-            });
-          }else {
-            this.$swal({
-              type: 'error',
-              title: res.data.message
+            getUserInfo().then(res => {
+              if(res.data.state == 100){
+                console.log(59595959595959595 + res.data.roleName)
+                this.loginrole = res.data.roleName;
+              }
             })
           }
         })
-        break
-      case 'litigant':
-        this.login(this.litigantLoginForm).then(res => {
-          this.loading = false
-          if (res.data.state === 100) {
-            
-            if(res.data.data.roles.length == 1){
-              this.optionRole(res.data.data.roles[0].type).then(ress => {
-                if(ress.data.state === 100){
-                  localStorage.setItem('roleIdToken',res.data.data.roles[0].id);
-                  this.searchForm.pageNumber = 1;
-                  this.getNowPageContent();
-                  // this.searchCaseList(this.searchForm)
-                  
-
-                  if (ress.data.data.isFace) {
-                    let child = this.$refs.faceChild as any
-                    child.startTrack()
-                  }
-                  getUserInfo().then(res => {
-                    if(res.data.state == 100){
-                      console.log(59595959595959595 + res.data.roleName)
-                      this.loginrole = res.data.roleName;
-                    }
-                  })
-                }
-              })
-            }else{
-              this.rList = res.data.data.roles;
-              this.isSel = true;
-            }
-            
-          }  else if (res.data.state === 103) {
-            this.$swal({
-              title: '请用微信扫码进行实名认证',
-              imageUrl: res.data.data.imagePath,
-              imageWidth: 300,
-              imageHeight: 300,
-              confirmButtonText: "好的"
-            });
-          }else {
-            this.$swal({
-              type: 'error',
-              title: res.data.message
-            })
-          }
+      }else {
+        this.$swal({
+          type: 'error',
+          title: res.data.message
         })
-        break
-    }
+      }
+    })
+    .catch(error => {
+      this.$swal({
+        type: 'error',
+        title: '网络错误！'
+      })
+    })
   }
 
   selectedBtn(){
@@ -270,29 +224,6 @@ export class LoginPage extends Vue {
   closeDialog(){
     this.selected = false;
   }
-  selRole(type,id){
-    let that = this;
-    this.optionRole(type).then(res => {
-      that.isSel = false;
-      if(res.data.state === 100){
-        localStorage.setItem('roleIdToken',id);
-        this.searchForm.pageNumber = 1;
-        this.getNowPageContent();
-        // that.searchCaseList(this.searchForm)
-        console.log(res.data.data.isFace)
-        if (res.data.data.isFace) {
-          let child = this.$refs.faceChild as any
-          child.startTrack()
-        }
-        getUserInfo().then(res => {
-          if(res.data.state == 100){
-            console.log(59595959595959595 + res.data.roleName)
-            this.loginrole = res.data.roleName;
-          }
-        })
-      }
-    })
-  }
   
   getCode () {
     if (!this.timer) {
@@ -310,37 +241,9 @@ export class LoginPage extends Vue {
       }, 1000)
     }
   }
-  selectClick(event,my){
-    this.delSelect(event,this.selectedCase,this.caseList,my)
-  }
-
-  delSelect(event,selectList,caseList,that){ //处理选择的数据
-    let list=selectList
-    if(event){//是否选中
-        that.checked=true;
-        list.push(that)
-        this.setSelectList({caseList:list})
-    }else{//取消选中删除
-      list.forEach((item,index) => {//循环选择项
-        if(item.caseId==that.caseId){//根据id找到该条删除
-          list.splice(index,1);
-        }
-      });
-      this.setSelectList({caseList:list})//更新选择项
-    }
-    console.log(this.selectedCase)
-  }
 
   backToLogin () {
     this.logout()
-  }
-
-  setPageData(pageNumber,  total) {//设置分页参数
-    this.pageData = {
-      pageNumber,
-      total,
-      size:7
-    }
   }
 
   async getNowPageContent(){//获取当前页内容
@@ -348,7 +251,6 @@ export class LoginPage extends Vue {
     let res = await this.searchCaseList(this.searchForm)
     console.log(res)
     let data = res.data;
-    this.setPageData(this.searchForm.pageNumber, data.total)
   }
 
   serachByCaseNo () {
@@ -356,89 +258,12 @@ export class LoginPage extends Vue {
     this.getNowPageContent();
     // this.searchCaseList(this.searchForm)
   }
-  selectAll(e,list,selectList){//全选
-    this.setSelectAllRes({state:e})
-    if(e){//是否选中
-      for(let item of list){
-        if(!item.checked){
-          item.checked=true;
-          selectList.push(item)
-        }
-        
-      }
-    }else{//取消选中
-      list.forEach((item,index) => {
-        item.checked=false;
-        selectList.forEach((item1,index1) => {
-          if(item.caseId==item1.caseId){//根据id找到该条删除
-            selectList.splice(index1,1);
-          }
-        });
-      });
-    }
-  }
-
-  openCourtClerk(e){
-    console.log(e)
-    if(e == ''){
-      this.$alert('您还未选中任何案件！', '', {
-        confirmButtonText: '确定',
-        callback: action => {
-        }
-      });
-      return false;
-    }
-    let ary = [];
-    let arr = [];
-    this.clerkBatcnRooms.map(item => {
-      if(item[0].roomKey == e){
-        arr = item;
-        item.map(it => {
-          ary.push(it.caseId)
-        })
-      }
-    })
-    this.setclerkRooms({caseList:arr});
-    let str = '';
-    str=ary.join(',');
-    let data = {
-      caseNo:'批量开庭',
-      caseId:str,
-      noTips:true
-    }
-    this.roomToken(data);
-  }
-
-  openCourt(e){//批量庭审
-    console.log(this.loginrole)
-    if(this.selectedCase.length==0){
-      this.$alert('您还未选中任何案件！', '', {
-        confirmButtonText: '确定',
-        callback: action => {
-        }
-      });
-      return
-    }
-    var caseIds=[]
-    var str=''
-    this.selectedCase.forEach((item,index)=>{
-      caseIds.push(item.caseId)
-    })
-    str=caseIds.join(',');
-    let data = {
-      caseNo:'批量开庭',
-      caseId:str,
-      noTips:true
-    }
-    this.roomToken(data);
-    // this.openCourtUrl("rtc",str)
-  }
 
   roomToken (obj) {
     // 记录选择的caseNo
     this.setCaseNo(obj.caseNo)
     let parmas={
-        caseid:obj.caseId,
+        caseid:'14b24cd09b61473fb3cbc425083549c7',
         roomType:1
     }
     this.loading = true
@@ -489,73 +314,5 @@ export class LoginPage extends Vue {
     this.searchForm.pageNumber = pageNum;
     this.getNowPageContent()
   }
-  delSelectCase(it,list){//删除
-    let waitList=this.selectedCase
-    waitList.forEach((item,index)=>{
-      if(it.caseId==item.caseId){
-        waitList.splice(index,1);//删除对应项
-      }
-    })
-    this.setSelectList({caseList:waitList})
-    //取消选择
-    for(let value of list){
-      if(it.caseId==value.caseId){
-        value.checked=false;
-        // this.setCaseList({caseList:allWaitList})
-        break
-      }
-    }
-  }
-  clearAll(list){//清除全部
-    //取消选择
-    for(let item of  this.selectedCase){
-      for(let item1 of list){
-        if(item.caseId==item1.caseId){
-          item1.checked=false;//列表项取消选择
-          break
-        }
-      }
-    }
-    this.setSelectList({caseList:[]})//清空选择项
-  }
-roomTokenTest (obj) {
-    // 记录选择的caseNo
-    this.setCaseNo(obj.caseNo)
-    this.loading = true
-    // 查询房间token
-    let parmas={
-        caseid:obj.caseId,
-        roomType:0
-    }
-    this.getRoomToken(parmas).then(res => {
-      this.loading = false
-      if (res.data.state === 100) {
-        this.setWebsocket()
-        // this.websocket.refresh()
-        if(this.loginrole == '书记员'){
-          
-          if(!obj.noTips){
-            let ary = [];
-            ary.push(obj)
-            this.setclerkRooms({caseList:ary});
-          }
-          this.$router.push({
-            name: 'clerkRoom'
-          })
-        }else{
-          this.$router.push({
-            name: 'roomPage'
-          })
-        }
-        // this.$router.push({
-        //   name: 'roomPage'
-        // })
-      } else {
-        this.$swal({
-          type: 'error',
-          title: res.data.message
-        })
-      }
-    })
-  }
+
 }
