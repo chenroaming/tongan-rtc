@@ -17,7 +17,7 @@
                         调解控制<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item @click="endCourt">开始调解</el-dropdown-item>
+                        <el-dropdown-item>开始调解</el-dropdown-item>
                         <el-dropdown-item>结束调解</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -126,4 +126,51 @@
       <el-button  @click="clearAll">关闭</el-button>
     </div>
   </el-dialog> -->
+  <el-dialog title="基础信息" :visible.sync="dialogFormVisible">
+    <el-card class="box-card">
+        <div slot="header" class="clearfix">
+            <span>参与人信息</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="getById()">新增参与人</el-button>
+        </div>
+        <div v-for="(item,index) in joinPeopleArr" :key="index">
+            <el-row>
+                <el-col :span="12">
+                    <el-button type="text" @click="getById(item.id)">{{item.name}}</el-button>
+                </el-col>
+                <el-col :span="12">
+                    <el-button type="text" @click="del(item.id)">删除</el-button>
+                </el-col>
+                
+            </el-row>
+        </div>
+    </el-card>
+  </el-dialog>
+  <el-dialog :visible.sync="joinPeople">
+    <el-form :model="form">
+    <el-form-item label="参与人姓名" :label-width="formLabelWidth">
+        <el-input v-model="form.name" auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="参与人证件号码" :label-width="formLabelWidth">
+        <el-input v-model="form.id_card" auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="参与人地址" :label-width="formLabelWidth">
+        <el-input v-model="form.address" auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="参与人手机号码" :label-width="formLabelWidth">
+        <el-input v-model="form.phone" auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="参与人类别" :label-width="formLabelWidth">
+        <el-select v-model="form.type" placeholder="请选择活动区域">
+        <!-- <el-option label="法院" value="0"></el-option>
+        <el-option label="司法局" value="1"></el-option> -->
+        <el-option label="申请人" value="2"></el-option>
+        <el-option label="被申请人" value="3"></el-option>
+        </el-select>
+    </el-form-item>
+    </el-form>
+    <div slot="footer">
+        <el-button @click="joinPeople = false">取 消</el-button>
+        <el-button type="primary" @click="joinPeople = false">确 定</el-button>
+    </div>
+  </el-dialog>
 </div>

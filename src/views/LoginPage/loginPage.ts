@@ -153,13 +153,23 @@ export class LoginPage extends Vue {
       // this.searchCaseList(this.searchForm)
     }
     getUserInfo().then(res => {
-      if(res.data.state == 100){
-        this.hasLogin = true;
-      }else{
-        this.hasLogin = false;
-      }
+      console.log(res.data);
+      // if(res.data.state == 100){
+      //   this.$store.commit('hasLogin',true);
+      // }else{
+      //   this.$store.commit('hasLogin',false);
+      // }
     })
   }
+
+  // computed: {
+  //   get(){
+  //     return this.$store.getters.hasLogin;
+  //   },
+  //   set(val) {
+  //     return this.$store.commit('hasLogin',val);
+  //   }
+  // }
   changeCode () {
     this.codeSrc = '/api/main/code.jhtml?tm=' + Math.random()
   }

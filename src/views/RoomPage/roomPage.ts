@@ -79,7 +79,21 @@ export class RoomPage extends Vue {
   isCheck: boolean =true
   content: string = '明白'
   show1: boolean = true
-windowIsshow: boolean = true
+  windowIsshow: boolean = true
+  dialogFormVisible: boolean = false
+  joinPeople:boolean = false
+  formLabelWidth: string = '120px'
+  joinPeopleArr:Array<any> = [
+    {type:'申请人',name:'zhangsan',id:'111'},
+    {type:'被申请人',name:'wangwu',id:'222'},
+  ]
+  form: any = {
+    name:'safdas',
+    id_card: '111',
+    address: 'xxx0',
+    phone: '111',
+    type: '2'
+  }
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -212,6 +226,10 @@ created () {
     })
   }
 
+  sendInfo(){
+    this.dialogFormVisible = false;
+  }
+
   async outRoom () {
     exportLog(this.caseId).then(res => {
       console.log(res)
@@ -246,6 +264,34 @@ created () {
   }
   choice(id){
     this.isActive = id;
+    if(this.isActive == '1'){
+      window.location.href = 'WebOffice://|Officectrl|http://court1.ptnetwork001.com/tartctest/edit.html';
+      return;
+    }
+    if(this.isActive == '2'){
+      this.dialogFormVisible = true;
+    }
+  }
+  getById(id = ''){
+    this.joinPeople = true;
+    console.log(id);
+  }
+  del(id = ''){
+    this.$confirm('确认删除该参与人?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      this.$message({
+        type: 'success',
+        message: '删除成功!'
+      });
+    }).catch(() => {
+      this.$message({
+        type: 'info',
+        message: '已取消删除'
+      });          
+    });
   }
   opens(){
     this.dialogShow = true;
