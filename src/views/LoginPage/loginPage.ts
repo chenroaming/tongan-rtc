@@ -152,7 +152,7 @@ export class LoginPage extends Vue {
   }
 
   changeCode () {
-    this.codeSrc = '/api/main/code.jhtml?tm=' + Math.random()
+    this.codeSrc = '/api/main/code.jhtml?tm=' + Math.random();
   }
 
   handleLogin () {
@@ -206,6 +206,10 @@ export class LoginPage extends Vue {
         title: '网络错误'
       })
     })
+  }
+
+  serachByCaseNo(){
+
   }
 
   roomToken (obj) {
