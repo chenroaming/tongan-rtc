@@ -3,7 +3,7 @@ import { Getter, Action, Mutation } from 'vuex-class'
 import { MainPlayer } from '../../components/MainPlayer'
 import { LocalPlayer } from '../../components/LocalPlayer'
 import { RemotePlayer } from '../../components/RemotePlayer'
-import { ChatWindow } from '../../components/ChatWindow'
+// import { ChatWindow } from '../../components/ChatWindow'
 import { EvidenceWindow } from '../../components/EvidenceWindow'
 import { WorkerWindow } from '../../components/WorkerWindow'
 import { logWindow } from '../../components/logWindow'
@@ -11,7 +11,7 @@ import { CourtWindow } from '../../components/CourtWindow'
 import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog,closeRoom, } from '../../api/export'
-import { finish,createImg } from '../../api/case'
+import { finish,createImg,startMediate,closeRoom,intoRoom,changePar } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -30,7 +30,7 @@ interface UserInfoShape {
         MainPlayer,
         LocalPlayer,
         RemotePlayer,
-        ChatWindow,
+        // ChatWindow,
         EvidenceWindow,
         WorkerWindow,
         logWindow,
@@ -43,7 +43,7 @@ export class RoomPage extends Vue {
   @Mutation('SET_USERID') setUserId: Function
   @Getter('getUserId') userId: string
   @Getter('getMessage') logMessage: Array<any>
-  @Getter('getCaseNo') caseNo: string
+  // @Getter('getCaseNo') caseNo: string
   @Getter('getCaseId') caseId: number
   @Getter('getMainInfo') mainInfo: any
   @Getter('getUserInfo') userInfo: UserInfoShape
@@ -284,10 +284,11 @@ created () {
     this.isActive = id;
     if(this.isActive == '1'){
       window.location.href = 'WebOffice://|Officectrl|http://court1.ptnetwork001.com/tartctest/edit.html';
+      this.baseInfoShow = false;
       return;
     }
     if(this.isActive == '2'){
-      this.dialogFormVisible = true;
+      this.baseInfoShow = true;
     }
   }
   getById(id = ''){
@@ -327,6 +328,17 @@ created () {
       idCard:this.respondent.id_card,
       address:this.respondent.address
     }
+    changePar('','2',this.applicant.name,this.applicant.phone,this.applicant.id_card,this.applicant.address).then(res => {
+      this.loading1 = false;
+      this.$swal({
+        type:'success',
+        title: res.data.message
+      })
+      if(res.data.state == 100){
+        this.baseInfoShow = false;
+        return;
+      }
+    })
     console.log(applicant,respondent);
   }
   opens(){

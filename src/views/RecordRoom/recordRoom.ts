@@ -27,7 +27,7 @@ interface CaseObjectShape {
 })
 
 export class RecordRoom extends Vue {
-    @Getter('getLoginState') hasLogin: boolean
+    // @Getter('getLoginState') hasLogin: boolean
     @Getter('getFaceCheckState') hasFaceCheck: boolean
     @Getter('getSelectedCase') selectedCase: Array<any>
     @Getter('getclerkBatcnRooms') clerkBatcnRooms: Array<any>
@@ -89,16 +89,23 @@ export class RecordRoom extends Vue {
   }
 
   mounted () {
-    if (this.hasLogin) {
-      // this.searchCaseList(this.searchForm)
-    }
+    const loading = this.$loading({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(255, 255, 255, 0.7)'
+    });
     getUserInfo().then(res => {
+      loading.close();
       console.log(res.data);
       // if(res.data.state == 100){
       //   this.$store.commit('hasLogin',true);
       // }else{
       //   this.$store.commit('hasLogin',false);
       // }
+    })
+    .catch(error => {
+      alert(error);
     })
   }
   back(){
@@ -113,6 +120,12 @@ export class RecordRoom extends Vue {
     this.baseInfoShow = false;
   }
   getRecord(id){
+    const loading = this.$loading({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(255, 255, 255, 0.7)'
+    });
     this.baseInfoShow = true;
   }
 }

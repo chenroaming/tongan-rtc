@@ -63,27 +63,27 @@ const getters = {
 
 // action
 const actions = {
-  login (context: { commit: Commit, state: State }, loginForm: LoginForm) {
-    return new Promise((resolve, reject) => {
-      login(loginForm.username, md5(loginForm.password), loginForm.code,loginForm.loginType).then(res => {
-        if (res.data.state === 100) {
+  // login (context: { commit: Commit, state: State }, loginForm: LoginForm) {
+  //   return new Promise((resolve, reject) => {
+  //     login(loginForm.username, md5(loginForm.password), loginForm.code,loginForm.loginType).then(res => {
+  //       if (res.data.state === 100) {
           
-        } else {
-          Sweetalert2({
-            type: 'error',
-            title: res.data.message
-          })
-        }
-        resolve(res)
-      }).catch(error => {
-        Sweetalert2({
-          type: 'error',
-          title: '连接超时，请稍后再试'
-        })
-        reject(error)
-      })
-    })
-  },
+  //       } else {
+  //         Sweetalert2({
+  //           type: 'error',
+  //           title: res.data.message
+  //         })
+  //       }
+  //       resolve(res)
+  //     }).catch(error => {
+  //       Sweetalert2({
+  //         type: 'error',
+  //         title: '连接超时，请稍后再试'
+  //       })
+  //       reject(error)
+  //     })
+  //   })
+  // },
   // login (context: { commit: Commit, state: State }, loginForm: LoginForm) {
   //   return new Promise((resolve, reject) => {
   //     login(loginForm.username, md5(loginForm.password), loginForm.code).then(res => {
@@ -161,41 +161,41 @@ const actions = {
       })
     })
   },
-  phoneLogin (context: { commit: Commit, state: State }, loginForm: LoginForm) {
-    return new Promise((resolve, reject) => {
-      login(loginForm.username, md5(loginForm.password), loginForm.code,loginForm.loginType).then(res => {
-        if (res.data.state === 100) {
-          Sweetalert2({
-            type: 'success',
-            title: res.data.message,
-            showConfirmButton: false,
-            timer: 1000
-          })
-          // 标记用户已登录
-          store.commit(types.SET_LOGIN, true)
-          if (res.data.isFace) {
-            store.commit(types.SET_FACECHECK, false)
-          } else {
-            store.commit(types.SET_FACECHECK, true)
-          }
-          // 调取用户信息
-          store.dispatch('getUserInfo')
-        } else {
-          Sweetalert2({
-            type: 'error',
-            title: res.data.message
-          })
-        }
-        resolve(res)
-      }).catch(error => {
-        Sweetalert2({
-          type: 'error',
-          title: '连接超时，请稍后再试'
-        })
-        reject(error)
-      })
-    })
-  },
+  // phoneLogin (context: { commit: Commit, state: State }, loginForm: LoginForm) {
+  //   return new Promise((resolve, reject) => {
+  //     login(loginForm.username, md5(loginForm.password), loginForm.code,loginForm.loginType).then(res => {
+  //       if (res.data.state === 100) {
+  //         Sweetalert2({
+  //           type: 'success',
+  //           title: res.data.message,
+  //           showConfirmButton: false,
+  //           timer: 1000
+  //         })
+  //         // 标记用户已登录
+  //         store.commit(types.SET_LOGIN, true)
+  //         if (res.data.isFace) {
+  //           store.commit(types.SET_FACECHECK, false)
+  //         } else {
+  //           store.commit(types.SET_FACECHECK, true)
+  //         }
+  //         // 调取用户信息
+  //         store.dispatch('getUserInfo')
+  //       } else {
+  //         Sweetalert2({
+  //           type: 'error',
+  //           title: res.data.message
+  //         })
+  //       }
+  //       resolve(res)
+  //     }).catch(error => {
+  //       Sweetalert2({
+  //         type: 'error',
+  //         title: '连接超时，请稍后再试'
+  //       })
+  //       reject(error)
+  //     })
+  //   })
+  // },
   logout (context: { commit: Commit, state: State }) {
     return new Promise((resolve, reject) => {
       logout().then(res => {

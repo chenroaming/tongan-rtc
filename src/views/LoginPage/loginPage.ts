@@ -5,7 +5,7 @@ import { AtomSpinner } from 'epic-spinners'
 import { FaceCheck } from '../../components/FaceCheck'
 import { getUserInfo,login,logout,getHallList } from '../../api/user'
 import { SelectDialog } from '../../components/SelectDialog'
-import { clerkSelectDialog } from '../../components/clerkSelectDialog'
+// import { clerkSelectDialog } from '../../components/clerkSelectDialog'
 import md5 from 'md5'
 import RWS from '../../utils/rws'
 
@@ -69,7 +69,7 @@ const TIME_COUNT: number = 60
     AtomSpinner,
     FaceCheck,
     SelectDialog,
-    clerkSelectDialog
+    // clerkSelectDialog
   }
 })
 
@@ -78,7 +78,7 @@ export class LoginPage extends Vue {
     @Getter('getFaceCheckState') hasFaceCheck: boolean
     @Getter('getCaseList') caseList: CaseListShape
     @Getter('getSelectedCase') selectedCase: Array<any>
-    @Getter('getclerkBatcnRooms') clerkBatcnRooms: Array<any>
+    // @Getter('getclerkBatcnRooms') clerkBatcnRooms: Array<any>
     @Getter('getSelectAllCase') endCheck: boolean
     @Action('phoneLogin') phoneLogin: Function
     @Action('optionRole') optionRole: Function
@@ -91,7 +91,7 @@ export class LoginPage extends Vue {
     @Action('setWebsocket') setWebsocket: Function
     @Action('setSelectList') setSelectList: Function
     @Action('setSelectAllRes') setSelectAllRes: Function
-    @Action('setclerkRooms') setclerkRooms: Function
+    // @Action('setclerkRooms') setclerkRooms: Function
 
     // @Action('login') login:Function
     // @Action('getHallList') getHallList:function
@@ -141,14 +141,22 @@ export class LoginPage extends Vue {
   }
 
   mounted () {
-    getUserInfo().then(res => {
-      console.log(res.data);
-      // if(res.data.state == 100){
-      //   this.isLogin = true;
-      // }else{
-      //   this.isLogin = false;
-      // }
-    })
+    const loading = this.$loading({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(255, 255, 255, 0.7)'
+    });
+    loading.close();
+    // getUserInfo().then(res => {
+    //   console.log(res.data);
+    //   loading.close();
+    //   if(res.data.state == 100){
+    //     this.isLogin = true;
+    //   }else{
+    //     this.isLogin = false;
+    //   }
+    // })
   }
 
   changeCode () {
@@ -227,21 +235,9 @@ export class LoginPage extends Vue {
         this.setWebsocket()
         // this.websocket.refresh()
         console.log(this.loginrole)
-        if(this.loginrole == '书记员'){
-          
-          if(!obj.noTips){
-            let ary = [];
-            ary.push(obj)
-            this.setclerkRooms({caseList:ary});
-          }
-          this.$router.push({
-            name: 'clerkRoom'
-          })
-        }else{
-          this.$router.push({
-            name: 'roomPage'
-          })
-        }
+        this.$router.push({
+          name: 'roomPage'
+        })
         
       } else {
         console.log(obj.noTips)
@@ -272,7 +268,6 @@ export class LoginPage extends Vue {
 
   pageChange(pageNum){
     this.searchForm.pageNumber = pageNum;
-    this.getNowPageContent()
   }
 
 }

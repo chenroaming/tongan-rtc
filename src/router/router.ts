@@ -43,16 +43,16 @@ export const createRoutes: () => RouteConfig[] = () => [
 
 export const router = new VueRouter({ mode: 'hash', routes: createRoutes() })
 
-router.beforeEach((to, from, next) => {
-  if (to.name === 'loginPage') {
-    store.dispatch('getUserInfo')
-    next()
-  }
-  if (to.name !== 'loginPage' && !store.getters.getLoginState) {
-    next({
-      name: 'loginPage'
-    })
-  } else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   if (to.name === 'loginPage') {
+//     store.dispatch('getUserInfo')
+//     next()
+//   }
+//   if (to.name !== 'loginPage' && !store.getters.getLoginState) {
+//     next({
+//       name: 'loginPage'
+//     })
+//   } else {
+//     next()
+//   }
+// })
