@@ -3,10 +3,10 @@ import { Getter, Action } from 'vuex-class'
 import { VueParticles } from '../../components/vue-particles'
 import { AtomSpinner } from 'epic-spinners'
 import { FaceCheck } from '../../components/FaceCheck'
-import { getUserInfo } from '../../api/user'
+import { getUserInfo,login,logout,getHallList } from '../../api/user'
 import { SelectDialog } from '../../components/SelectDialog'
 import { clerkSelectDialog } from '../../components/clerkSelectDialog'
-
+import md5 from 'md5'
 import RWS from '../../utils/rws'
 
 import './loginPage.less'
@@ -16,7 +16,6 @@ interface LoginFormShape {
   username: string
   password: string
   code: string
-  loginType: string
 }
 
 
@@ -81,7 +80,6 @@ export class LoginPage extends Vue {
     @Getter('getSelectedCase') selectedCase: Array<any>
     @Getter('getclerkBatcnRooms') clerkBatcnRooms: Array<any>
     @Getter('getSelectAllCase') endCheck: boolean
-    @Action('login') login: Function
     @Action('phoneLogin') phoneLogin: Function
     @Action('optionRole') optionRole: Function
     @Action('getCode') getCodeApi: Function
@@ -94,6 +92,11 @@ export class LoginPage extends Vue {
     @Action('setSelectList') setSelectList: Function
     @Action('setSelectAllRes') setSelectAllRes: Function
     @Action('setclerkRooms') setclerkRooms: Function
+
+    // @Action('login') login:Function
+    // @Action('getHallList') getHallList:function
+    // @Action('logout') logout:Function
+    
 
     totalPage: number = 9
     loading: boolean = false
@@ -112,17 +115,7 @@ export class LoginPage extends Vue {
         username: '',
         password: '',
         code: '',
-        loginType:'court',
     }
-  
-  
-
-  litigantLoginForm: LoginFormShape = {
-    username: '',
-    password: '',
-    code: '',
-    loginType:'litigant',
-  }
   caseList2: Array<any> =  [
     {id:'1',name:'莲花村',isOpen:true},
     {id:'2',name:'莲花村',isOpen:false},
@@ -136,7 +129,7 @@ export class LoginPage extends Vue {
   show: boolean = true
   count: number = 60
   timer: null | any = null
-
+  isLogin: boolean = false
   pageData: PageData = {
     pageNumber: 1,
     total: 0,
@@ -148,58 +141,34 @@ export class LoginPage extends Vue {
   }
 
   mounted () {
-    if (this.hasLogin) {
-      this.getNowPageContent();
-      // this.searchCaseList(this.searchForm)
-    }
     getUserInfo().then(res => {
       console.log(res.data);
       // if(res.data.state == 100){
-      //   this.$store.commit('hasLogin',true);
+      //   this.isLogin = true;
       // }else{
-      //   this.$store.commit('hasLogin',false);
+      //   this.isLogin = false;
       // }
     })
   }
 
-  // computed: {
-  //   get(){
-  //     return this.$store.getters.hasLogin;
-  //   },
-  //   set(val) {
-  //     return this.$store.commit('hasLogin',val);
-  //   }
-  // }
   changeCode () {
     this.codeSrc = '/api/main/code.jhtml?tm=' + Math.random()
   }
 
   handleLogin () {
     this.loading = true
-    this.login(this.judgeLoginForm).then(res => {
+    login(this.judgeLoginForm.username,md5(this.judgeLoginForm.password),this.judgeLoginForm.code).then(res => {
       this.loading = false;
       if (res.data.state === 100) {
-        // this.$swal({
-        //   type: 'success',
-        //   title: res.data.message
-        // })
-        this.optionRole(res.data.data.roles[0].type).then(ress => {
-          if(ress.data.state === 100){
-            localStorage.setItem('roleIdToken',res.data.data.roles[0].id);
-            this.searchForm.pageNumber = 1;
-            this.getNowPageContent();
-            // this.searchCaseList(this.searchForm)
-            if (ress.data.data.isFace) {
-              let child = this.$refs.faceChild as any
-              child.startTrack()
-            }
-            getUserInfo().then(res => {
-              if(res.data.state == 100){
-                console.log(59595959595959595 + res.data.roleName)
-                this.loginrole = res.data.roleName;
-              }
-            })
-          }
+        this.$swal({
+          type: 'success',
+          title: res.data.message
+        })
+        this.loading = true;
+        this.isLogin = true;
+        getHallList('').then(res => {
+          this.loading = false;
+          console.log(res.data);
         })
       }else {
         this.$swal({
@@ -216,57 +185,27 @@ export class LoginPage extends Vue {
     })
   }
 
-  selectedBtn(){
-    this.selected = true;
-  }
-  getRoomsShow(){
-    if(this.clerkBatcnRooms.length > 0){
-      this.nowSelTab = this.clerkBatcnRooms[0][0].roomKey;
-    }else{
-      this.nowSelTab = "";
-    }
-    (this.$refs.clerkDialog as any).getTabs(this.nowSelTab)
-    this.batchRoomsShow = true;
-  }
-  closeDialogClerk(){
-    this.batchRoomsShow = false;
-  }
-  closeDialog(){
-    this.selected = false;
-  }
-  
-  getCode () {
-    if (!this.timer) {
-      this.getCodeApi(this.litigantLoginForm.username)
-      this.count = TIME_COUNT
-      this.show = false
-      this.timer = setInterval(() => {
-        if (this.count > 0 && this.count <= TIME_COUNT) {
-          this.count--
-        } else {
-          this.show = true
-          clearInterval(this.timer)
-          this.timer = null 
-        }
-      }, 1000)
-    }
-  }
-
   backToLogin () {
-    this.logout()
-  }
-
-  async getNowPageContent(){//获取当前页内容
-    console.log(this.searchForm)
-    let res = await this.searchCaseList(this.searchForm)
-    console.log(res)
-    let data = res.data;
-  }
-
-  serachByCaseNo () {
-    this.searchForm.pageNumber = 1;
-    this.getNowPageContent();
-    // this.searchCaseList(this.searchForm)
+    logout().then(res => {
+      if(res.data.state == 100){
+        this.isLogin = false;
+        this.$swal({
+          type: 'success',
+          title: res.data.message
+        })
+      }else{
+        this.$swal({
+          type: 'error',
+          title: res.data.message
+        })
+      }
+    })
+    .catch(error => {
+      this.$swal({
+        type: 'error',
+        title: '网络错误'
+      })
+    })
   }
 
   roomToken (obj) {
@@ -320,6 +259,13 @@ export class LoginPage extends Vue {
       }
     })
   }
+
+  getRecord(id){
+    this.$router.push({
+      name: 'recordRoom'
+    })
+  }
+
   pageChange(pageNum){
     this.searchForm.pageNumber = pageNum;
     this.getNowPageContent()

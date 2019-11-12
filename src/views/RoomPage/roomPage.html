@@ -32,6 +32,38 @@
         <div class="right-content-down" :class="{active:isActive == '2'}" @click="choice('2')">
             基础信息
         </div>
+        <div class="baseInfo-box" v-show="baseInfoShow">
+            <p><el-input v-model="caseNo" placeholder="请输入案号"></el-input></p>
+            <div class="baseInfo-title"><img src="../../assets/img/applicant.png" alt=""><span>申请人</span></div>
+            <div class="applicant-name">
+                <span>姓名<input type="text" v-model="applicant.name" placeholder="请输入姓名"></span>
+                <span>联系电话<input type="text" v-model="applicant.phone" placeholder="请输入联系电话"></span>
+            </div>
+            <div class="applicant-id">
+                <span>身份证<input type="text" v-model="applicant.id_card" placeholder="请输入身份证号"></span>
+            </div>
+            <div class="applicant-address">
+                <span>地址<input type="text" v-model="applicant.address" placeholder="请输入地址"></span>
+            </div>
+            <div class="baseInfo-title"><img src="../../assets/img/respondent.png" alt=""><span>被申请人</span></div>
+            <div class="respondent-name">
+                <span>姓名<input type="text" v-model="respondent.name" placeholder="请输入姓名"></span>
+                <span>联系电话<input type="text" v-model="respondent.phone" placeholder="请输入联系电话"></span>
+            </div>
+            <div class="respondent-id">
+                <span>身份证<input type="text" v-model="respondent.id_card" placeholder="请输入身份证号"></span>
+            </div>
+            <div class="respondent-address">
+                <span>地址<input type="text" v-model="respondent.address" placeholder="请输入地址"></span>
+            </div>
+            <div class="justiceBureau">
+                <span>
+                    <img src="../../assets/img/justiceBureau.png" alt="">
+                    司法局<input type="text" v-model="justiceBureau" placeholder="请输入地址">
+                </span>
+            </div>
+            <div><el-button :loading="loading1" type="primary" @click="submit">提交</el-button></div>
+        </div>
     </div>
     <MainPlayer ref="mainPlayer" />
     <div :class="userInfo.role === '法官' ? 'bigger remoteplayer-list' : 'remoteplayer-list' ">
@@ -126,7 +158,7 @@
       <el-button  @click="clearAll">关闭</el-button>
     </div>
   </el-dialog> -->
-  <el-dialog title="基础信息" :visible.sync="dialogFormVisible">
+  <!-- <el-dialog title="基础信息" :visible.sync="dialogFormVisible">
     <el-card class="box-card">
         <div slot="header" class="clearfix">
             <span>参与人信息</span>
@@ -163,7 +195,7 @@
         <el-select v-model="form.type" placeholder="请选择活动区域">
         <!-- <el-option label="法院" value="0"></el-option>
         <el-option label="司法局" value="1"></el-option> -->
-        <el-option label="申请人" value="2"></el-option>
+        <!-- <el-option label="申请人" value="2"></el-option>
         <el-option label="被申请人" value="3"></el-option>
         </el-select>
     </el-form-item>
@@ -172,5 +204,5 @@
         <el-button @click="joinPeople = false">取 消</el-button>
         <el-button type="primary" @click="joinPeople = false">确 定</el-button>
     </div>
-  </el-dialog>
+  </el-dialog> --> -->
 </div>

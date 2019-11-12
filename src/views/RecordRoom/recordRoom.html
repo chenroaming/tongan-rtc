@@ -1,0 +1,90 @@
+<div>
+<!-- LOGIN MODULE -->
+  
+  <div class="wrap case-list-wrapper">
+    <div class="back" @click="back">
+      <img src="../../assets//img//back.svg" alt="返回" />
+    </div>
+    <div class="wrapper">
+      <header @keydown.enter="serachByCaseNo">
+          <p class="title">
+            调解记录
+          </p>
+      </header>
+      <div class="container scrollStyle">
+        <ul class="todo" id="todo">
+          <li v-for="(item, index) in caseList2" :key="index">
+            <span class="caseNo-wrapper" style="width:540px">{{ item.name }}</span>
+            <div class="join-room" @click="getRecord(item.id)">
+              查看记录
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <el-pagination
+      layout="prev, pager, next"
+      :page-count="totalPage"
+      @current-change="pageChange">
+    </el-pagination>
+    <div class="info-box" v-show="baseInfoShow">
+      <p class="info-box-title">{{caseNo}}</p>
+      <span class="close" @click="closeWindow">X</span>
+      <div class="baseInfo-title"><img src="../../assets/img/applicant.png" alt=""><span>申请人</span></div>
+      <div class="applicant-name">
+          <span>姓名：{{applicant.name}}</span>
+          <span>联系电话：{{applicant.phone}}</span>
+      </div>
+      <div class="applicant-id">
+          <span>身份证：{{applicant.id_card}}</span>
+      </div>
+      <div class="applicant-address">
+          <span>地址：{{applicant.address}}</span>
+      </div>
+      <div class="baseInfo-title"><img src="../../assets/img/respondent.png" alt=""><span>被申请人</span></div>
+      <div class="respondent-name">
+          <span>姓名：{{respondent.name}}</span>
+          <span>联系电话：{{respondent.phone}}</span>
+      </div>
+      <div class="respondent-id">
+          <span>身份证：{{respondent.id_card}}</span>
+      </div>
+      <div class="respondent-address">
+          <span>地址：{{respondent.address}}</span>
+      </div>
+      <div class="justiceBureau">
+          <span>
+              <img src="../../assets/img/justiceBureau.png" alt="">
+              司法局：{{justiceBureau}}
+          </span>
+      </div>
+      <div class="tiaojie">
+        <span>
+          <img src="../../assets/img/shijian.png" alt="">
+          调解时间：{{mediationTime}}
+        </span>
+      </div>
+      <div class="tiaojie">
+        <span>
+          <img src="../../assets/img/justiceBureau.png" alt="">
+          调解协议：
+        </span>
+        <span>
+          下载
+          <img src="../../assets/img/xiazai.png" alt="">
+        </span>
+      </div>
+      <div class="tiaojie">
+        <span>
+          <img src="../../assets/img/shipin.png" alt="">
+          调解录像：
+        </span>
+        <span>
+          下载
+          <img src="../../assets/img/xiazai.png" alt="">
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+

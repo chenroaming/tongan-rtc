@@ -2,26 +2,26 @@ import Util from '../utils/util'
 
 let service = Util.axios
 
-/**
- * [用户登入接口]
- * @param {string} username [用户名]
- * @param {string} password [密码]
- * @param {string} code     [验证码]
- * @returns { state: number, message: string } [state:100 成功；101 失败]
- */
-export function login (username, password, code,loginType) {
-  const params = {
-    username,
-    password,
-    code,
-    loginType
-  }
-  return service({
-    url: '/main/login.jhtml',
-    method: 'post',
-    params
-  })
-}
+// /**
+//  * [用户登入接口]
+//  * @param {string} username [用户名]
+//  * @param {string} password [密码]
+//  * @param {string} code     [验证码]
+//  * @returns { state: number, message: string } [state:100 成功；101 失败]
+//  */
+// export function login (username, password, code,loginType) {
+//   const params = {
+//     username,
+//     password,
+//     code,
+//     loginType
+//   }
+//   return service({
+//     url: '/main/login.jhtml',
+//     method: 'post',
+//     params
+//   })
+// }
 
 /**
  * [用户登入接口]
@@ -73,16 +73,16 @@ export function phoneLogin (idCard, password, code,loginType) {
   })
 }
 
-/**
- * [用户登出接口]
- * @returns { state: number, message: string } [state:100 成功；101 失败]
- */
-export function logout () {
-  return service({
-    url: '/main/loginOut.jhtml',
-    method: 'get'
-  })
-}
+// /**
+//  * [用户登出接口]
+//  * @returns { state: number, message: string } [state:100 成功；101 失败]
+//  */
+// export function logout () {
+//   return service({
+//     url: '/main/loginOut.jhtml',
+//     method: 'get'
+//   })
+// }
 
 /**
  * [获取短信验证码接口]
@@ -125,46 +125,49 @@ export function userDetail (adminId) {
 }
 
 
-// /**
-//  * [用户登入接口新]
-//  * @param {string} username [用户名]
-//  * @param {string} password [密码]
-//  * @param {string} code     [验证码]
-//  * @returns { state: number, message: string } [state:100 成功；101 失败]
-//  */
-// export function login (username, password, code) {
-//   const params = {
-//     username,
-//     password,
-//     code
-//   }
-//   return service({
-//     url: '/main/login.jhtml',
-//     method: 'post',
-//     params
-//   })
-// }
+/**
+ * [用户登入接口新]
+ * @param {string} username [用户名]
+ * @param {string} password [密码]
+ * @param {string} code     [验证码]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function login (username, password, code) {
+  const params = {
+    username,
+    password,
+    code
+  }
+  return service({
+    url: '/main/login.jhtml',
+    method: 'post',
+    params
+  })
+}
 
 
-// /**
-//  * [用户登出接口新]
-//  * @returns { state: number, message: string } [state:100 成功；101 失败]
-//  */
-// export function logout () {
-//   return service({
-//     url: '/main/loginOut.jhtml',
-//     method: 'post'
-//   })
-// }
+/**
+ * [用户登出接口新]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function logout () {
+  return service({
+    url: '/main/loginOut.jhtml',
+    method: 'post'
+  })
+}
 
 
-// /**
-//  * [查询议理堂新]
-//  * @returns { state: number, message: string } [state:100 成功；101 失败]
-//  */
-// export function getHallList () {
-//   return service({
-//     url: '/mediate/getHallList.jhtml',
-//     method: 'get'
-//   })
-// }
+/**
+ * [查询议理堂新]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getHallList (keyword) {
+  const params = {
+    keyword
+  }
+  return service({
+    url: '/mediate/getHallList.jhtml',
+    method: 'get'
+  })
+}

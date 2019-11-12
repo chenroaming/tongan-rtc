@@ -2,8 +2,11 @@ import { Commit } from 'vuex'
 import store from '../index'
 import types from '../types'
 import { caseList } from '../../api/case'
+// import {intoRoom} from '../../api/case'
 import Vue from 'vue'
 import Sweetalert2 from 'sweetalert2'
+
+
 
 interface State {
   caseList?: CaseListShape
@@ -33,9 +36,15 @@ interface CaseObjectShape {
   caseNo: string,
   isOpen: number
 }
+
 interface SearchForm {
   caseNo: string,
   pageNumber: number,
+}
+
+
+interface hallId {
+  hallId:string
 }
 
 // initial state
@@ -63,6 +72,25 @@ const getters = {
 
 // action
 const actions = {
+  // intoRoom (context: { commit: Commit, state: State },hallId:string ){
+  //   return new Promise((resolve, reject) => {
+  //     intoRoom(hallId).then(res => {
+  //         resolve(res)
+  //       } else {
+  //         Sweetalert2({
+  //           type: 'error',
+  //           title: res.data.message
+  //         })
+  //       }
+  //     }).catch(error => {
+  //       Sweetalert2({
+  //         type: 'error',
+  //         title: '连接超时，请稍后再试'
+  //       })
+  //       reject(error)
+  //     })
+  //   })
+  // },
   searchCaseList (context: { commit: Commit, state: State },searchForm:{caseNo : string , pageNumber : number} ) {
     return new Promise((resolve, reject) => {
       caseList(searchForm.caseNo,searchForm.pageNumber).then(res => {

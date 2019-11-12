@@ -51,7 +51,6 @@ export class RoomPage extends Vue {
   @Getter('getWebsocket') websocket: RWS
   @Action('websocketSend') send: Function
   @Action('setVideoSrcObj') setVideoSrcObj: Function
-
   @Getter('getSelectedCase') selectedCase: Array<any>
 
 
@@ -94,6 +93,25 @@ export class RoomPage extends Vue {
     phone: '111',
     type: '2'
   }
+  applicant: any = {
+    name:'safdas',
+    id_card: '111',
+    address: 'xxx0',
+    phone: '111',
+    type: '2'
+  }
+  respondent:any = {
+    name:'safdas',
+    id_card: '111',
+    address: 'xxx0',
+    phone: '111',
+    type: '3'
+  }
+  loading1:boolean = false
+  baseInfoShow:boolean = true
+  justiceBureau:string = 'sdasadfasfdsafd'
+  mediationTime:string = '20191112'
+  caseNo:string = '调解号2019闽0212调3800号'
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -292,6 +310,24 @@ created () {
         message: '已取消删除'
       });          
     });
+  }
+  submit(){
+    this.loading1 = true;
+    const applicant = {
+      type:'2',
+      name:this.applicant.name,
+      phone:this.applicant.phone,
+      idCard:this.applicant.id_card,
+      address:this.applicant.address
+    }
+    const respondent = {
+      type:'3',
+      name:this.respondent.name,
+      phone:this.respondent.phone,
+      idCard:this.respondent.id_card,
+      address:this.respondent.address
+    }
+    console.log(applicant,respondent);
   }
   opens(){
     this.dialogShow = true;

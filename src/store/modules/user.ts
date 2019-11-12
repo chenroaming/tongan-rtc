@@ -2,6 +2,7 @@ import { Commit } from 'vuex'
 import store from '../index'
 import types from '../types'
 import { login, phoneLogin, logout, getUserInfo, getCode,optionRole } from '../../api/user'
+// import { login, logout, getUserInfo, getCode,getHallList} from '../../api/user'
 import Sweetalert2 from 'sweetalert2'
 import md5 from 'md5'
 
@@ -25,10 +26,20 @@ interface LoginForm {
   loginType:string,
 }
 
+// interface LoginForm {
+//   username: string,
+//   password?: string,
+//   code: string
+// }
+
 interface role {
   roleType: number,
   
 }
+
+// interface keyword {
+//   keyword:string
+// }
 
 // initial state
 const state: State = {
@@ -73,6 +84,48 @@ const actions = {
       })
     })
   },
+  // login (context: { commit: Commit, state: State }, loginForm: LoginForm) {
+  //   return new Promise((resolve, reject) => {
+  //     login(loginForm.username, md5(loginForm.password), loginForm.code).then(res => {
+  //       if (res.data.state === 100) {
+          
+  //       } else {
+  //         Sweetalert2({
+  //           type: 'error',
+  //           title: res.data.message
+  //         })
+  //       }
+  //       resolve(res)
+  //     }).catch(error => {
+  //       Sweetalert2({
+  //         type: 'error',
+  //         title: '连接超时，请稍后再试'
+  //       })
+  //       reject(error)
+  //     })
+  //   })
+  // },
+
+  // getHallList(context: { commit: Commit, state: State },keyword:keyword){
+  //   return new Promise((resolve, reject) => {
+  //     getHallList().then(res => {
+  //       if (res.data.state === 100) {
+  //         resolve(res)
+  //       } else {
+  //         Sweetalert2({
+  //           type: 'error',
+  //           title: res.data.message
+  //         })
+  //       }
+  //     }).catch(error => {
+  //       Sweetalert2({
+  //         type: 'error',
+  //         title: '连接超时，请稍后再试'
+  //       })
+  //       reject(error)
+  //     })
+  //   })
+  // },
   optionRole (context: { commit: Commit, state: State },roleType:number) {
     return new Promise((resolve, reject) => {
       optionRole(roleType).then(res => {
@@ -170,7 +223,6 @@ const actions = {
       })
     })
   },
-  
   getUserInfo (context: { commit: Commit, state: State }) {
     return new Promise((resolve, reject) => {
       getUserInfo().then(res => {

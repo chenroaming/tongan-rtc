@@ -1,10 +1,10 @@
 <div>
 <!-- LOGIN MODULE -->
   <div class="login">
-    <div class="user" v-show="!hasLogin" @keydown.enter="handleLogin">
+    <div class="user" v-show="!isLogin" @keydown.enter="handleLogin">
       <div class="form-wrap">
         <!-- TABS CONTENT -->
-        <div class="tabs-content" v-show="!hasLogin">
+        <div class="tabs-content" v-show="!isLogin">
           <div class="logo-box"></div>
           <div id="login-tab-content" :class="userType == 'judge' ? 'active' : ''">  
             <div class="login-form">
@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class="wrap case-list-wrapper" v-show="hasLogin">
+  <div class="wrap case-list-wrapper" v-show="isLogin">
     <div class="back" @click="backToLogin">
       <img src="../../assets//img//back.svg" alt="返回" />
     </div>
@@ -51,6 +51,9 @@
             </div>
             <div class="join-room" @click="roomToken(item)">
               进入调解
+            </div>
+            <div style="margin-right: 45px;" class="join-room" @click="getRecord(item.id)">
+              调解记录
             </div>
           </li>
         </ul>
