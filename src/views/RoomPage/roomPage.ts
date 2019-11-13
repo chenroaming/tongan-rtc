@@ -12,7 +12,7 @@ import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog } from '../../api/export'
 import { getUserInfo } from '../../api/user'
-import { finish,createImg,startMediate,closeRoom,intoRoom,changePar,changePar2 } from '../../api/case'
+import { finish,createImg,startMediate,closeRoom,intoRoom,changePar1,changePar,changePar2,getFileName } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -118,6 +118,7 @@ export class RoomPage extends Vue {
   roleName:string = ''
   pant1:string = ''
   pant2:string = ''
+  recordId:string = ''
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -295,8 +296,19 @@ created () {
   choice(id){
     this.isActive = id;
     if(this.isActive == '1'){
-      window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html';
-      this.baseInfoShow = false;
+      if(!this.recordId){
+        this.$swal({
+          type:"error",
+          title:"请先补全申请人/被申请人/司法局信息！"
+        })
+        return;
+      }
+      getFileName(this.recordId).then(res => {
+        console.log(res.data);
+        window.localStorage.setItem('fileName',res.data.fileName);
+        window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+res.data.fileName;
+        this.baseInfoShow = false;
+      })
       return;
     }
     if(this.isActive == '2'){
@@ -304,6 +316,7 @@ created () {
     }
   }
   start(){
+    alert(1);
     const hallId = window.localStorage.getItem('hallId');
     startMediate(hallId,this.pant1,this.pant2,this.justiceId).then(res => {
       if(res.data.state == 100){
@@ -337,20 +350,19 @@ created () {
   }
   submit(){
     this.loading1 = true;
-    if(!this.applicant.name || !this.respondent.name){
-      this.$swal({
-        type:'error',
-        title: '申请人和被申请人姓名不能为空！'
-      })
-      this.loading1 = false;
-      return;
-    }
-    changePar('','2',this.applicant.name,this.applicant.phone,this.applicant.id_card,this.applicant.address).then(res => {
-      
+    // if(!this.applicant.name || !this.respondent.name){
+    //   this.$swal({
+    //     type:'error',
+    //     title: '申请人和被申请人姓名不能为空！'
+    //   })
+    //   this.loading1 = false;
+    //   return;
+    // }
+    changePar1('','2',this.caseNo,this.applicant.name,this.applicant.phone,this.applicant.id_card,this.applicant.address).then(res => {
       if(res.data.state == 100){
         this.pant1 = res.data.pantId;
+        this.recordId = res.data.recordId;
         changePar('','3',this.respondent.name,this.respondent.phone,this.respondent.id_card,this.respondent.address).then(res => {
-          
           if(res.data.state == 100){
             this.pant2 = res.data.pantId;
             changePar2('','1',this.justiceBureau).then(res => {

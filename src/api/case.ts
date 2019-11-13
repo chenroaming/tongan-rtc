@@ -148,6 +148,28 @@ export function getById (pantId) {
  * @param {string}
  * @returns { state: number, message: string } [state:100 成功；101 失败]
  */
+export function changePar1 (pantId,type,mediateNo,name,phone,idCard,address) {
+  const params = {
+    pantId,
+    type,
+    mediateNo,
+    name,
+    phone,
+    idCard,
+    address
+  }
+  return service({
+    url: '/participant/changePar.jhtml',
+    method: 'post',
+    params
+  })
+}
+
+/**
+ * [新增修改参与人新]
+ * @param {string}
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
 export function changePar (pantId,type,name,phone,idCard,address) {
   const params = {
     pantId,
@@ -228,6 +250,23 @@ export function getRecord2 (recordId) {
   }
   return service({
     url: '/mediate/getRecord.jhtml',
+    method: 'get',
+    params
+  })
+}
+
+
+/**
+ * [查询文件名]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getFileName (recordId) {
+  const params = {
+    recordId
+  }
+  return service({
+    url: '/mediate/getProtocolName.jhtml',
     method: 'get',
     params
   })

@@ -12,7 +12,7 @@
         <div v-if="roleName == '法院'">
             <!-- <div @click="endCourt" class="end-court">休庭</div> -->
             <div class="end-court">
-                <el-dropdown trigger="click">
+                <el-dropdown trigger="click" @command="start">
                     <span class="el-dropdown-link text">
                         调解控制<i class="el-icon-arrow-down el-icon--right"></i>
                     </span>

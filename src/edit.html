@@ -10,14 +10,16 @@ function OpenDoc()
 	var WebOffice=document.getElementById("WebOffice");
 	//通过对象WebOffice的Open方法打开个一个服务器文档
 	//此处服务器文档地址为：http://localhost/weboffice/20161108144356.doc
-	WebOffice.Open("http://www.officectrl.com/officecs/temp/file1.doc",false,"Word.Document");
+	WebOffice.Open("http://mediate.ptnetwork001.com/upload/mediateModel/1.doc",false,"Word.Document");
 	isOpen=true;
 }
+
 function OpenSave()
 {
 	if(isOpen)
 	{
-		var msg = WebOffice.Save('http://mediate.ptnetwork001.com/saveDoc.jsp');
+		var fileName = window.location.href.split('?file=')[1];
+		var msg = WebOffice.Save('http://mediate.ptnetwork001.com:7878/saveDoc.jsp?file='+fileName);
 		alert(msg);
 	}
 }
@@ -30,11 +32,15 @@ function OpenSave()
 <script language="javascript">
 if (!!window.ActiveXObject || "ActiveXObject" in window){
 document.write('<object classid="clsid:FF09E4FA-BFAA-486E-ACB4-86EB0AE875D5" codebase="WebOffice.ocx#Version=2019,1,7,3" id="WebOffice" width="900" height="500" >');
-document.write('</object>');}
+document.write('</object>');
+}
 else
 {
 document.write('<object id="WebOffice" CLSID="{FF09E4FA-BFAA-486E-ACB4-86EB0AE875D5}" TYPE="application/x-itst-activex"  width=100% height=900></object>');
 }
+setTimeout(function(){
+OpenDoc();
+},1000)//延迟一秒打开文件
 </script>
 </body>
 </html>
