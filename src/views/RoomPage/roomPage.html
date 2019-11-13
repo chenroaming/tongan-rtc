@@ -1,15 +1,15 @@
 <div class="room-content">
     <div class="header">
         <div class="room-logo">
-            莲花镇云阳村
+            {{hallName}}
         </div>
         <div class="room-title">议理堂在线调解</div>
-        <div class="mainInfo">当前主屏：{{ mainInfo.roleName }} — {{ mainInfo.name }}</div>
+        <div class="mainInfo">当前主屏：{{ mainInfo.name }}</div>
         <div class="leave" @click="outRoom" style="color: #fff;">
             <!-- <img src="../../assets/img/leave.svg" alt="离开"> -->
             退出
         </div>
-        <div v-if="userInfo.role === '法官'">
+        <div v-if="roleName == '法院'">
             <!-- <div @click="endCourt" class="end-court">休庭</div> -->
             <div class="end-court">
                 <el-dropdown trigger="click">
@@ -62,7 +62,7 @@
                     司法局<input type="text" v-model="justiceBureau" placeholder="请输入地址">
                 </span>
             </div>
-            <div><el-button :loading="loading1" type="primary" @click="submit">提交</el-button></div>
+            <div style="margin-top: 15px;"><el-button :loading="loading1" type="primary" @click="submit">提交</el-button></div>
         </div>
     </div>
     <MainPlayer ref="mainPlayer" />

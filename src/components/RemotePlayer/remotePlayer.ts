@@ -4,6 +4,7 @@ import { piliRTC } from '../../utils/pili'
 import { userDetail } from '../../api/user'
 
 import './remotePlayer.less'
+import user from '../../store/modules/user'
 
 interface UserShape {
     name: string
@@ -42,27 +43,34 @@ export class RemotePlayer extends Vue {
       }
   }
   @Watch('id', { immediate: true, deep: true })
-  
-
   async autopPlay (val: string, oldVal: string) {
     if (this.id !== undefined) {
       const stream = await piliRTC.subscribe(this.id)
       const containerElement = this.$refs.videoWrapper as HTMLElement
       stream.play(containerElement)
-    
-      const res = await userDetail(this.id)
+      const hallId = window.localStorage.getItem('hallId');
+      const res = await userDetail(this.id,hallId);
       if (res.data.state === 100) {
-        this.userInfo = res.data.result
-        if (this.userInfo.roleName=='法官') {
-            this.position='mindleWindow'
-        }else if (this.userInfo.roleName=='被告') {
-            this.position='rightWindow'
-        }else if (this.userInfo.roleName=='原告') {
-            this.position='leftWindow'
-        }else{
-            this.position='leftWindow'
-        }
+        this.userInfo = res.data.result;
       }
+      // userDetail(this.id,hallId).then(res =>{
+      //   if(res.data.state == 100){
+      //     this.userName = res.data.name;
+      //   }
+      //   alert(this.userName);
+      // })
+      // if (res.data.state === 100) {
+      //   this.userInfo = res.data.result
+      //   if (this.userInfo.roleName=='法官') {
+      //       this.position='mindleWindow'
+      //   }else if (this.userInfo.roleName=='被告') {
+      //       this.position='rightWindow'
+      //   }else if (this.userInfo.roleName=='原告') {
+      //       this.position='leftWindow'
+      //   }else{
+      //       this.position='leftWindow'
+      //   }
+      // }
     }
   }
 

@@ -63,7 +63,7 @@ export function intoRoom (hallId) {
     hallId //房间id
   }
   return service({
-    url: '/mediate/intoRoom.jhmel',
+    url: '/mediate/intoRoom.jhtml',
     method: 'post',
     params
   })
@@ -164,6 +164,24 @@ export function changePar (pantId,type,name,phone,idCard,address) {
   })
 }
 
+/**
+ * [新增司法局新]
+ * @param {string}
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function changePar2 (pantId,type,judicialName) {
+  const params = {
+    pantId,
+    type,
+    judicialName
+  }
+  return service({
+    url: '/participant/changePar.jhtml',
+    method: 'post',
+    params
+  })
+}
+
 
 /**
  * [删除参与人新]
@@ -177,6 +195,40 @@ export function delParticipant (pantId) {
   return service({
     url: '/participant/delParticipant.jhmtl',
     method: 'post',
+    params
+  })
+}
+
+/**
+ * [查询单个房间调解记录]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getRecord1 (hallId,pageNum,pageSize) {
+  const params = {
+    hallId,
+    pageNum,
+    pageSize
+  }
+  return service({
+    url: '/mediate/getRecord.jhtml',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * [查询具体调解记录]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getRecord2 (recordId) {
+  const params = {
+    recordId
+  }
+  return service({
+    url: '/mediate/getRecord.jhtml',
+    method: 'get',
     params
   })
 }

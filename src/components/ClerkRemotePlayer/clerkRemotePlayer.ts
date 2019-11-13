@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
 import { piliRTC } from '../../utils/pili'
-import { userDetail } from '../../api/user'
+// import { userDetail } from '../../api/user'
 
 import './clerkRemotePlayer.less'
 
@@ -50,19 +50,19 @@ export class ClerkRemotePlayer extends Vue {
       const containerElement = this.$refs.videoWrapper as HTMLElement
       stream.play(containerElement)
     
-      const res = await userDetail(this.id)
-      if (res.data.state === 100) {
-        this.userInfo = res.data.result
-        if (this.userInfo.roleName=='法官') {
-            this.position='mindleWindow'
-        }else if (this.userInfo.roleName=='被告') {
-            this.position='rightWindow'
-        }else if (this.userInfo.roleName=='原告') {
-            this.position='leftWindow'
-        }else{
-            this.position='leftWindow'
-        }
-      }
+      // const res = await userDetail(this.id)
+      // if (res.data.state === 100) {
+      //   this.userInfo = res.data.result
+      //   if (this.userInfo.roleName=='法官') {
+      //       this.position='mindleWindow'
+      //   }else if (this.userInfo.roleName=='被告') {
+      //       this.position='rightWindow'
+      //   }else if (this.userInfo.roleName=='原告') {
+      //       this.position='leftWindow'
+      //   }else{
+      //       this.position='leftWindow'
+      //   }
+      // }
     }
   }
 

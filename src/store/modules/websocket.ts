@@ -21,12 +21,12 @@ const actions = {
     if(protocolStr == "http:")
     {
        console.log("protocol = " + protocolStr);
-       store.commit(types.SET_WEBSOCKET, new RWS('ws://' + location.host + '/api/voice/ws.jhtml'))
+      //  store.commit(types.SET_WEBSOCKET, new RWS('ws://' + location.host + '/api/voice/ws.jhtml'))
     }
     else if(protocolStr == "https:")
     {
        console.log("protocol = " + protocolStr);
-       store.commit(types.SET_WEBSOCKET, new RWS('wss://' + location.host + '/api/voice/ws.jhtml'))
+      //  store.commit(types.SET_WEBSOCKET, new RWS('wss://' + location.host + '/api/voice/ws.jhtml'))
     }
     // store.commit(types.SET_WEBSOCKET, new RWS('wss://' + location.host + '/api/voice/ws.jhtml'))
   },

@@ -4,14 +4,15 @@ import { MainPlayer } from '../../components/MainPlayer'
 import { LocalPlayer } from '../../components/LocalPlayer'
 import { RemotePlayer } from '../../components/RemotePlayer'
 // import { ChatWindow } from '../../components/ChatWindow'
-import { EvidenceWindow } from '../../components/EvidenceWindow'
-import { WorkerWindow } from '../../components/WorkerWindow'
-import { logWindow } from '../../components/logWindow'
-import { CourtWindow } from '../../components/CourtWindow'
+// import { EvidenceWindow } from '../../components/EvidenceWindow'
+// import { WorkerWindow } from '../../components/WorkerWindow'
+// import { logWindow } from '../../components/logWindow'
+// import { CourtWindow } from '../../components/CourtWindow'
 import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
-import { exportLog,closeRoom, } from '../../api/export'
-import { finish,createImg,startMediate,closeRoom,intoRoom,changePar } from '../../api/case'
+import { exportLog } from '../../api/export'
+import { getUserInfo } from '../../api/user'
+import { finish,createImg,startMediate,closeRoom,intoRoom,changePar,changePar2 } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -31,10 +32,10 @@ interface UserInfoShape {
         LocalPlayer,
         RemotePlayer,
         // ChatWindow,
-        EvidenceWindow,
-        WorkerWindow,
-        logWindow,
-        CourtWindow
+        // EvidenceWindow,
+        // WorkerWindow,
+        // logWindow,
+        // CourtWindow
     }
 })
 
@@ -94,24 +95,29 @@ export class RoomPage extends Vue {
     type: '2'
   }
   applicant: any = {
-    name:'safdas',
-    id_card: '111',
-    address: 'xxx0',
-    phone: '111',
+    name:'',
+    id_card: '',
+    address: '',
+    phone: '',
     type: '2'
   }
   respondent:any = {
-    name:'safdas',
-    id_card: '111',
-    address: 'xxx0',
-    phone: '111',
+    name:'',
+    id_card: '',
+    address: '',
+    phone: '',
     type: '3'
   }
+  roomId:string = ''
+  hallName:string = ''
   loading1:boolean = false
   baseInfoShow:boolean = true
-  justiceBureau:string = 'sdasadfasfdsafd'
-  mediationTime:string = '20191112'
-  caseNo:string = '调解号2019闽0212调3800号'
+  justiceBureau:string = ''
+  mediationTime:string = ''
+  caseNo:string = ''
+  roleName:string = ''
+  pant1:string = ''
+  pant2:string = ''
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -125,16 +131,19 @@ export class RoomPage extends Vue {
   }
 created () {
     // 情况语音列表
+    
+    this.hallName = window.localStorage.getItem('hallName')
+    this.roomId = window.localStorage.getItem('roomId')
     this.cleanMsg()
-    this.content = this.totalTime + 's后可关闭'
-    let clock = window.setInterval(() => {
-        this.totalTime--
-        this.content = this.totalTime + 's后可关闭'
-        if (this.totalTime < 0) {
-        window.clearInterval(clock)
-        this.content = '明白'
-    }
-    },1000)
+    // this.content = this.totalTime + 's后可关闭'
+    // let clock = window.setInterval(() => {
+    //     this.totalTime--
+    //     this.content = this.totalTime + 's后可关闭'
+    //     if (this.totalTime < 0) {
+    //     window.clearInterval(clock)
+    //     this.content = '明白'
+    // }
+    // },1000)
     // this.timer = setInterval(() => {
     //   this.updateTime()
     // }, 1000)
@@ -160,6 +169,9 @@ created () {
   }
   async mounted () {
     // 进入房间
+    getUserInfo().then(res => {
+      this.roleName = res.data.roleName;
+    })
     try {
       console.log('joinRoomWithToken')
       const roomInfo = await piliRTC.joinRoomWithToken(this.roomToken)
@@ -210,8 +222,8 @@ created () {
 
   destroyed () {
     piliRTC.leaveRoom()
-    clearInterval(this.timer)
-    this.websocket.close()
+    // clearInterval(this.timer)
+    // this.websocket.close()
     piliRTC.removeAllListeners('user-join')
     piliRTC.removeAllListeners('user-publish')
     piliRTC.removeAllListeners('user-unpublish')
@@ -249,10 +261,10 @@ created () {
   }
 
   async outRoom () {
-    exportLog(this.caseId).then(res => {
-      console.log(res)
-    })
-    closeRoom().then(res => {
+    // exportLog(this.caseId).then(res => {
+    //   console.log(res)
+    // })
+    closeRoom(this.roomId).then(res => {
       console.log(res)
     })
     this.$router.push({
@@ -283,13 +295,24 @@ created () {
   choice(id){
     this.isActive = id;
     if(this.isActive == '1'){
-      window.location.href = 'WebOffice://|Officectrl|http://court1.ptnetwork001.com/tartctest/edit.html';
+      window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html';
       this.baseInfoShow = false;
       return;
     }
     if(this.isActive == '2'){
-      this.baseInfoShow = true;
+      this.baseInfoShow = !this.baseInfoShow;
     }
+  }
+  start(){
+    const hallId = window.localStorage.getItem('hallId');
+    startMediate(hallId,this.pant1,this.pant2,this.justiceId).then(res => {
+      if(res.data.state == 100){
+        this.$swal({
+          type:'success',
+          title:res.data.message
+        })
+      }
+    })
   }
   getById(id = ''){
     this.joinPeople = true;
@@ -314,32 +337,58 @@ created () {
   }
   submit(){
     this.loading1 = true;
-    const applicant = {
-      type:'2',
-      name:this.applicant.name,
-      phone:this.applicant.phone,
-      idCard:this.applicant.id_card,
-      address:this.applicant.address
-    }
-    const respondent = {
-      type:'3',
-      name:this.respondent.name,
-      phone:this.respondent.phone,
-      idCard:this.respondent.id_card,
-      address:this.respondent.address
+    if(!this.applicant.name || !this.respondent.name){
+      this.$swal({
+        type:'error',
+        title: '申请人和被申请人姓名不能为空！'
+      })
+      this.loading1 = false;
+      return;
     }
     changePar('','2',this.applicant.name,this.applicant.phone,this.applicant.id_card,this.applicant.address).then(res => {
-      this.loading1 = false;
-      this.$swal({
-        type:'success',
-        title: res.data.message
-      })
+      
       if(res.data.state == 100){
-        this.baseInfoShow = false;
+        this.pant1 = res.data.pantId;
+        changePar('','3',this.respondent.name,this.respondent.phone,this.respondent.id_card,this.respondent.address).then(res => {
+          
+          if(res.data.state == 100){
+            this.pant2 = res.data.pantId;
+            changePar2('','1',this.justiceBureau).then(res => {
+              this.loading1 = false;
+              if(res.data.state == 100){
+                this.justiceId = res.data.pantId;
+                this.$swal({
+                  type:'success',
+                  title: res.data.message
+                })
+                return;
+              }
+              if(res.data.state == 101){
+                this.$swal({
+                  type:'error',
+                  title: res.data.message
+                })
+              }
+            })
+            this.baseInfoShow = false;
+            
+            return;
+          }
+          if(res.data.state == 101){
+            this.$swal({
+              type:'error',
+              title: res.data.message
+            })
+          }
+        })
         return;
       }
+      if(res.data.state == 101){
+        this.$swal({
+          type:'error',
+          title: res.data.message
+      })
     })
-    console.log(applicant,respondent);
   }
   opens(){
     this.dialogShow = true;

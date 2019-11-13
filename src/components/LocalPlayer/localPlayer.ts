@@ -1,6 +1,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
-import { userDetail } from '../../api/user'
+// import { userDetail } from '../../api/user'
+import {getUserInfo} from '../../api/user'
 import './localPlayer.less'
 
 interface UserInfoShape {
@@ -46,6 +47,11 @@ export class LocalPlayer extends Vue {
 //       this.setVideoSrcObj(val.mediaStream)
 //     }
 //   }
+mounted () {
+  getUserInfo().then(res => {
+    this.name = res.data.result.username;
+  })
+}
 @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) { 
       console.log(val)
@@ -56,25 +62,25 @@ export class LocalPlayer extends Vue {
       //   this.windowIsshow=true
       // }
   }
-    async mounted () {
-        userDetail(this.userInfo.id).then(res => {
-            if (res.data.state === 100) {
-                this.name = res.data.result.name
-                this.roleName = res.data.result.roleName
-                this.address = res.data.result.address
-                if (this.roleName=='法官') {
-                    this.position='mindleWindow'
-                }else if (this.roleName=='被告') {
-                    this.position='rightWindow'
-                }else if (this.roleName=='原告') {
-                    this.position='leftWindow'
-                }else{
-                    this.position='leftWindow'
-                }
-                this.setMainInfo({ name: this.name, roleName: this.roleName })
-            }
-        })
-    }
+    // async mounted () {
+    //     userDetail(this.userInfo.id).then(res => {
+    //         if (res.data.state === 100) {
+    //             this.name = res.data.result.name
+    //             this.roleName = res.data.result.roleName
+    //             this.address = res.data.result.address
+    //             if (this.roleName=='法官') {
+    //                 this.position='mindleWindow'
+    //             }else if (this.roleName=='被告') {
+    //                 this.position='rightWindow'
+    //             }else if (this.roleName=='原告') {
+    //                 this.position='leftWindow'
+    //             }else{
+    //                 this.position='leftWindow'
+    //             }
+    //             this.setMainInfo({ name: this.name, roleName: this.roleName })
+    //         }
+    //     })
+    // }
 
     openFull () {
         const containerElement = this.$refs.videoWrapper as HTMLElement

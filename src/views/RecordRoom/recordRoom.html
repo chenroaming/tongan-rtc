@@ -14,7 +14,7 @@
       <div class="container scrollStyle">
         <ul class="todo" id="todo">
           <li v-for="(item, index) in caseList2" :key="index">
-            <span class="caseNo-wrapper" style="width:540px">{{ item.name }}</span>
+            <span class="caseNo-wrapper" style="width:540px">{{ item.mediateNo }}</span>
             <div class="join-room" @click="getRecord(item.id)">
               查看记录
             </div>

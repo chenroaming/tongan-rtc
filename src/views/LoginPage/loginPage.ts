@@ -4,6 +4,7 @@ import { VueParticles } from '../../components/vue-particles'
 import { AtomSpinner } from 'epic-spinners'
 import { FaceCheck } from '../../components/FaceCheck'
 import { getUserInfo,login,logout,getHallList } from '../../api/user'
+import { intoRoom, } from '../../api/case'
 import { SelectDialog } from '../../components/SelectDialog'
 // import { clerkSelectDialog } from '../../components/clerkSelectDialog'
 import md5 from 'md5'
@@ -116,14 +117,7 @@ export class LoginPage extends Vue {
         password: '',
         code: '',
     }
-  caseList2: Array<any> =  [
-    {id:'1',name:'莲花村',isOpen:true},
-    {id:'2',name:'莲花村',isOpen:false},
-    {id:'3',name:'莲花村',isOpen:true},
-    {id:'4',name:'莲花村',isOpen:false},
-    {id:'5',name:'莲花村',isOpen:true},
-    {id:'6',name:'莲花村',isOpen:false},
-  ]
+  caseList2: Array<any> =  []
   
   
   show: boolean = true
@@ -139,7 +133,8 @@ export class LoginPage extends Vue {
     caseNo: '',
     pageNumber: this.pageData.pageNumber
   }
-
+  hallName:string = ''
+  nowPage:Number = 1
   mounted () {
     const loading = this.$loading({
       lock: true,
@@ -147,16 +142,22 @@ export class LoginPage extends Vue {
       spinner: 'el-icon-loading',
       background: 'rgba(255, 255, 255, 0.7)'
     });
-    loading.close();
-    // getUserInfo().then(res => {
-    //   console.log(res.data);
-    //   loading.close();
-    //   if(res.data.state == 100){
-    //     this.isLogin = true;
-    //   }else{
-    //     this.isLogin = false;
-    //   }
-    // })
+    getUserInfo().then(res => {
+      console.log(res.data);
+      if(res.data.state == 100){
+        this.isLogin = true;
+        getHallList(this.hallName,this.nowPage,6).then(res => {
+          loading.close();
+          if(res.data.state == 100){
+            this.totalPage = res.data.data.totalPages;
+            this.caseList2 = res.data.data.content;
+          }
+        })
+      }else{
+        loading.close();
+        this.isLogin = false;
+      }
+    })
   }
 
   changeCode () {
@@ -174,9 +175,11 @@ export class LoginPage extends Vue {
         })
         this.loading = true;
         this.isLogin = true;
-        getHallList('').then(res => {
+        getHallList(this.hallName,this.nowPage,6).then(res => {
           this.loading = false;
           console.log(res.data);
+          this.totalPage = res.data.data.totalPages;
+          this.caseList2 = res.data.data.content;
         })
       }else {
         this.$swal({
@@ -217,16 +220,37 @@ export class LoginPage extends Vue {
   }
 
   serachByCaseNo(){
-
+    const loading = this.$loading({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(255, 255, 255, 0.7)'
+    });
+    getHallList(this.hallName,this.nowPage,6).then(res => {
+      loading.close();
+      this.totalPage = res.data.data.totalPages;
+      this.caseList2 = res.data.data.content;
+    })
   }
 
   roomToken (obj) {
     // 记录选择的caseNo
-    this.setCaseNo(obj.caseNo)
+    this.setCaseNo(obj.id)
+    window.localStorage.setItem('roomId',obj.id);
+    window.localStorage.setItem('hallName',obj.name);
     let parmas={
-        caseid:'14b24cd09b61473fb3cbc425083549c7',
+        caseid:obj.id,
         roomType:1
     }
+    // intoRoom(obj.id).then(res => {
+    //   console.log(res.data);
+    //   this.setWebsocket()
+    //   store.commit(types.SET_ROOM_TOKEN, res.data.result)
+    //   store.commit(types.SET_CASE_ID, obj.id)
+    //   this.$router.push({
+    //     name: 'roomPage'
+    //   })
+    // })
     this.loading = true
     // 查询房间token
     this.getRoomToken(parmas).then(res => {
@@ -261,13 +285,25 @@ export class LoginPage extends Vue {
   }
 
   getRecord(id){
+    window.localStorage.setItem('hallId',id);
     this.$router.push({
-      name: 'recordRoom'
+      name: 'recordRoom',
     })
   }
 
   pageChange(pageNum){
-    this.searchForm.pageNumber = pageNum;
+    this.nowPage = pageNum;
+    const loading = this.$loading({
+      lock: true,
+      text: 'Loading',
+      spinner: 'el-icon-loading',
+      background: 'rgba(255, 255, 255, 0.7)'
+    });
+    getHallList(this.hallName,this.nowPage,6).then(res => {
+      loading.close();
+      this.totalPage = res.data.data.totalPages;
+      this.caseList2 = res.data.data.content;
+    })
   }
 
 }

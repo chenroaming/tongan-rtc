@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 import { Getter, Action, Mutation } from 'vuex-class'
 import { piliRTC } from '../../utils/pili'
-import { userDetail } from '../../api/user'
+// import { userDetail } from '../../api/user'
 
 import './mainPlayer.less'
 

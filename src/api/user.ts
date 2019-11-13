@@ -112,18 +112,34 @@ export function getUserInfo () {
 /**
  * [获取用户信息接口]
  */
-export function userDetail (adminId) {
+export function userDetail (adminId,hallId) {
   const params = {
-    adminId
+    adminId,
+    hallId
   }
 
   return service({
-    url: 'online/userDetail.jhtml',
-    method: 'get',
+    url: '/mediate/getUserDetail.jhtml',
+    method: 'post',
     params
   })
 }
 
+
+/**
+ * [获取用户信息接口]
+ */
+// export function userDetail (hallId) {
+//   const params = {
+//     hallId
+//   }
+
+//   return service({
+//     url: '/mediate/getUserDetail.jhtml',
+//     method: 'post',
+//     params
+//   })
+// }
 
 /**
  * [用户登入接口新]
@@ -162,12 +178,13 @@ export function logout () {
  * [查询议理堂新]
  * @returns { state: number, message: string } [state:100 成功；101 失败]
  */
-export function getHallList (keyword) {
+export function getHallList (keyword,pageNum,pageSize) {
   const params = {
-    keyword
+    keyword,pageNum,pageSize
   }
   return service({
     url: '/mediate/getHallList.jhtml',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
