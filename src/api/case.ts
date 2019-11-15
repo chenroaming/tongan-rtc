@@ -46,12 +46,12 @@ export function finish () {
     method: 'get'
   })
 }
-export function createImg () {
-    return service({
-      url: '/online/createImg.jhtml',
-      method: 'get'
-    })
-  }
+// export function createImg () {
+//     return service({
+//       url: '/online/createImg.jhtml',
+//       method: 'get'
+//     })
+//   }
 
   /**
  * [进入房间新]
@@ -269,5 +269,33 @@ export function getFileName (recordId) {
     url: '/mediate/getProtocolName.jhtml',
     method: 'get',
     params
+  })
+}
+
+/**
+ * [获取记录ID]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getRecordId (hallId) {
+  const params = {
+    hallId
+  }
+  return service({
+    url: '/mediate/getRecordId.jhtml',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * [获取二维码]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function createImg () {
+  return service({
+    url: '/mediate/createImg.jhtml',
+    method: 'post',
   })
 }

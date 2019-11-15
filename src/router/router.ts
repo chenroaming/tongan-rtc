@@ -6,12 +6,14 @@ import store from '../store/index'
 const loginPage = () => import('../views/LoginPage').then(({ LoginPage }) => LoginPage)
 const roomPage = () => import('../views/RoomPage').then(({ RoomPage }) => RoomPage)
 const recordRoom = () => import('../views/RecordRoom').then(({ RecordRoom }) => RecordRoom)
+// const handDraw2 = () => import('../views/HandDraw2').then(({ HandDraw2 }) => HandDraw2)
 // const clerkRoom = () => import('../views/ClerkRoom').then(({ ClerkRoom }) => ClerkRoom)
 // const faceCheck = () => import('../components/FaceCheck').then(({ FaceCheck }) => FaceCheck)
 if (process.env.ENV === 'development' && module.hot) {
   makeHot('../views/LoginPage', loginPage, module.hot.accept('../views/LoginPage', () => reload('../views/LoginPage', (require('../views/LoginPage') as any).LoginPage)))
   makeHot('../views/RoomPage', roomPage, module.hot.accept('../views/RoomPage', () => reload('../views/RoomPage', (require('../views/RoomPage') as any).RoomPage)))
   makeHot('../views/RecordRoom', recordRoom, module.hot.accept('../views/RecordRoom', () => reload('../views/RecordRoom', (require('../views/RecordRoom') as any).RecordRoom)))
+  // makeHot('../views/HandDraw2', handDraw2, module.hot.accept('../views/HandDraw2', () => reload('../views/HandDraw2', (require('../views/HandDraw2') as any).HandDraw2)))
   // makeHot('../views/ClerkRoom', clerkRoom, module.hot.accept('../views/ClerkRoom', () => reload('../views/ClerkRoom', (require('../views/ClerkRoom') as any).ClerkRoom)))
   // makeHot('../components/FaceCheck', faceCheck, module.hot.accept('../components/FaceCheck', () => reload('../components/FaceCheck', (require('../components/FaceCheck') as any).FaceCheck)))
 }

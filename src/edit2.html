@@ -10,36 +10,17 @@ function OpenDoc()
 	var WebOffice=document.getElementById("WebOffice");
 	//通过对象WebOffice的Open方法打开个一个服务器文档
 	//此处服务器文档地址为：http://localhost/weboffice/20161108144356.doc
-	var fileName = window.location.href.split('?file=')[1];
-	if(fileName.indexOf('new')){
-		fileName = "/upload/protocol/1.doc";
-	}
-	WebOffice.Open("http://mediate.ptnetwork001.com"+fileName,false,"Word.Document");
-	// if(fileName){
-		
-	// }else{
-	// 	WebOffice.Open("http://mediate.ptnetwork001.com/upload/mediateModel/1.doc",false,"Word.Document");
-	// }
+	WebOffice.Open("http://mediate.ptnetwork001.com/upload/mediateModel/1.doc",false,"Word.Document");
 	isOpen=true;
 }
-
-function OpenSave()
-{
-	if(isOpen)
-	{
-		var fileName = window.location.href.split('?file=')[1];
-		if(fileName.indexOf('new')){
-			fileName = fileName.split('new')[0];
-		}
-		var msg = WebOffice.Save('http://mediate.ptnetwork001.com:7878/saveDoc.jsp?file='+fileName);
-		alert(msg);
-	}
+function signature(){
+	
 }
 </script>
 <body>
 	<div>
 		<input type=button onclick="OpenDoc();" value="打开">
-		<input type=button onclick="OpenSave();" value="保存">
+		<input type=button onclick="signature();" value="确认签字">
 	</div>
 <script language="javascript">
 if (!!window.ActiveXObject || "ActiveXObject" in window){

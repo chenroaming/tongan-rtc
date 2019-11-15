@@ -47,7 +47,7 @@
             <span class="caseNo-wrapper" style="width:540px">{{ item.name }}</span>
             <div class="case-state">
               <div class="light" :class="item.mediate ? 'open' : 'disable' "></div>
-              <span>{{ item.mediate ? '正在调解' : '未开庭' }}</span>
+              <span>{{ item.mediate ? '正在调解' : '未调解' }}</span>
             </div>
             <div class="join-room" @click="roomToken(item)">
               进入调解

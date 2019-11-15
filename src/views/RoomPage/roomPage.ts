@@ -12,12 +12,13 @@ import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog } from '../../api/export'
 import { getUserInfo } from '../../api/user'
-import { finish,createImg,startMediate,closeRoom,intoRoom,changePar1,changePar,changePar2,getFileName } from '../../api/case'
+import { finish,createImg,startMediate,closeRoom,intoRoom,changePar1,changePar,changePar2,getFileName,getRecordId } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
 
 import './roomPage.less'
+import { ElStep } from 'element-ui/types/step'
 
 interface UserInfoShape {
   id: number,
@@ -119,6 +120,7 @@ export class RoomPage extends Vue {
   pant1:string = ''
   pant2:string = ''
   recordId:string = ''
+  justiceId:string = ''
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -296,18 +298,34 @@ created () {
   choice(id){
     this.isActive = id;
     if(this.isActive == '1'){
-      if(!this.recordId){
+      if(!this.recordId && this.roleName == '法院'){
         this.$swal({
           type:"error",
           title:"请先补全申请人/被申请人/司法局信息！"
         })
         return;
       }
-      getFileName(this.recordId).then(res => {
-        console.log(res.data);
-        window.localStorage.setItem('fileName',res.data.fileName);
-        window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+res.data.fileName;
-        this.baseInfoShow = false;
+      const hallId = window.localStorage.getItem('roomId');
+      getRecordId(hallId).then(res => {
+        if(res.data.state == 100){
+          this.recordId = res.data.recordId;
+          getFileName(this.recordId).then(res => {
+            console.log(res.data);
+            const fileName = '';
+            if(res.data.have){
+              fileName = res.data.fileUrl;
+            }else{
+              fileName = res.data.fileUrl + 'new';
+            }
+            
+            if(this.roleName == '法院'){
+              window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;
+            }else{
+              window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+fileName;
+            }
+            this.baseInfoShow = false;
+          })
+        }
       })
       return;
     }
@@ -315,8 +333,24 @@ created () {
       this.baseInfoShow = !this.baseInfoShow;
     }
   }
+  getQRimg(){
+      this.$swal({
+        title: '扫描二维码签名确认',
+            html: "<div>申请人：<img  src='../../assets/img/applicant.png' style='width:55%'></div><div>被申请人：<img  src='../../assets/img/applicant.png' style='width:55%'></div>",
+        confirmButtonText: '好的',
+        allowOutsideClick: false,
+      })
+    // createImg().then(res => {
+    //     this.$swal({
+    //     title: '扫描二维码签名确认',
+    //         html: "<img  src="+'/'+QRCode+" style='width:55%'>",
+    //     confirmButtonText: '好的',
+    //     allowOutsideClick: false,
+    //   })
+    // })
+    
+  }
   start(){
-    alert(1);
     const hallId = window.localStorage.getItem('hallId');
     startMediate(hallId,this.pant1,this.pant2,this.justiceId).then(res => {
       if(res.data.state == 100){
@@ -359,6 +393,7 @@ created () {
     //   return;
     // }
     changePar1('','2',this.caseNo,this.applicant.name,this.applicant.phone,this.applicant.id_card,this.applicant.address).then(res => {
+      
       if(res.data.state == 100){
         this.pant1 = res.data.pantId;
         this.recordId = res.data.recordId;
