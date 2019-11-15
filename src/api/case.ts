@@ -328,3 +328,15 @@ export function downloadPro (recordId) {
     params
   })
 }
+
+/**
+ * [获取最大解调号]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getMaxNo () {
+  return service({
+    url: '/mediate/getMaxNo.jhtml',
+    method: 'get',
+  })
+}

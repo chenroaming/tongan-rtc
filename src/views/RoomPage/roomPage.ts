@@ -12,7 +12,7 @@ import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog } from '../../api/export'
 import { getUserInfo } from '../../api/user'
-import { finish,createImg,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId } from '../../api/case'
+import { finish,createImg,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId,getMaxNo } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -90,14 +90,14 @@ export class RoomPage extends Vue {
   ]
   form: any = {
     name:'safdas',
-    id_card: '111',
+    idCard: '111',
     address: 'xxx0',
     phone: '111',
     type: '2'
   }
   applicant: any = {
     name:'',
-    id_card: '',
+    idCard: '',
     address: '',
     phone: '',
     type: '2',
@@ -105,7 +105,7 @@ export class RoomPage extends Vue {
   }
   respondent:any = {
     name:'',
-    id_card: '',
+    idCard: '',
     address: '',
     phone: '',
     type: '3',
@@ -182,8 +182,15 @@ created () {
       this.roleName = res.data.roleName;
       if(this.roleName != '法院'){
         this.baseInfoShow = false;
+        return;
       }
+      getMaxNo().then(res => {
+        if(res.data.state == 100){
+          this.caseNo = res.data.mediateNo;
+        }
+      })
     })
+    
     try {
       console.log('joinRoomWithToken')
       const roomInfo = await piliRTC.joinRoomWithToken(this.roomToken)
@@ -315,18 +322,19 @@ created () {
             this.justiceBureau.pantId = item.id ? item.id :'';
           }else if(item.type == '2'){
             this.applicant.name = item.name ? item.name : '';
-            this.applicant.id_card = item.idCard ? item.idCard : '';
+            this.applicant.idCard = item.idCard ? item.idCard : '';
             this.applicant.phone = item.phone ? item.phone : '';
             this.applicant.pantId = item.id ? item.id : '';
             this.applicant.address = item.address ? item.address : '';
           }else if(item.type == '3'){
             this.respondent.name = item.name ? item.name : '';
-            this.respondent.id_card = item.idCard ? item.idCard : '';
+            this.respondent.idCard = item.idCard ? item.idCard : '';
             this.respondent.phone = item.phone ? item.phone : '';
             this.respondent.pantId = item.id ? item.id : '';
             this.respondent.address = item.address ? item.address : '';
           }
         }
+        this.caseNo = res.data.mediateNo;
       }
     })
   }
