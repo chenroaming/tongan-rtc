@@ -12,7 +12,7 @@ import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog } from '../../api/export'
 import { getUserInfo } from '../../api/user'
-import { finish,createImg,startMediate,closeRoom,intoRoom,changePar1,changePar,changePar2,getFileName,getRecordId } from '../../api/case'
+import { finish,createImg,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -100,20 +100,26 @@ export class RoomPage extends Vue {
     id_card: '',
     address: '',
     phone: '',
-    type: '2'
+    type: '2',
+    pantId:''
   }
   respondent:any = {
     name:'',
     id_card: '',
     address: '',
     phone: '',
-    type: '3'
+    type: '3',
+    pantId:''
   }
   roomId:string = ''
   hallName:string = ''
   loading1:boolean = false
   baseInfoShow:boolean = true
-  justiceBureau:string = ''
+  justiceBureau:any = {
+    type:'1',
+    name:'',
+    pantId:''
+  }
   mediationTime:string = ''
   caseNo:string = ''
   roleName:string = ''
@@ -174,6 +180,9 @@ created () {
     // 进入房间
     getUserInfo().then(res => {
       this.roleName = res.data.roleName;
+      if(this.roleName != '法院'){
+        this.baseInfoShow = false;
+      }
     })
     try {
       console.log('joinRoomWithToken')
@@ -267,9 +276,11 @@ created () {
     // exportLog(this.caseId).then(res => {
     //   console.log(res)
     // })
-    closeRoom(this.roomId).then(res => {
-      console.log(res)
-    })
+    if(this.roleName == '法院'){
+      closeRoom(this.roomId).then(res => {
+        console.log(res)
+      })
+    }
     this.$router.push({
       name: 'loginPage'
     })
@@ -295,6 +306,30 @@ created () {
       }
     })
   }
+  getPantId(){
+    getByRoomId().then(res => {
+      if(res.data.state == 100){
+        for (const item of res.data.pants1){
+          if(item.type == '1'){
+            this.justiceBureau.name = item.name ? item.name : '';
+            this.justiceBureau.pantId = item.id ? item.id :'';
+          }else if(item.type == '2'){
+            this.applicant.name = item.name ? item.name : '';
+            this.applicant.id_card = item.idCard ? item.idCard : '';
+            this.applicant.phone = item.phone ? item.phone : '';
+            this.applicant.pantId = item.id ? item.id : '';
+            this.applicant.address = item.address ? item.address : '';
+          }else if(item.type == '3'){
+            this.respondent.name = item.name ? item.name : '';
+            this.respondent.id_card = item.idCard ? item.idCard : '';
+            this.respondent.phone = item.phone ? item.phone : '';
+            this.respondent.pantId = item.id ? item.id : '';
+            this.respondent.address = item.address ? item.address : '';
+          }
+        }
+      }
+    })
+  }
   choice(id){
     this.isActive = id;
     if(this.isActive == '1'){
@@ -305,61 +340,103 @@ created () {
         })
         return;
       }
-      const hallId = window.localStorage.getItem('roomId');
-      getRecordId(hallId).then(res => {
-        if(res.data.state == 100){
-          this.recordId = res.data.recordId;
-          getFileName(this.recordId).then(res => {
-            console.log(res.data);
-            const fileName = '';
-            if(res.data.have){
-              fileName = res.data.fileUrl;
-            }else{
-              fileName = res.data.fileUrl + 'new';
-            }
-            
-            if(this.roleName == '法院'){
-              window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;
-            }else{
-              window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+fileName;
-            }
-            this.baseInfoShow = false;
-          })
+      getFileName().then(res => {
+        console.log(res.data);
+        let fileName = '';
+        if(res.data.have){
+          fileName = res.data.fileUrl;
+        }else{
+          fileName = res.data.fileUrl + 'new';
         }
+        if(this.roleName == '法院'){
+          window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;//法院
+        }else{
+          window.open('http://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com'+res.data.fileUrl);//议理堂司法局
+          // window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+res.data.fileUrl;//议理堂司法局
+        }
+        this.baseInfoShow = false;
       })
+      // const hallId = window.localStorage.getItem('roomId');
+      // getRecordId(hallId).then(res => {
+      //   if(res.data.state == 100){
+      //     this.recordId = res.data.recordId;
+          
+      //   }
+      // })
       return;
     }
     if(this.isActive == '2'){
       this.baseInfoShow = !this.baseInfoShow;
+      if(this.recordId){
+        this.getPantId();
+      }else if(this.roleName != '法院'){
+        this.getPantId();
+      }
     }
   }
   getQRimg(){
-      this.$swal({
-        title: '扫描二维码签名确认',
-            html: "<div>申请人：<img  src='../../assets/img/applicant.png' style='width:55%'></div><div>被申请人：<img  src='../../assets/img/applicant.png' style='width:55%'></div>",
-        confirmButtonText: '好的',
-        allowOutsideClick: false,
-      })
-    // createImg().then(res => {
-    //     this.$swal({
-    //     title: '扫描二维码签名确认',
-    //         html: "<img  src="+'/'+QRCode+" style='width:55%'>",
-    //     confirmButtonText: '好的',
-    //     allowOutsideClick: false,
-    //   })
-    // })
-    
-  }
-  start(){
-    const hallId = window.localStorage.getItem('hallId');
-    startMediate(hallId,this.pant1,this.pant2,this.justiceId).then(res => {
+    createImg().then(res => {
       if(res.data.state == 100){
         this.$swal({
-          type:'success',
+          title: '扫描二维码签名确认',
+          html: "<div><img  src='https://mediate.ptnetwork001.com/"+res.data.path+"' style='width:55%'></div>",
+          confirmButtonText: '好的',
+          allowOutsideClick: false,
+        })
+        // if(this.roleName == '法院' || this.roleName ==  '司法局'){
+        //   this.$swal({
+        //     title: '扫描二维码签名确认',
+        //     html: "<div><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[0]+"' style='width:55%'></div>",
+        //     confirmButtonText: '好的',
+        //     allowOutsideClick: false,
+        //   })
+        //   return;
+        // }
+        // this.$swal({
+        //   title: '扫描二维码签名确认',
+        //   html: "<div><p>申请人请扫描以下二维码</p><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[0]+"' style='width:55%'></div><div><p>被申请人请扫描以下二维码</p><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[1]+"' style='width:55%'></div>",
+        //   confirmButtonText: '好的',
+        //   allowOutsideClick: false,
+        // }) 
+      }else if(res.data.state == 101){
+        this.$swal({
+          type:'error',
           title:res.data.message
         })
       }
     })
+  }
+  start(command){
+    if(command == 'start'){
+      const hallId = window.localStorage.getItem('hallId');
+      startMediate().then(res => {
+        if(res.data.state == 100){
+          this.$swal({
+            type:'success',
+            title:res.data.message
+          })
+        }else if(res.data.state == 101){
+          this.$swal({
+            type:'error',
+            title:res.data.message
+          })
+        }
+      })
+    }else{
+      endMediate().then(res => {
+        if(res.data.state == 100){
+          this.$swal({
+            type:'success',
+            title:res.data.message
+          })
+        }else if(res.data.state == 101){
+          this.$swal({
+            type:'error',
+            title:res.data.message
+          })
+        }
+      })
+    }
   }
   getById(id = ''){
     this.joinPeople = true;
@@ -379,7 +456,7 @@ created () {
       this.$message({
         type: 'info',
         message: '已取消删除'
-      });          
+      });        
     });
   }
   submit(){
@@ -392,49 +469,29 @@ created () {
     //   this.loading1 = false;
     //   return;
     // }
-    changePar1('','2',this.caseNo,this.applicant.name,this.applicant.phone,this.applicant.id_card,this.applicant.address).then(res => {
-      
+    const pant = {
+      mediateNo:this.caseNo,
+      pantList:[]
+    };
+    pant.pantList.push(this.applicant);
+    pant.pantList.push(this.respondent);
+    pant.pantList.push(this.justiceBureau);
+    changePar(pant).then(res => {
+      this.loading1 = false;
+      this.baseInfoShow = false;
+      this.getPantId();
       if(res.data.state == 100){
-        this.pant1 = res.data.pantId;
-        this.recordId = res.data.recordId;
-        changePar('','3',this.respondent.name,this.respondent.phone,this.respondent.id_card,this.respondent.address).then(res => {
-          if(res.data.state == 100){
-            this.pant2 = res.data.pantId;
-            changePar2('','1',this.justiceBureau).then(res => {
-              this.loading1 = false;
-              if(res.data.state == 100){
-                this.justiceId = res.data.pantId;
-                this.$swal({
-                  type:'success',
-                  title: res.data.message
-                })
-                return;
-              }
-              if(res.data.state == 101){
-                this.$swal({
-                  type:'error',
-                  title: res.data.message
-                })
-              }
-            })
-            this.baseInfoShow = false;
-            
-            return;
-          }
-          if(res.data.state == 101){
-            this.$swal({
-              type:'error',
-              title: res.data.message
-            })
-          }
-        })
-        return;
-      }
-      if(res.data.state == 101){
         this.$swal({
-          type:'error',
-          title: res.data.message
-      })
+          type:"success",
+          title:res.data.message
+        })
+        this.recordId = res.data.recordId;
+      }else if(res.data.state == 101){
+        this.$swal({
+          type:"error",
+          title:res.data.message
+        })
+      }
     })
   }
   opens(){
@@ -484,38 +541,38 @@ created () {
   jumpBigData () {
     window.open('/bigData/index.html')
   }
-  signCheck(){
-      let that = this;
-    //   console.log()
-      //掉接口获取二维码路径
-      createImg().then(res => {
-        if (res.data.state === 100) {
-          console.log(res)
-          let QRCode=res.data.path
-          this.$swal({
-            title: '扫描二维码签名确认',
-                html: "<img  src="+'/'+QRCode+" style='width:55%'>",
-            // imageUrl: '/dist/images/tu-s.png',
-            confirmButtonText: '好的',
-            allowOutsideClick: false,
-        })
-        // 通知服务端（证据同步投屏）
-        console.log(that.userInfo.role)
-        if(that.userInfo.role == '法官'){
-          let sendObj = { 'name': '', 'roleName': '', 'type': 9, 'wav': '', 'content':'/' + QRCode, 'createDate': '' }
-          let sendJSON = JSON.stringify(sendObj)
-          that.send(sendJSON)
-          console.log('发送成')
-        }
+  // signCheck(){
+  //     let that = this;
+  //   //   console.log()
+  //     //掉接口获取二维码路径
+  //     createImg().then(res => {
+  //       if (res.data.state === 100) {
+  //         console.log(res)
+  //         let QRCode=res.data.path
+  //         this.$swal({
+  //           title: '扫描二维码签名确认',
+  //               html: "<img  src="+'/'+QRCode+" style='width:55%'>",
+  //           // imageUrl: '/dist/images/tu-s.png',
+  //           confirmButtonText: '好的',
+  //           allowOutsideClick: false,
+  //       })
+  //       // 通知服务端（证据同步投屏）
+  //       console.log(that.userInfo.role)
+  //       if(that.userInfo.role == '法官'){
+  //         let sendObj = { 'name': '', 'roleName': '', 'type': 9, 'wav': '', 'content':'/' + QRCode, 'createDate': '' }
+  //         let sendJSON = JSON.stringify(sendObj)
+  //         that.send(sendJSON)
+  //         console.log('发送成')
+  //       }
         
-        } else {
-          this.$swal({
-            type: 'error',
-            title: res.data.message
-          })
-        }
-      })
-  }
+  //       } else {
+  //         this.$swal({
+  //           type: 'error',
+  //           title: res.data.message
+  //         })
+  //       }
+  //     })
+  // }
   closeIsRead(){
       if (this.content=='明白') {
           if (this.isCheck) {

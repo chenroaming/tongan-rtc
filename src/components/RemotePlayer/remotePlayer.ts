@@ -48,7 +48,7 @@ export class RemotePlayer extends Vue {
       const stream = await piliRTC.subscribe(this.id)
       const containerElement = this.$refs.videoWrapper as HTMLElement
       stream.play(containerElement)
-      const hallId = window.localStorage.getItem('hallId');
+      const hallId = window.localStorage.getItem('roomId');
       const res = await userDetail(this.id,hallId);
       if (res.data.state === 100) {
         this.userInfo = res.data.result;

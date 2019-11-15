@@ -3,24 +3,22 @@
 <title></title>
 </head>
 <script language="javascript">
+var fileName = window.location.href.split('?file=')[1];
 var isOpen=false;
 function OpenDoc()
 {
 	//取得WebOffice对象
 	var WebOffice=document.getElementById("WebOffice");
 	//通过对象WebOffice的Open方法打开个一个服务器文档
-	//此处服务器文档地址为：http://localhost/weboffice/20161108144356.doc
-	WebOffice.Open("http://mediate.ptnetwork001.com/upload/mediateModel/1.doc",false,"Word.Document");
-	isOpen=true;
-}
-function signature(){
 	
+	//此处服务器文档地址为：http://localhost/weboffice/20161108144356.doc
+	WebOffice.Open("http://mediate.ptnetwork001.com"+fileName,false,"Word.Document");
+	isOpen=true;
 }
 </script>
 <body>
 	<div>
 		<input type=button onclick="OpenDoc();" value="打开">
-		<input type=button onclick="signature();" value="确认签字">
 	</div>
 <script language="javascript">
 if (!!window.ActiveXObject || "ActiveXObject" in window){

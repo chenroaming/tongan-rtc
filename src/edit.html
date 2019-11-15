@@ -4,34 +4,43 @@
 </head>
 <script language="javascript">
 var isOpen=false;
+var fileName = window.location.href.split('?file=')[1];
+var check = fileName;
 function OpenDoc()
 {
+	if(fileName != check){
+		alert('地址栏参数不允许修改！');
+		return;
+	}
 	//取得WebOffice对象
 	var WebOffice=document.getElementById("WebOffice");
 	//通过对象WebOffice的Open方法打开个一个服务器文档
 	//此处服务器文档地址为：http://localhost/weboffice/20161108144356.doc
-	var fileName = window.location.href.split('?file=')[1];
-	if(fileName.indexOf('new')){
-		fileName = "/upload/protocol/1.doc";
+	var nowFileName = '';
+	if(fileName.indexOf('new') != -1){
+		nowFileName = "/upload/mediateModel/1.doc";
+	}else{
+		nowFileName = fileName;
 	}
-	WebOffice.Open("http://mediate.ptnetwork001.com"+fileName,false,"Word.Document");
-	// if(fileName){
-		
-	// }else{
-	// 	WebOffice.Open("http://mediate.ptnetwork001.com/upload/mediateModel/1.doc",false,"Word.Document");
-	// }
+	WebOffice.Open("http://mediate.ptnetwork001.com"+nowFileName,false,"Word.Document");
 	isOpen=true;
 }
 
 function OpenSave()
 {
+	if(fileName != check){
+		alert('地址栏参数不允许修改！');
+		return;
+	}
 	if(isOpen)
 	{
-		var fileName = window.location.href.split('?file=')[1];
-		if(fileName.indexOf('new')){
-			fileName = fileName.split('new')[0];
+		var nowFileName = '';
+		if(fileName.indexOf('new') != -1){
+			nowFileName = fileName.split('new')[0];
+		}else{
+			nowFileName = fileName;
 		}
-		var msg = WebOffice.Save('http://mediate.ptnetwork001.com:7878/saveDoc.jsp?file='+fileName);
+		var msg = WebOffice.Save('http://mediate.ptnetwork001.com:7878/saveDoc.jsp?file='+nowFileName);
 		alert(msg);
 	}
 }

@@ -3,7 +3,7 @@ import { Getter, Action } from 'vuex-class'
 import { VueParticles } from '../../components/vue-particles'
 import { AtomSpinner } from 'epic-spinners'
 import { getUserInfo } from '../../api/user'
-import { getRecord1,getRecord2 } from '../../api/case'
+import { getRecord1,getRecord2,downloadPro } from '../../api/case'
 
 import RWS from '../../utils/rws'
 
@@ -80,6 +80,7 @@ export class RecordRoom extends Vue {
     phone: '',
     type: ''
   }
+  nowId:string = ''
   
   mounted () {
     const loading = this.$loading({
@@ -133,6 +134,7 @@ export class RecordRoom extends Vue {
     return date.toJSON().substr(0, 19).replace('T', ' ').substring(0,10);
   }
   getRecord(id){
+    this.nowId = id;
     const loading = this.$loading({
       lock: true,
       text: 'Loading',
@@ -178,5 +180,24 @@ export class RecordRoom extends Vue {
       }
     })
     this.baseInfoShow = true;
+  }
+
+  download(){
+    downloadPro(this.nowId).then(res => {
+      console.log(res.data);
+      if(res.data.state == 100){
+        // window.open(res.data.fileUrl);
+        window.open('https://view.officeapps.live.com/op/view.aspx?src='+res.data.fileUrl);
+        // var link = document.createElement('a');
+        // link.setAttribute("download", "");
+        // link.href = res.data.fileUrl;
+        // link.click();
+      }else if(res.data.state == 101){
+        this.$swal({
+          type:'error',
+          title:res.data.message
+        })
+      }
+    })
   }
 }

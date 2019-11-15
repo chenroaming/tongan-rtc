@@ -49,11 +49,11 @@
               <div class="light" :class="item.mediate ? 'open' : 'disable' "></div>
               <span>{{ item.mediate ? '正在调解' : '未调解' }}</span>
             </div>
-            <div class="join-room" @click="roomToken(item)">
-              进入调解
-            </div>
-            <div style="margin-right: 45px;" class="join-room" @click="getRecord(item.id)">
+            <div class="join-room" @click="getRecord(item.id)">
               调解记录
+            </div>
+            <div style="margin-right: 45px;" class="join-room" @click="roomToken(item)">
+              进入调解
             </div>
           </li>
         </ul>
