@@ -359,8 +359,8 @@ created () {
         if(this.roleName == '法院'){
           window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;//法院
         }else{
-          window.open('http://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com'+res.data.fileUrl);//议理堂司法局
-          // window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+res.data.fileUrl;//议理堂司法局
+          // window.open('http://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com'+res.data.fileUrl);//议理堂司法局
+          window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+res.data.fileUrl;//议理堂司法局
         }
         this.baseInfoShow = false;
       })
