@@ -93,10 +93,10 @@ html{
   }
   .right-content {
     position: fixed;
-    top: 7.5%;
+    top: 8%;
     right: 0;
     width: 60px;
-    height: 92.5%;
+    height: 92%;
     border: 1px solid #E8E8E8;
     cursor: pointer;
     z-index: 999;
@@ -292,7 +292,7 @@ html{
   }
   .mainPlayer {
     position: absolute;
-    top: 60px;
+    top: 8%;
     bottom: 0px;
     left: 0px;
     right: 0px;
@@ -307,7 +307,7 @@ html{
     width: 24%;
     // max-width: 450px;
     min-width: 240px;
-    height: 260px;
+    height: 200px;
     .qnrtc-stream-player {
         width: 24%;
         max-width: 450px;
@@ -317,17 +317,21 @@ html{
     }
   }
   .remoteplayer-list {
+    position: fixed;
+    top: 8%;
+    left: 0;
+    width: 325px;
+    z-index: 999;
+    margin: 0;
     text-align: center;
-    width: auto;
-    margin: 0 auto;
     padding-right: 30px;
     padding-left: 30px;
-    position: absolute;
     text-align: center;
     height: 260px;
     bottom: 0;
     left: 0;
     right: 0;
+    padding-top: 10px;
     &.bigger {
       height: 260px;
       .remotePlayer {
@@ -369,6 +373,7 @@ html{
         width: 24%;
         max-width: 450px;
         min-width: 240px;
+        // min-height:200px;
       height: 200px;
       object-fit: fill;
     }

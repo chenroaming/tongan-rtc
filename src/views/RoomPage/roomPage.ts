@@ -43,6 +43,7 @@ interface UserInfoShape {
 export class RoomPage extends Vue {
   @Getter('getRoomToken') roomToken: string
   @Mutation('SET_USERID') setUserId: Function
+  @Action('setMainInfo') setMainInfo: Function
   @Getter('getUserId') userId: string
   @Getter('getMessage') logMessage: Array<any>
   // @Getter('getCaseNo') caseNo: string
@@ -114,7 +115,7 @@ export class RoomPage extends Vue {
   roomId:string = ''
   hallName:string = ''
   loading1:boolean = false
-  baseInfoShow:boolean = true
+  baseInfoShow:boolean = false
   justiceBureau:any = {
     type:'1',
     name:'',
@@ -127,6 +128,8 @@ export class RoomPage extends Vue {
   pant2:string = ''
   recordId:string = ''
   justiceId:string = ''
+  dialogVisible:boolean = false
+  protocolUrl:string = ''
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -140,7 +143,6 @@ export class RoomPage extends Vue {
   }
 created () {
     // 情况语音列表
-    
     this.hallName = window.localStorage.getItem('hallName')
     this.roomId = window.localStorage.getItem('roomId')
     this.cleanMsg()
@@ -180,6 +182,7 @@ created () {
     // 进入房间
     getUserInfo().then(res => {
       this.roleName = res.data.roleName;
+      this.setMainInfo({ name: res.data.result.username, roleName: this.roleName })
       if(this.roleName != '法院'){
         this.baseInfoShow = false;
         return;
@@ -356,11 +359,20 @@ created () {
         }else{
           fileName = res.data.fileUrl + 'new';
         }
+        if(!res.data.have && this.roleName != '法院'){
+          this.$swal({
+            type:"error",
+            title:"暂无协议材料！"
+          })
+          return;
+        }
         if(this.roleName == '法院'){
           window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;//法院
         }else{
           // window.open('http://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com'+res.data.fileUrl);//议理堂司法局
-          window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+res.data.fileUrl;//议理堂司法局
+          // window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+res.data.fileUrl;//议理堂司法局
+          this.dialogVisible = true;
+          this.protocolUrl = 'https://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com' + res.data.fileUrl + '?random=' + Math.random();
         }
         this.baseInfoShow = false;
       })
@@ -532,12 +544,6 @@ created () {
       }
     })
   }
-  // updateTime () {
-  //   let cd = new Date()
-  //   this.clock.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2)
-  //   this.clock.date = this.zeroPadding(cd.getFullYear(), 4) + '年' + this.zeroPadding(cd.getMonth() + 1, 2) + '月' + this.zeroPadding(cd.getDate(), 2) + '日'
-  //   this.clock.week = this.week[cd.getDay()]
-  // }
   zeroPadding (num, digit) {
     let zero = ''
     for (let i = 0; i < digit; i++) {
@@ -549,47 +555,7 @@ created () {
   jumpBigData () {
     window.open('/bigData/index.html')
   }
-  // signCheck(){
-  //     let that = this;
-  //   //   console.log()
-  //     //掉接口获取二维码路径
-  //     createImg().then(res => {
-  //       if (res.data.state === 100) {
-  //         console.log(res)
-  //         let QRCode=res.data.path
-  //         this.$swal({
-  //           title: '扫描二维码签名确认',
-  //               html: "<img  src="+'/'+QRCode+" style='width:55%'>",
-  //           // imageUrl: '/dist/images/tu-s.png',
-  //           confirmButtonText: '好的',
-  //           allowOutsideClick: false,
-  //       })
-  //       // 通知服务端（证据同步投屏）
-  //       console.log(that.userInfo.role)
-  //       if(that.userInfo.role == '法官'){
-  //         let sendObj = { 'name': '', 'roleName': '', 'type': 9, 'wav': '', 'content':'/' + QRCode, 'createDate': '' }
-  //         let sendJSON = JSON.stringify(sendObj)
-  //         that.send(sendJSON)
-  //         console.log('发送成')
-  //       }
-        
-  //       } else {
-  //         this.$swal({
-  //           type: 'error',
-  //           title: res.data.message
-  //         })
-  //       }
-  //     })
-  // }
-  closeIsRead(){
-      if (this.content=='明白') {
-          if (this.isCheck) {
-            this.isReadWindow=false
-          }
-        
-      }
-      
-  }
+  
   CheckItem(e){
       console.log(e.target.checked)
       this.isCheck=e.target.checked

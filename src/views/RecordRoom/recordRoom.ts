@@ -66,6 +66,7 @@ export class RecordRoom extends Vue {
   baseInfoShow:boolean = false
   justiceBureau:string = ''
   mediationTime:string = ''
+  endTime:string = ''
   applicant: any = {
     name:'',
     id_card: '',
@@ -131,7 +132,7 @@ export class RecordRoom extends Vue {
   }
   time(time = +new Date()) {//时间戳转换函数
     var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
-    return date.toJSON().substr(0, 19).replace('T', ' ').substring(0,10);
+    return date.toJSON().substr(0, 19).replace('T', ' ').substring(0,16);
   }
   getRecord(id){
     this.nowId = id;
@@ -146,7 +147,8 @@ export class RecordRoom extends Vue {
       if(res.data.state == 100){
         if(res.data.record.participants.length > 0){
           this.caseNo = res.data.record.mediateNo;
-          this.mediationTime = this.time(res.data.record.createDate);
+          this.mediationTime = res.data.record.startTime ? this.time(res.data.record.startTime) : '';
+          this.endTime = res.data.record.endTime ? this.time(res.data.record.endTime) : '';
           for (const item of res.data.record.participants){
             if(item.type == '2'){
               this.applicant.name = item.name;
@@ -175,6 +177,7 @@ export class RecordRoom extends Vue {
           this.respondent.id_card = '';
           this.caseNo = '';
           this.mediationTime = '';
+          this.endTime = '';
           this.justiceBureau = '';
         }
       }
@@ -187,11 +190,11 @@ export class RecordRoom extends Vue {
       console.log(res.data);
       if(res.data.state == 100){
         // window.open(res.data.fileUrl);
-        window.open('https://view.officeapps.live.com/op/view.aspx?src='+res.data.fileUrl);
-        // var link = document.createElement('a');
-        // link.setAttribute("download", "");
-        // link.href = res.data.fileUrl;
-        // link.click();
+        // window.open('https://view.officeapps.live.com/op/view.aspx?src='+res.data.fileUrl);
+        const link = document.createElement('a');
+        link.setAttribute("download", "");
+        link.href = res.data.fileUrl;
+        link.click();//点击直接下载文件
       }else if(res.data.state == 101){
         this.$swal({
           type:'error',
