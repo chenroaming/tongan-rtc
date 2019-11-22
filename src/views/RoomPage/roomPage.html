@@ -25,7 +25,10 @@
             </div>
         </div>
         <div class="end-court" style="top: 6px;right: 180px;width: 161px;">
-            <span class="qianming" @click="getQRimg"><img src="../../assets/img/qianming2.png" alt="">签名</span>
+            <span class="qianming" @click="getQRimg">
+                <img src="../../assets/img/qianming2.png" alt="">
+                <span style="position: absolute;">签名</span>
+            </span>
         </div>
     <!-- <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div> -->
     </div>
@@ -41,7 +44,7 @@
         </div>
     </div>
     <div class="baseInfo-box" v-show="baseInfoShow">
-        <p><el-input v-model="caseNo" :disabled="roleName != '法院'" placeholder="请输入案号"></el-input></p>
+        <p><el-input v-model="caseNo" :disabled="roleName != '法院'" placeholder="请输入引调号"></el-input></p>
         <div class="baseInfo-title"><img src="../../assets/img/applicant.png" alt=""><span>申请人</span></div>
         <div class="applicant-name">
             <span>姓名<input :disabled="roleName != '法院'" type="text" v-model="applicant.name" placeholder="请输入姓名"></span>
@@ -87,7 +90,7 @@
                     <p class="evi-name">
                         <span style="font-size: 14px;font-weight: 700;">证据名称：</span>
                         <span style="display: inline-block;width: 50%;">{{item.name}}</span>
-                        <span style="cursor: pointer;vertical-align: middle;font-size: 12px;font-weight: 700;color: #1F4E87;" @click="watchEvi(index,item.No)">查看</span>
+                        <span style="cursor: pointer;vertical-align: middle;font-size: 12px;font-weight: 700;color: #1F4E87;" @click="watchEvi(index,item.name)">查看</span>
                         <img src="../../assets/img/eye.png" alt="">
                     </p>
                 </li>

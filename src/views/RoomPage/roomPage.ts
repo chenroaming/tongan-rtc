@@ -189,6 +189,7 @@ created () {
     getUserInfo().then(res => {
       this.roleName = res.data.roleName;
       this.setMainInfo({ name: res.data.result.username, roleName: this.roleName })
+      this.initWebsocketEvent();//webSocket初始化
       if(this.roleName != '法院'){
         this.baseInfoShow = false;
         return;
@@ -199,7 +200,7 @@ created () {
         }
       })
     })
-    // this.initWebsocketEvent();//webSocket初始化
+    
     try {
       console.log('joinRoomWithToken')
       const roomInfo = await piliRTC.joinRoomWithToken(this.roomToken)
@@ -252,7 +253,7 @@ created () {
   destroyed () {
     piliRTC.leaveRoom()
     // clearInterval(this.timer)
-    // this.websocket.close()
+    this.websocket.close()
     piliRTC.removeAllListeners('user-join')
     piliRTC.removeAllListeners('user-publish')
     piliRTC.removeAllListeners('user-unpublish')
@@ -284,23 +285,65 @@ created () {
       }
     })
   }
-  // initWebsocketEvent () {
-  //   console.log(this.websocket);
-  //   this.websocket.onclose = () => {
-  //     console.log('websocket断开')
-  //   }
-  //   this.websocket.onerror = () => {
-  //     console.log('websocket错误')
-  //   }
-  //   this.websocket.onopen = () => {
-  //     console.log('websocket链接')
-  //   }
-  //   this.websocket.onmessage = (event) => {
-  //     console.log('WebSocket:收到一条消息', event.data)
-  //     let result = JSON.parse(event.data)
-      
-  //   }
-  // }
+  initWebsocketEvent () {
+    console.log(this.websocket);
+    this.websocket.onclose = () => {
+      console.log('websocket断开')
+    }
+    this.websocket.onerror = () => {
+      console.log('websocket错误')
+    }
+    this.websocket.onopen = () => {
+      console.log('websocket链接')
+      // const obj = {
+      //   name:'zhangsan'
+      // }
+      // this.send(JSON.stringify(obj))
+    }
+    this.websocket.onmessage = (event) => {
+      console.log(event.data)
+      let result = JSON.parse(event.data)
+      this.eviListpic = [];
+      for (const item of result.urls){
+        const obj = {
+          src:'https://mediate.ptnetwork001.com' + item,
+        }
+        this.eviListpic.push(obj);
+      }
+      this.picShow = true;
+      this.eviTitle = event.data.proofName;
+      const hallId = window.localStorage.getItem('roomId');
+      getRecordId(hallId).then(res => {
+        if(res.data.state == 100){
+          this.recordId = res.data.recordId;
+          this.eviList = [];
+          getProofByRecordId(this.recordId).then(res => {
+            if(res.data.state == 100){
+              for (let i = 0;i < res.data.proofs.length;i++){
+                const obj = {
+                  No:'证据' + (i + 1),
+                  name:res.data.proofs[i].name,
+                  id:res.data.proofs[i].id,
+                  proofUrlSet:res.data.proofs[i].proofUrlSet
+                }
+                this.eviList.push(obj);
+              }
+            }
+          })
+          getProofImg(this.recordId).then(res => {
+            if(res.data.state == 100){
+              this.eviQrcode = 'https://mediate.ptnetwork001.com/' + res.data.path;
+            }
+          })
+        }else if(res.data.state == 101){
+          this.$swal({
+            type:"error",
+            title:res.data.message
+          })
+        }
+      })
+    }
+  }
   sendInfo(){
     this.dialogFormVisible = false;
   }
@@ -309,11 +352,9 @@ created () {
     // exportLog(this.caseId).then(res => {
     //   console.log(res)
     // })
-    if(this.roleName == '法院'){
-      closeRoom(this.roomId).then(res => {
-        console.log(res)
-      })
-    }
+    closeRoom(this.roomId).then(res => {
+      console.log(res)
+    })
     this.$router.push({
       name: 'loginPage'
     })
@@ -377,19 +418,26 @@ created () {
       getFileName().then(res => {
         console.log(res.data);
         let fileName = '';
+        if(res.data.state != 100){
+          this.$swal({
+            type:"error",
+            title:res.data.message
+          })
+          return;
+        }
         if(res.data.have){
           fileName = res.data.fileUrl;
         }else{
           fileName = res.data.fileUrl + 'new';
         }
-        if(!res.data.have && this.roleName != '法院'){
+        if(!res.data.have && this.roleName == '议理堂'){
           this.$swal({
             type:"error",
             title:"暂无协议材料！"
           })
           return;
         }
-        if(this.roleName == '法院'){
+        if(this.roleName == '法院' || this.roleName == '司法局'){
           window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;//法院
         }else{
           // window.open('http://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com'+res.data.fileUrl);//议理堂司法局
@@ -421,37 +469,41 @@ created () {
     if(this.isActive == '3'){
         const hallId = window.localStorage.getItem('roomId');
         // const hallId = '2f61df55c18b5q7werqkpov41415';
-        getRecordId(hallId).then(res => {
-          if(res.data.state == 100){
-            this.eviShow = !this.eviShow;
-            this.baseInfoShow = false;
-            this.recordId = res.data.recordId;
-            this.eviList = [];
-            getProofByRecordId(this.recordId).then(res => {
-              if(res.data.state == 100){
-                for (let i = 0;i < res.data.proofs.length;i++){
-                  const obj = {
-                    No:'证据' + (i + 1),
-                    name:res.data.proofs[i].name,
-                    id:res.data.proofs[i].id,
-                    proofUrlSet:res.data.proofs[i].proofUrlSet
+        if(!this.eviShow){
+          getRecordId(hallId).then(res => {
+            if(res.data.state == 100){
+              this.eviShow = !this.eviShow;
+              this.baseInfoShow = false;
+              this.recordId = res.data.recordId;
+              this.eviList = [];
+              getProofByRecordId(this.recordId).then(res => {
+                if(res.data.state == 100){
+                  for (let i = 0;i < res.data.proofs.length;i++){
+                    const obj = {
+                      No:'证据' + (i + 1),
+                      name:res.data.proofs[i].name,
+                      id:res.data.proofs[i].id,
+                      proofUrlSet:res.data.proofs[i].proofUrlSet
+                    }
+                    this.eviList.push(obj);
                   }
-                  this.eviList.push(obj);
                 }
-              }
-            })
-            getProofImg(this.recordId).then(res => {
-              if(res.data.state == 100){
-                this.eviQrcode = 'https://mediate.ptnetwork001.com/' + res.data.path;
-              }
-            })
-          }else if(res.data.state == 101){
-            this.$swal({
-              type:"error",
-              title:res.data.message
-            })
-          }
-        })
+              })
+              getProofImg(this.recordId).then(res => {
+                if(res.data.state == 100){
+                  this.eviQrcode = 'https://mediate.ptnetwork001.com/' + res.data.path;
+                }
+              })
+            }else if(res.data.state == 101){
+              this.$swal({
+                type:"error",
+                title:res.data.message
+              })
+            }
+          })
+        }else{
+          this.eviShow = !this.eviShow;
+        }
     }
   }
   getQRimg(){
