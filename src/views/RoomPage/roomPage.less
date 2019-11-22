@@ -91,26 +91,51 @@ html{
       }
     }
   }
+  .qianming {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 15px;
+    background-color: #25A8F1;
+    position: relative;
+    font-size: 12px;
+    cursor: pointer;
+    img{
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 4px;
+      left: 12px;
+    }
+  }
   .right-content {
     position: fixed;
     top: 8%;
     right: 0;
-    width: 60px;
+    width: 5%;
     height: 92%;
     border: 1px solid #E8E8E8;
     cursor: pointer;
     z-index: 999;
     .right-content-up {
       width: 100%;
-      height: 50%;
-      padding: 128px 16px;
+      height: 33.333%;
+      padding: 80% 20px;
+      color: #25A8F1;
+      background-color: #DCDCDC;
+    }
+    .right-content-middle {
+      width: 100%;
+      height: 33.333%;
+      padding: 80% 20px;
       color: #25A8F1;
       background-color: #DCDCDC;
     }
     .right-content-down {
       width: 100%;
-      height: 50%;
-      padding: 128px 16px;
+      height: 33.333%;
+      padding: 80% 20px;
       color: #25A8F1;
       background-color: #DCDCDC;
     }
@@ -118,177 +143,247 @@ html{
       background-color: #25A8F1;
       color: #FFF;
     }
-    .baseInfo-box {
-      position: absolute;
-      top: 15%;
-      right: 60px;
-      width: 400px;
-      height: 100%;
-      background-color:#fff;
-      p{
-        padding: 3px 88px;
+  }
+  .baseInfo-box {
+    position: absolute;
+    top: 8%;
+    right: 5%;
+    width: 400px;
+    height: 100%;
+    background-color:#fff;
+    z-index: 999;
+    p{
+      padding: 3px 88px;
+    }
+    .baseInfo-title{
+      text-align: left;
+      padding-left: 20px;
+      height: 38px;
+      line-height: 38px;
+      img{
+        vertical-align: middle;
       }
-      .baseInfo-title{
-        text-align: left;
-        padding-left: 20px;
-        height: 38px;
-        line-height: 38px;
+      span{
+        font-weight: 700;
+        margin-left: 10px;
+        color: #1F4E87;
+      }
+    }
+
+    .applicant-name {
+      height: 45px;
+      padding: 5px 4px;
+      span:nth-child(1){
+        width: 38%;
+        vertical-align: middle;
+        margin-left: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        float: left;
+        input{
+          margin-left: 10px;
+          width: 100px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+      span:nth-child(2){
+        width: 55%;
+        display: inline-block;
+        float: left;
+        margin-left: 15px;
+        font-size: 14px;
+        font-weight: 700;
+        input{
+          margin-left: 10px;
+          width: 147px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+    }
+    .applicant-id {
+      height: 45px;
+      padding: 7px 12px;
+      span{
+        width: 100%;
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        font-weight: 700;
+        input{
+          width: 327px;
+          margin-left: 5px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+    }
+    .applicant-address {
+      height: 45px;
+      padding: 7px 14px;
+      span{
+        width: 100%;
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        font-weight: 700;
+        input{
+          width: 327px;
+          margin-left: 5px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+    }
+
+
+    .respondent-name {
+      height: 45px;
+      padding: 5px 4px;
+      span:nth-child(1){
+        width: 38%;
+        vertical-align: middle;
+        margin-left: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        float: left;
+        input{
+          margin-left: 10px;
+          width: 100px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+      span:nth-child(2){
+        width: 55%;
+        display: inline-block;
+        float: left;
+        margin-left: 15px;
+        font-size: 14px;
+        font-weight: 700;
+        input{
+          margin-left: 10px;
+          width: 147px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+    }
+    .respondent-id {
+      height: 45px;
+      padding: 7px 12px;
+      span{
+        width: 100%;
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        font-weight: 700;
+        input{
+          width: 327px;
+          margin-left: 5px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+    }
+    .respondent-address {
+      height: 45px;
+      padding: 7px 14px;
+      span{
+        width: 100%;
+        display: inline-block;
+        float: left;
+        font-size: 14px;
+        font-weight: 700;
+        input{
+          width: 327px;
+          margin-left: 5px;
+          border: 1px solid #DEDEDE;
+        }
+      }
+    }
+
+
+    .justiceBureau {
+      text-align: left;
+  font-weight: 700;
+  color: #1F4E87;
+      span{
         img{
           vertical-align: middle;
+          margin-left: 20px;
         }
-        span{
-          font-weight: 700;
+        input{
           margin-left: 10px;
-          color: #1F4E87;
+          border: 1px solid #DEDEDE;
+          width: 278px;
         }
       }
-
-      .applicant-name {
-        height: 45px;
-        padding: 5px 4px;
-        span:nth-child(1){
-          width: 38%;
-          vertical-align: middle;
-          margin-left: 10px;
-          font-size: 14px;
-          font-weight: 700;
-          float: left;
-          input{
-            margin-left: 10px;
-            width: 100px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-        span:nth-child(2){
-          width: 55%;
-          display: inline-block;
-          float: left;
-          margin-left: 15px;
-          font-size: 14px;
-          font-weight: 700;
-          input{
-            margin-left: 10px;
-            width: 147px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-      }
-      .applicant-id {
-        height: 45px;
-        padding: 7px 12px;
-        span{
-          width: 100%;
-          display: inline-block;
-          float: left;
-          font-size: 14px;
-          font-weight: 700;
-          input{
-            width: 327px;
-            margin-left: 5px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-      }
-      .applicant-address {
-        height: 45px;
-        padding: 7px 14px;
-        span{
-          width: 100%;
-          display: inline-block;
-          float: left;
-          font-size: 14px;
-          font-weight: 700;
-          input{
-            width: 327px;
-            margin-left: 5px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-      }
-
-
-      .respondent-name {
-        height: 45px;
-        padding: 5px 4px;
-        span:nth-child(1){
-          width: 38%;
-          vertical-align: middle;
-          margin-left: 10px;
-          font-size: 14px;
-          font-weight: 700;
-          float: left;
-          input{
-            margin-left: 10px;
-            width: 100px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-        span:nth-child(2){
-          width: 55%;
-          display: inline-block;
-          float: left;
-          margin-left: 15px;
-          font-size: 14px;
-          font-weight: 700;
-          input{
-            margin-left: 10px;
-            width: 147px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-      }
-      .respondent-id {
-        height: 45px;
-        padding: 7px 12px;
-        span{
-          width: 100%;
-          display: inline-block;
-          float: left;
-          font-size: 14px;
-          font-weight: 700;
-          input{
-            width: 327px;
-            margin-left: 5px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-      }
-      .respondent-address {
-        height: 45px;
-        padding: 7px 14px;
-        span{
-          width: 100%;
-          display: inline-block;
-          float: left;
-          font-size: 14px;
-          font-weight: 700;
-          input{
-            width: 327px;
-            margin-left: 5px;
-            border: 1px solid #DEDEDE;
-          }
-        }
-      }
-
-
-      .justiceBureau {
-        text-align: left;
-    font-weight: 700;
-    color: #1F4E87;
-        span{
-          img{
-            vertical-align: middle;
-            margin-left: 20px;
-          }
-          input{
-            margin-left: 10px;
-            border: 1px solid #DEDEDE;
-            width: 278px;
-          }
-        }
-      }
-
     }
+
+  }
+  li {
+    list-style: none;
+  }
+  .evi-box {
+    width: 400px;
+    height: 100%;
+    background-color: rgba(255,255,255,0.5);
+    position: absolute;
+    top: 8%;
+    right: 60px;
+    cursor: auto;
+    z-index: 999;
+  }
+  .title-box {
+    text-align: left;
+    height: 33px;
+    padding-left: 19px;
+    color: #1F4E87;
+    font-weight: 700;
+    img{
+      width: 30px;
+      vertical-align: middle;
+    }
+  }
+  .eviList-box {
+    height: 60%;
+    overflow-y:scroll;
+  }
+  .evi-name {
+    text-align: left;
+    padding-left: 55px;
+    img{
+      vertical-align: middle;
+    }
+  }
+  .pic-box {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 68%;
+    height: 100%;
+    z-index: 999;
+    background-color: rgba(255,255,255,0.5);
+  }
+
+  .exit {
+    background-image: url(../../assets/img/exit.png);
+    position: absolute;
+    top: 15%;
+    right: 0;
+    width: 100px;
+    height: 40px;
+    line-height: 40px;
+    background-repeat: no-repeat;
+    color: #fff;
+    cursor: pointer;
+  }
+  .carousel-box {
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    width: 35%;
+    // background-color: #000;
+  }
+  .el-carousel__container {
+    height: 500px;
   }
   .mainPlayer {
     position: absolute;

@@ -60,7 +60,7 @@ export class ChatWindow extends Vue {
     let that = this
 
     // 监听websocket事件
-    this.initWebsocketEvent()
+    // this.initWebsocketEvent()
     // 获取语音对象
     navigator.getUserMedia({ audio: true }, function (stream) {
       console.log(stream)

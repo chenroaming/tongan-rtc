@@ -1,7 +1,8 @@
 <div class="room-content">
     <div class="header">
         <div class="room-logo">
-            {{hallName}}
+            <!-- {{hallName}} -->
+            <img style="width: 280px;margin-left: 10px;" src="../../assets/img/roomLogo.png" alt="">
         </div>
         <div class="room-title">议理堂在线调解</div>
         <div class="mainInfo">当前主屏：{{ mainInfo.name }}</div>
@@ -24,54 +25,99 @@
             </div>
         </div>
         <div class="end-court" style="top: 6px;right: 180px;width: 161px;">
-            <span @click="getQRimg">点击获取签名二维码</span>
+            <span class="qianming" @click="getQRimg"><img src="../../assets/img/qianming2.png" alt="">签名</span>
         </div>
     <!-- <div class="room-time"> {{clock.date}} {{clock.time}} {{clock.week}}（北京时间）</div> -->
     </div>
     <div class="right-content">
-        <div class="right-content-up" :class="{active:isActive == '1'}" @click="choice('1')">
+        <div class="right-content-up" :class="{active:isActive == '3'}" @click="choice('3')">
+            上传证据
+        </div>
+        <div class="right-content-middle" :class="{active:isActive == '1'}" @click="choice('1')">
             调解协议
         </div>
         <div class="right-content-down" :class="{active:isActive == '2'}" @click="choice('2')">
             基础信息
         </div>
-        <div class="baseInfo-box" v-show="baseInfoShow">
-            <p><el-input v-model="caseNo" :disabled="roleName != '法院'" placeholder="请输入案号"></el-input></p>
-            <div class="baseInfo-title"><img src="../../assets/img/applicant.png" alt=""><span>申请人</span></div>
-            <div class="applicant-name">
-                <span>姓名<input :disabled="roleName != '法院'" type="text" v-model="applicant.name" placeholder="请输入姓名"></span>
-                <span>联系电话<input :disabled="roleName != '法院'" type="text" v-model="applicant.phone" placeholder="请输入联系电话"></span>
-            </div>
-            <div class="applicant-id">
-                <span>身份证<input :disabled="roleName != '法院'" type="text" v-model="applicant.idCard" placeholder="请输入身份证号"></span>
-            </div>
-            <div class="applicant-address">
-                <span>地址<input :disabled="roleName != '法院'" type="text" v-model="applicant.address" placeholder="请输入地址"></span>
-            </div>
-            <div class="baseInfo-title"><img src="../../assets/img/respondent.png" alt=""><span>被申请人</span></div>
-            <div class="respondent-name">
-                <span>姓名<input :disabled="roleName != '法院'" type="text" v-model="respondent.name" placeholder="请输入姓名"></span>
-                <span>联系电话<input :disabled="roleName != '法院'" type="text" v-model="respondent.phone" placeholder="请输入联系电话"></span>
-            </div>
-            <div class="respondent-id">
-                <span>身份证<input :disabled="roleName != '法院'" type="text" v-model="respondent.idCard" placeholder="请输入身份证号"></span>
-            </div>
-            <div class="respondent-address">
-                <span>地址<input :disabled="roleName != '法院'" type="text" v-model="respondent.address" placeholder="请输入地址"></span>
-            </div>
-            <div class="justiceBureau">
-                <span>
-                    <img src="../../assets/img/justiceBureau.png" alt="">
-                    司法局<input :disabled="roleName != '法院'" type="text" v-model="justiceBureau.name" placeholder="请输入司法局名称">
-                </span>
-            </div>
-            <div style="margin-top: 15px;"><el-button :disabled="roleName != '法院'" :loading="loading1" type="primary" @click="submit">提交</el-button></div>
+    </div>
+    <div class="baseInfo-box" v-show="baseInfoShow">
+        <p><el-input v-model="caseNo" :disabled="roleName != '法院'" placeholder="请输入案号"></el-input></p>
+        <div class="baseInfo-title"><img src="../../assets/img/applicant.png" alt=""><span>申请人</span></div>
+        <div class="applicant-name">
+            <span>姓名<input :disabled="roleName != '法院'" type="text" v-model="applicant.name" placeholder="请输入姓名"></span>
+            <span>联系电话<input :disabled="roleName != '法院'" type="text" v-model="applicant.phone" placeholder="请输入联系电话"></span>
+        </div>
+        <div class="applicant-id">
+            <span>身份证<input :disabled="roleName != '法院'" type="text" v-model="applicant.idCard" placeholder="请输入身份证号"></span>
+        </div>
+        <div class="applicant-address">
+            <span>地址<input :disabled="roleName != '法院'" type="text" v-model="applicant.address" placeholder="请输入地址"></span>
+        </div>
+        <div class="baseInfo-title"><img src="../../assets/img/respondent.png" alt=""><span>被申请人</span></div>
+        <div class="respondent-name">
+            <span>姓名<input :disabled="roleName != '法院'" type="text" v-model="respondent.name" placeholder="请输入姓名"></span>
+            <span>联系电话<input :disabled="roleName != '法院'" type="text" v-model="respondent.phone" placeholder="请输入联系电话"></span>
+        </div>
+        <div class="respondent-id">
+            <span>身份证<input :disabled="roleName != '法院'" type="text" v-model="respondent.idCard" placeholder="请输入身份证号"></span>
+        </div>
+        <div class="respondent-address">
+            <span>地址<input :disabled="roleName != '法院'" type="text" v-model="respondent.address" placeholder="请输入地址"></span>
+        </div>
+        <div class="justiceBureau">
+            <span>
+                <img src="../../assets/img/justiceBureau.png" alt="">
+                司法局<input :disabled="roleName != '法院'" type="text" v-model="justiceBureau.name" placeholder="请输入司法局名称">
+            </span>
+        </div>
+        <div style="margin-top: 15px;"><el-button :disabled="roleName != '法院'" :loading="loading1" type="primary" @click="submit">提交</el-button></div>
+    </div>
+    <div class="evi-box" v-show="eviShow">
+        <p style="text-align: left;height: 60px;line-height: 60px;font-weight: 700;font-size: 18px;">
+            <img style="width: 25px;height: 20px;vertical-align: middle;" src="../../assets/img/title.png" alt="">
+            <span style="margin-left: 20px;vertical-align: middle;">证据列表</span>
+        </p>
+        <div class="eviList-box">
+            <ul>
+                <li v-for="(item,index) in eviList">
+                    <p class="title-box">
+                        <img src="../../assets/img/write.png" alt="">
+                        <span>{{item.No}}</span>
+                    </p>
+                    <p class="evi-name">
+                        <span style="font-size: 14px;font-weight: 700;">证据名称：</span>
+                        <span style="display: inline-block;width: 50%;">{{item.name}}</span>
+                        <span style="cursor: pointer;vertical-align: middle;font-size: 12px;font-weight: 700;color: #1F4E87;" @click="watchEvi(index,item.No)">查看</span>
+                        <img src="../../assets/img/eye.png" alt="">
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <p style="height: 40px;text-align: left;padding-left: 25px;font-weight: 700;font-size: 14px;">
+                <img style="vertical-align: middle;width: 30px;" src="../../assets/img/qrcode.png" alt="">
+                <span style="vertical-align: middle;">扫码上传</span>
+            </p>
+            <img style="width: 35%;" :src="eviQrcode" alt="">
         </div>
     </div>
     <MainPlayer ref="mainPlayer" />
     <div :class="userInfo.role === '法官' ? 'bigger remoteplayer-list' : 'remoteplayer-list' ">
         <LocalPlayer ref="localPlayer" :stream="stream" />
         <RemotePlayer v-for="(item, index) in users" :class=windowIsShowClass v-if="item.userId !== userId" :id="item.userId" :key="index" />
+    </div>
+    <div class="pic-box" v-show="picShow">
+        <div class="exit" @click="picShow = false">
+            退出查看
+        </div>
+        <div class="carousel-box">
+            <p style="font-size: 20px;color: #1F4E87;font-weight: 700;">{{eviTitle}}</p>
+            <el-carousel trigger="click" :autoplay="false" indicator-position="outside">
+                <el-carousel-item v-for="(item,index) in eviListpic" :key="index">
+                    <img style="width: 100%;height: 100%;" :src="item.src" alt="">
+                </el-carousel-item>
+            </el-carousel>
+        </div>
     </div>
     <el-dialog
         title="查看调解协议"

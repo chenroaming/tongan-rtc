@@ -340,3 +340,36 @@ export function getMaxNo () {
     method: 'get',
   })
 }
+
+
+/**
+ * [获取证据列表]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getProofByRecordId (recordId) {
+  const params = {
+    recordId
+  }
+  return service({
+    url: '/mediate/proof/getProofByRecordId.jhtml',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * [获取上传证据的二维码]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getProofImg (recordId) {
+  const params = {
+    recordId
+  }
+  return service({
+    url: '/mediate/proof/getProofImg.jhtml',
+    method: 'post',
+    params
+  })
+}

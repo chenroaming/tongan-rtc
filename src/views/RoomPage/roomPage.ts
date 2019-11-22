@@ -12,7 +12,7 @@ import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog } from '../../api/export'
 import { getUserInfo } from '../../api/user'
-import { finish,createImg,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId,getMaxNo } from '../../api/case'
+import { finish,createImg,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId,getMaxNo,getProofByRecordId,getProofImg } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -130,6 +130,12 @@ export class RoomPage extends Vue {
   justiceId:string = ''
   dialogVisible:boolean = false
   protocolUrl:string = ''
+  eviShow:boolean = false
+  eviList:Array<any> = []
+  eviQrcode:string = ''
+  picShow:boolean = false
+  eviListpic:Array<any> = []
+  eviTitle:string = ''
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -142,7 +148,6 @@ export class RoomPage extends Vue {
       console.log(this.users)
   }
 created () {
-    // 情况语音列表
     this.hallName = window.localStorage.getItem('hallName')
     this.roomId = window.localStorage.getItem('roomId')
     this.cleanMsg()
@@ -180,6 +185,7 @@ created () {
   }
   async mounted () {
     // 进入房间
+    
     getUserInfo().then(res => {
       this.roleName = res.data.roleName;
       this.setMainInfo({ name: res.data.result.username, roleName: this.roleName })
@@ -193,7 +199,7 @@ created () {
         }
       })
     })
-    
+    // this.initWebsocketEvent();//webSocket初始化
     try {
       console.log('joinRoomWithToken')
       const roomInfo = await piliRTC.joinRoomWithToken(this.roomToken)
@@ -217,11 +223,13 @@ created () {
       console.log('roompage getLocalStream')
       localStream.play((this.$refs.localPlayer as any).$el, true)
       // 本地推流
+      
       try {
         console.log('publish')
         const publishInfo = await piliRTC.publish(localStream)
         this.setUserId(publishInfo.userId)
         this.setVideoSrcObj(localStream.mediaStream)
+        
       } catch (e) {
         console.log('本地推流失败!', e)
       }
@@ -241,7 +249,6 @@ created () {
       if (!item.published) this.users.splice(index, 1)
     })
   }
-
   destroyed () {
     piliRTC.leaveRoom()
     // clearInterval(this.timer)
@@ -277,7 +284,23 @@ created () {
       }
     })
   }
-
+  // initWebsocketEvent () {
+  //   console.log(this.websocket);
+  //   this.websocket.onclose = () => {
+  //     console.log('websocket断开')
+  //   }
+  //   this.websocket.onerror = () => {
+  //     console.log('websocket错误')
+  //   }
+  //   this.websocket.onopen = () => {
+  //     console.log('websocket链接')
+  //   }
+  //   this.websocket.onmessage = (event) => {
+  //     console.log('WebSocket:收到一条消息', event.data)
+  //     let result = JSON.parse(event.data)
+      
+  //   }
+  // }
   sendInfo(){
     this.dialogFormVisible = false;
   }
@@ -387,11 +410,48 @@ created () {
     }
     if(this.isActive == '2'){
       this.baseInfoShow = !this.baseInfoShow;
+      this.eviShow = false;
       if(this.recordId){
         this.getPantId();
       }else if(this.roleName != '法院'){
         this.getPantId();
       }
+      return;
+    }
+    if(this.isActive == '3'){
+        const hallId = window.localStorage.getItem('roomId');
+        // const hallId = '2f61df55c18b5q7werqkpov41415';
+        getRecordId(hallId).then(res => {
+          if(res.data.state == 100){
+            this.eviShow = !this.eviShow;
+            this.baseInfoShow = false;
+            this.recordId = res.data.recordId;
+            this.eviList = [];
+            getProofByRecordId(this.recordId).then(res => {
+              if(res.data.state == 100){
+                for (let i = 0;i < res.data.proofs.length;i++){
+                  const obj = {
+                    No:'证据' + (i + 1),
+                    name:res.data.proofs[i].name,
+                    id:res.data.proofs[i].id,
+                    proofUrlSet:res.data.proofs[i].proofUrlSet
+                  }
+                  this.eviList.push(obj);
+                }
+              }
+            })
+            getProofImg(this.recordId).then(res => {
+              if(res.data.state == 100){
+                this.eviQrcode = 'https://mediate.ptnetwork001.com/' + res.data.path;
+              }
+            })
+          }else if(res.data.state == 101){
+            this.$swal({
+              type:"error",
+              title:res.data.message
+            })
+          }
+        })
     }
   }
   getQRimg(){
@@ -425,6 +485,19 @@ created () {
         })
       }
     })
+  }
+  watchEvi(index,No){
+    console.log(this.eviList[index]);
+    this.eviListpic = [];
+    const picArr = this.eviList[index];
+    for (const item of picArr.proofUrlSet){
+      const obj = {
+        src:'https://mediate.ptnetwork001.com' + item.path,
+      }
+      this.eviListpic.push(obj);
+    }
+    this.picShow = true;
+    this.eviTitle = No;
   }
   start(command){
     if(command == 'start'){
