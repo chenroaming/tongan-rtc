@@ -816,7 +816,7 @@ transform: scale(1) translate3d(0,0,0);
   bottom: 0;
   margin: auto;
   width: 500px;
-  height: 580px;
+  height: 600px;
   box-shadow: 1px 5px 5px #DEDEDE;
   background-color: #fff;
   border-top-right-radius: 30px;
@@ -854,6 +854,7 @@ transform: scale(1) translate3d(0,0,0);
     font-weight: 700;
     margin-left: 10px;
     color: #1F4E87;
+    vertical-align: middle;
   }
 }
 
@@ -890,7 +891,7 @@ transform: scale(1) translate3d(0,0,0);
 }
 .applicant-id {
   height: 45px;
-  padding: 7px 70px;
+  padding: 7px 85px;
   span{
     text-align: left;
     width: 100%;
@@ -907,7 +908,7 @@ transform: scale(1) translate3d(0,0,0);
 }
 .applicant-address {
   height: 45px;
-  padding: 7px 70px;
+  padding: 7px 85px;
   span{
     text-align: left;
     width: 100%;
@@ -957,7 +958,7 @@ transform: scale(1) translate3d(0,0,0);
 }
 .respondent-id {
   height: 45px;
-  padding: 7px 70px;
+  padding: 7px 85px;
   span{
     text-align: left;
     width: 100%;
@@ -974,7 +975,7 @@ transform: scale(1) translate3d(0,0,0);
 }
 .respondent-address {
   height: 45px;
-  padding: 7px 70px;
+  padding: 7px 85px;
   span{
     text-align: left;
     width: 100%;
@@ -1024,4 +1025,89 @@ transform: scale(1) translate3d(0,0,0);
     margin-right: 10px;
     cursor: pointer;
   }
+}
+
+.evi-box {
+  position: fixed;
+  top: 66px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 350px;
+  height: 500px;
+  box-shadow: 1px 5px 5px #DEDEDE;
+  background-color: #fff;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  z-index: 9;
+  .evi-box-title {
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    width: 80%;
+    margin: 0 auto;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .evi-close {
+    position: absolute;
+    top: 11px;
+    right: 45px;
+    color: #DEDEDEDE;
+    cursor: pointer;
+    font-size: 20px;
+  }
+}
+
+.eviList-box {
+  height: 90%;
+  overflow-y:scroll;
+}
+.evi-name {
+  text-align: left;
+  padding-left: 55px;
+  height: 60px;
+  img{
+    vertical-align: middle;
+  }
+}
+
+.pic-box {
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  margin: auto;
+}
+
+.exit {
+  background-image: url(../../assets/img/exit.png);
+  position: absolute;
+  top: 20%;
+  right: 33%;
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  background-repeat: no-repeat;
+  color: #fff;
+  cursor: pointer;
+  z-index: 99;
+}
+.carousel-box {
+  position: absolute;
+  top: 15%;
+  right: 0;
+  width: 35%;
+  height: auto;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+}
+.el-carousel__container {
+  height: 500px;
 }

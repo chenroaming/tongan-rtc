@@ -82,7 +82,52 @@ export class RecordRoom extends Vue {
     type: ''
   }
   nowId:string = ''
-  
+  eviShow:boolean = false
+  eviList:Array<any> = [
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'},
+      {path:'https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg'},
+    ]
+    },
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'},
+      {path:'https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg'},
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'},
+      {path:'https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg'},
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
+      {path:'https://www.baidu.com/img/bd_logo1.png'}
+    ]},
+  ]
+  eviListpic:Array<any> = []
+  picShow:boolean = false
+  eviTitle:string = ''
   mounted () {
     const loading = this.$loading({
       lock: true,
@@ -203,4 +248,24 @@ export class RecordRoom extends Vue {
       }
     })
   }
+
+  eviWatch(){
+    this.eviShow = true;
+  }
+
+  watchEvi(index,No){
+    console.log(this.eviList[index]);
+    this.eviListpic = [];
+    const picArr = this.eviList[index];
+    for (const item of picArr.proofUrlSet){
+      const obj = {
+        // src:'https://mediate.ptnetwork001.com' + item.path,
+        src:item.path,
+      }
+      this.eviListpic.push(obj);
+    }
+    this.picShow = true;
+    this.eviTitle = No;
+  }
+  
 }
