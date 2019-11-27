@@ -83,48 +83,7 @@ export class RecordRoom extends Vue {
   }
   nowId:string = ''
   eviShow:boolean = false
-  eviList:Array<any> = [
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'},
-      {path:'https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg'},
-    ]
-    },
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'},
-      {path:'https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg'},
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'},
-      {path:'https://ss0.baidu.com/94o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a62e824376d98d1069d40a31113eb807/838ba61ea8d3fd1fc9c7b6853a4e251f94ca5f46.jpg'},
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-    {name:'证据1',id:'asdfasfasdfasddf',proofUrlSet:[
-      {path:'https://www.baidu.com/img/bd_logo1.png'}
-    ]},
-  ]
+  eviList:Array<any> = []
   eviListpic:Array<any> = []
   picShow:boolean = false
   eviTitle:string = ''
@@ -190,6 +149,7 @@ export class RecordRoom extends Vue {
     getRecord2(id).then(res => {
       loading.close();
       if(res.data.state == 100){
+        this.eviList = res.data.record.proofs;
         if(res.data.record.participants.length > 0){
           this.caseNo = res.data.record.mediateNo;
           this.mediationTime = res.data.record.startTime ? this.time(res.data.record.startTime) : '';
@@ -259,13 +219,13 @@ export class RecordRoom extends Vue {
     const picArr = this.eviList[index];
     for (const item of picArr.proofUrlSet){
       const obj = {
-        // src:'https://mediate.ptnetwork001.com' + item.path,
-        src:item.path,
+        src:'https://mediate.ptnetwork001.com' + item.path,
+        // src:item.path,
       }
       this.eviListpic.push(obj);
     }
     this.picShow = true;
-    this.eviTitle = No;
+    this.eviTitle = '证据名称' + No;
   }
   
 }

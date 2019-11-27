@@ -46,12 +46,12 @@ export function finish () {
     method: 'get'
   })
 }
-// export function createImg () {
-//     return service({
-//       url: '/online/createImg.jhtml',
-//       method: 'get'
-//     })
-//   }
+export function createImg () {
+    return service({
+      url: '/online/createImg.jhtml',
+      method: 'get'
+    })
+  }
 
   /**
  * [进入房间新]
@@ -303,13 +303,14 @@ export function getRecordId (hallId) {
  * @param {string} caseNo [案号]
  * @returns { state: number, message: string } [state:100 成功；101 失败]
  */
-export function createImg () {
-  // const params = {
-  //   recordId
-  // }
+export function createImg2 (recordId) {
+  const params = {
+    recordId
+  }
   return service({
     url: '/mediate/createImg.jhtml',
     method: 'post',
+    params
   })
 }
 

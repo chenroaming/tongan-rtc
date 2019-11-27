@@ -260,7 +260,8 @@ export class LoginPage extends Vue {
         // this.websocket.refresh()
         console.log(this.loginrole)
         this.$router.push({
-          name: 'roomPage'
+          name: 'roomPage',
+          params:{isOpen:res.data.is_open}
         })
         
       } else {

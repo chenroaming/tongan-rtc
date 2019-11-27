@@ -2,7 +2,7 @@
     <div class="header">
         <div class="room-logo">
             <!-- {{hallName}} -->
-            <img style="width: 280px;margin-left: 10px;" src="../../assets/img/roomLogo.png" alt="">
+            <img style="width: 75%;margin-left: 10px;" src="../../assets/img/roomLogo.png" alt="">
         </div>
         <div class="room-title">议理堂在线调解</div>
         <div class="mainInfo">当前主屏：{{ mainInfo.name }}</div>
@@ -10,7 +10,7 @@
             <!-- <img src="../../assets/img/leave.svg" alt="离开"> -->
             退出
         </div>
-        <div v-if="roleName == '法院'">
+        <div v-if="isOpen">
             <!-- <div @click="endCourt" class="end-court">休庭</div> -->
             <div class="end-court">
                 <el-dropdown @command="start">
@@ -44,36 +44,36 @@
         </div>
     </div>
     <div class="baseInfo-box" v-show="baseInfoShow">
-        <p><el-input v-model="caseNo" :disabled="roleName == '议理堂'" placeholder="请输入引调号"></el-input></p>
+        <p><el-input v-model="caseNo" :disabled="!isOpen" placeholder="请输入引调号"></el-input></p>
         <div class="baseInfo-title"><img src="../../assets/img/applicant.png" alt=""><span>申请人</span></div>
         <div class="applicant-name">
-            <span>姓名<input :disabled="roleName == '议理堂'" type="text" v-model="applicant.name" placeholder="请输入姓名"></span>
-            <span>联系电话<input :disabled="roleName == '议理堂'" type="text" v-model="applicant.phone" placeholder="请输入联系电话"></span>
+            <span>姓名<input :disabled="!isOpen" type="text" v-model="applicant.name" placeholder="请输入姓名"></span>
+            <span>联系电话<input :disabled="!isOpen" type="text" v-model="applicant.phone" placeholder="请输入号码"></span>
         </div>
         <div class="applicant-id">
-            <span>身份证<input :disabled="roleName == '议理堂'" type="text" v-model="applicant.idCard" placeholder="请输入身份证号"></span>
+            <span>身份证<input :disabled="!isOpen" type="text" v-model="applicant.idCard" placeholder="请输入身份证号"></span>
         </div>
         <div class="applicant-address">
-            <span>地址<input :disabled="roleName == '议理堂'" type="text" v-model="applicant.address" placeholder="请输入地址"></span>
+            <span>地址<input :disabled="!isOpen" type="text" v-model="applicant.address" placeholder="请输入地址"></span>
         </div>
         <div class="baseInfo-title"><img src="../../assets/img/respondent.png" alt=""><span>被申请人</span></div>
         <div class="respondent-name">
-            <span>姓名<input :disabled="roleName == '议理堂'" type="text" v-model="respondent.name" placeholder="请输入姓名"></span>
-            <span>联系电话<input :disabled="roleName == '议理堂'" type="text" v-model="respondent.phone" placeholder="请输入联系电话"></span>
+            <span>姓名<input :disabled="!isOpen" type="text" v-model="respondent.name" placeholder="请输入姓名"></span>
+            <span>联系电话<input :disabled="!isOpen" type="text" v-model="respondent.phone" placeholder="请输入号码"></span>
         </div>
         <div class="respondent-id">
-            <span>身份证<input :disabled="roleName == '议理堂'" type="text" v-model="respondent.idCard" placeholder="请输入身份证号"></span>
+            <span>身份证<input :disabled="!isOpen" type="text" v-model="respondent.idCard" placeholder="请输入身份证号"></span>
         </div>
         <div class="respondent-address">
-            <span>地址<input :disabled="roleName == '议理堂'" type="text" v-model="respondent.address" placeholder="请输入地址"></span>
+            <span>地址<input :disabled="!isOpen" type="text" v-model="respondent.address" placeholder="请输入地址"></span>
         </div>
         <div class="justiceBureau">
             <span>
                 <img src="../../assets/img/justiceBureau.png" alt="">
-                司法局<input :disabled="roleName == '议理堂'" type="text" v-model="justiceBureau.name" placeholder="请输入司法局名称">
+                司法局<input :disabled="!isOpen" type="text" v-model="justiceBureau.name" placeholder="请输入司法局名称">
             </span>
         </div>
-        <div style="margin-top: 15px;"><el-button :disabled="roleName == '议理堂'" :loading="loading1" type="primary" @click="submit">提交</el-button></div>
+        <div style="margin-top: 15px;"><el-button :disabled="!isOpen" :loading="loading1" type="primary" @click="submit">提交</el-button></div>
     </div>
     <div class="evi-box" v-show="eviShow">
         <p style="text-align: left;height: 60px;line-height: 60px;font-weight: 700;font-size: 18px;">

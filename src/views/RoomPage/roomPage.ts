@@ -12,7 +12,7 @@ import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog } from '../../api/export'
 import { getUserInfo } from '../../api/user'
-import { finish,createImg,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId,getMaxNo,getProofByRecordId,getProofImg } from '../../api/case'
+import { finish,createImg2,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId,getMaxNo,getProofByRecordId,getProofImg } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -136,6 +136,7 @@ export class RoomPage extends Vue {
   picShow:boolean = false
   eviListpic:Array<any> = []
   eviTitle:string = ''
+  isOpen:boolean = false
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -187,18 +188,21 @@ created () {
     // 进入房间
     
     getUserInfo().then(res => {
+      this.isOpen = this.$route.params.isOpen ? true : false;
       this.roleName = res.data.roleName;
       this.setMainInfo({ name: res.data.result.username, roleName: this.roleName })
       this.initWebsocketEvent();//webSocket初始化
-      if(this.roleName != '法院'){
-        this.baseInfoShow = false;
-        return;
+      // if(this.roleName != '法院'){
+      //   this.baseInfoShow = false;
+      //   return;
+      // }
+      if(this.isOpen){
+        getMaxNo().then(res => {
+          if(res.data.state == 100){
+            this.caseNo = res.data.mediateNo;
+          }
+        })
       }
-      getMaxNo().then(res => {
-        if(res.data.state == 100){
-          this.caseNo = res.data.mediateNo;
-        }
-      })
     })
     
     try {
@@ -352,9 +356,11 @@ created () {
     // exportLog(this.caseId).then(res => {
     //   console.log(res)
     // })
-    closeRoom(this.roomId).then(res => {
-      console.log(res)
-    })
+    if(this.isOpen){
+      closeRoom(this.roomId).then(res => {
+        console.log(res)
+      })
+    }
     this.$router.push({
       name: 'loginPage'
     })
@@ -408,7 +414,7 @@ created () {
   choice(id){
     this.isActive = id;
     if(this.isActive == '1'){
-      if(!this.recordId && this.roleName == '法院'){
+      if(!this.recordId && this.isOpen){
         this.$swal({
           type:"error",
           title:"请先补全申请人/被申请人/司法局信息！"
@@ -430,14 +436,14 @@ created () {
         }else{
           fileName = res.data.fileUrl + 'new';
         }
-        if(!res.data.have && this.roleName == '议理堂'){
+        if(!res.data.have && !this.isOpen){
           this.$swal({
             type:"error",
             title:"暂无协议材料！"
           })
           return;
         }
-        if(this.roleName == '法院' || this.roleName == '司法局'){
+        if(this.isOpen){
           window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;//法院
         }else{
           // window.open('http://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com'+res.data.fileUrl);//议理堂司法局
@@ -507,36 +513,48 @@ created () {
     }
   }
   getQRimg(){
-    createImg().then(res => {
-      if(res.data.state == 100){
-        this.$swal({
-          title: '扫描二维码签名确认',
-          html: "<div><img  src='https://mediate.ptnetwork001.com/"+res.data.path+"' style='width:55%'></div>",
-          confirmButtonText: '好的',
-          allowOutsideClick: false,
-        })
-        // if(this.roleName == '法院' || this.roleName ==  '司法局'){
-        //   this.$swal({
-        //     title: '扫描二维码签名确认',
-        //     html: "<div><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[0]+"' style='width:55%'></div>",
-        //     confirmButtonText: '好的',
-        //     allowOutsideClick: false,
-        //   })
-        //   return;
-        // }
-        // this.$swal({
-        //   title: '扫描二维码签名确认',
-        //   html: "<div><p>申请人请扫描以下二维码</p><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[0]+"' style='width:55%'></div><div><p>被申请人请扫描以下二维码</p><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[1]+"' style='width:55%'></div>",
-        //   confirmButtonText: '好的',
-        //   allowOutsideClick: false,
-        // }) 
-      }else if(res.data.state == 101){
-        this.$swal({
-          type:'error',
-          title:res.data.message
-        })
-      }
-    })
+      const hallId = window.localStorage.getItem('roomId');
+      getRecordId(hallId).then(res => {
+        if(res.data.state == 100){
+          this.recordId = res.data.recordId;
+          createImg2(this.recordId).then(res => {
+            if(res.data.state == 100){
+              this.$swal({
+                title: '扫描二维码签名确认',
+                html: "<div><img  src='https://mediate.ptnetwork001.com/"+res.data.path+"' style='width:55%'></div>",
+                confirmButtonText: '好的',
+                allowOutsideClick: false,
+              })
+              // if(this.roleName == '法院' || this.roleName ==  '司法局'){
+              //   this.$swal({
+              //     title: '扫描二维码签名确认',
+              //     html: "<div><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[0]+"' style='width:55%'></div>",
+              //     confirmButtonText: '好的',
+              //     allowOutsideClick: false,
+              //   })
+              //   return;
+              // }
+              // this.$swal({
+              //   title: '扫描二维码签名确认',
+              //   html: "<div><p>申请人请扫描以下二维码</p><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[0]+"' style='width:55%'></div><div><p>被申请人请扫描以下二维码</p><img  src='https://mediate.ptnetwork001.com/"+res.data.pathList[1]+"' style='width:55%'></div>",
+              //   confirmButtonText: '好的',
+              //   allowOutsideClick: false,
+              // }) 
+            }else if(res.data.state == 101){
+              this.$swal({
+                type:'error',
+                title:res.data.message
+              })
+            }
+          })
+        }else if(res.data.state == 101){
+          this.$swal({
+            type:'error',
+            title:res.data.message
+          })
+        }
+      })
+      return;
   }
   watchEvi(index,No){
     console.log(this.eviList[index]);

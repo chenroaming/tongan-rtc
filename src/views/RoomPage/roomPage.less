@@ -113,7 +113,7 @@ html{
     position: fixed;
     top: 8%;
     right: 0;
-    width: 5%;
+    width: 3%;
     height: 92%;
     border: 1px solid #E8E8E8;
     cursor: pointer;
@@ -121,21 +121,24 @@ html{
     .right-content-up {
       width: 100%;
       height: 33.333%;
-      padding: 80% 38%;
+      padding: 0 38%;
+      padding-top: 130%;
       color: #25A8F1;
       background-color: #DCDCDC;
     }
     .right-content-middle {
       width: 100%;
       height: 33.333%;
-      padding: 80% 38%;
+      padding: 0 38%;
+      padding-top: 130%;
       color: #25A8F1;
       background-color: #DCDCDC;
     }
     .right-content-down {
       width: 100%;
       height: 33.333%;
-      padding: 80% 38%;
+      padding: 0 38%;
+      padding-top: 130%;
       color: #25A8F1;
       background-color: #DCDCDC;
     }
@@ -147,13 +150,15 @@ html{
   .baseInfo-box {
     position: absolute;
     top: 8%;
-    right: 5%;
-    width: 400px;
+    right: 3%;
+    width: 330px;
     height: 100%;
-    background-color:#fff;
+    background-color: #fff;
     z-index: 999;
     p{
-      padding: 3px 88px;
+      padding: 3px;
+      width: 66%;
+      margin: 0 auto;
     }
     .baseInfo-title{
       text-align: left;
@@ -174,7 +179,7 @@ html{
       height: 45px;
       padding: 5px 4px;
       span:nth-child(1){
-        width: 38%;
+        width: 40%;
         vertical-align: middle;
         margin-left: 10px;
         font-size: 14px;
@@ -182,12 +187,12 @@ html{
         float: left;
         input{
           margin-left: 10px;
-          width: 100px;
+          width: 85px;
           border: 1px solid #DEDEDE;
         }
       }
       span:nth-child(2){
-        width: 55%;
+        width: 52%;
         display: inline-block;
         float: left;
         margin-left: 15px;
@@ -195,14 +200,15 @@ html{
         font-weight: 700;
         input{
           margin-left: 10px;
-          width: 147px;
+          width: 101px;
           border: 1px solid #DEDEDE;
         }
       }
     }
     .applicant-id {
       height: 45px;
-      padding: 7px 12px;
+      padding: 7px 0;
+      padding-left: 12px;
       span{
         width: 100%;
         display: inline-block;
@@ -210,15 +216,15 @@ html{
         font-size: 14px;
         font-weight: 700;
         input{
-          width: 327px;
-          margin-left: 5px;
+          width: 266px;
           border: 1px solid #DEDEDE;
         }
       }
     }
     .applicant-address {
       height: 45px;
-      padding: 7px 14px;
+      padding: 7px 0;
+      padding-left: 12px;
       span{
         width: 100%;
         display: inline-block;
@@ -226,8 +232,8 @@ html{
         font-size: 14px;
         font-weight: 700;
         input{
-          width: 327px;
-          margin-left: 5px;
+          width: 271px;
+          margin-left: 14px;
           border: 1px solid #DEDEDE;
         }
       }
@@ -238,7 +244,7 @@ html{
       height: 45px;
       padding: 5px 4px;
       span:nth-child(1){
-        width: 38%;
+        width: 40%;
         vertical-align: middle;
         margin-left: 10px;
         font-size: 14px;
@@ -246,12 +252,12 @@ html{
         float: left;
         input{
           margin-left: 10px;
-          width: 100px;
+          width: 85px;
           border: 1px solid #DEDEDE;
         }
       }
       span:nth-child(2){
-        width: 55%;
+        width: 52%;
         display: inline-block;
         float: left;
         margin-left: 15px;
@@ -259,14 +265,15 @@ html{
         font-weight: 700;
         input{
           margin-left: 10px;
-          width: 147px;
+          width: 101px;
           border: 1px solid #DEDEDE;
         }
       }
     }
     .respondent-id {
       height: 45px;
-      padding: 7px 12px;
+      padding: 7px 0;
+      padding-left: 12px;
       span{
         width: 100%;
         display: inline-block;
@@ -274,15 +281,15 @@ html{
         font-size: 14px;
         font-weight: 700;
         input{
-          width: 327px;
-          margin-left: 5px;
+          width: 266px;
           border: 1px solid #DEDEDE;
         }
       }
     }
     .respondent-address {
       height: 45px;
-      padding: 7px 14px;
+      padding: 7px 0;
+      padding-left: 12px;
       span{
         width: 100%;
         display: inline-block;
@@ -290,8 +297,8 @@ html{
         font-size: 14px;
         font-weight: 700;
         input{
-          width: 327px;
-          margin-left: 5px;
+          width: 271px;
+          margin-left: 14px;
           border: 1px solid #DEDEDE;
         }
       }
@@ -310,7 +317,7 @@ html{
         input{
           margin-left: 10px;
           border: 1px solid #DEDEDE;
-          width: 278px;
+          width: 306px;
         }
       }
     }
@@ -325,7 +332,7 @@ html{
     background-color: #fff;
     position: absolute;
     top: 8%;
-    right: 60px;
+    right: 3%;
     cursor: auto;
     z-index: 999;
   }
@@ -409,11 +416,11 @@ html{
     height: 200px;
     margin-right: 40px;
     .qnrtc-stream-player {
-        width: 24%;
+        width: 142%!important;
         max-width: 450px;
         min-width: 240px;
-      height: 260px;
-      object-fit: fill;
+      height: 107%!important;
+      object-fit: fill!important;
     }
   }
   .remoteplayer-list {
@@ -472,12 +479,12 @@ html{
     min-width: 240px;
     margin-right: 40px;
     .qnrtc-stream-player {
-        width: 24%;
+        width: 142%!important;
         max-width: 450px;
         min-width: 240px;
         // min-height:200px;
-      height: 200px;
-      object-fit: fill;
+      height: 107%!important;
+      object-fit: fill!important;
     }
   }
   .right-bar {
