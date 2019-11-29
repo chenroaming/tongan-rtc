@@ -87,14 +87,22 @@ export class RecordRoom extends Vue {
   eviListpic:Array<any> = []
   picShow:boolean = false
   eviTitle:string = ''
+  deg:number = 0
+  nowPage:number = 1
+  hallId:string = ''
+  nowIndex:number = -1
+  isShow:boolean = false
+  isLoading:boolean = false
+  noMore:boolean = false
+  locked:boolean = true
   mounted () {
+    this.hallId = window.localStorage.getItem('hallId');
     const loading = this.$loading({
       lock: true,
       text: 'Loading',
       spinner: 'el-icon-loading',
       background: 'rgba(255, 255, 255, 0.7)'
     });
-    const hallId = window.localStorage.getItem('hallId');
     getUserInfo().then(res => {
       loading.close();
       console.log(res.data);
@@ -110,10 +118,14 @@ export class RecordRoom extends Vue {
         title:'网络错误！请刷新重试！'
       })
     })
-    getRecord1(hallId,1,6).then(res => {
+    getRecord1(this.hallId,this.nowPage,7).then(res => {
       if(res.data.state == 100){
         this.caseList2 = res.data.records.content;
-        this.totalPage = res.data.records.totalPages;
+        this.nowPage = this.nowPage + 1;
+        if(res.data.records.totalPages == 1){
+          this.noMore = true;
+        }
+        // this.totalPage = res.data.records.totalPages;
       }
     })
   }
@@ -122,15 +134,15 @@ export class RecordRoom extends Vue {
       name: 'loginPage'
     })
   }
-  pageChange(nowPage){
-    const hallId = window.localStorage.getItem('hallId');
-    getRecord1(hallId,nowPage,6).then(res => {
-      if(res.data.state == 100){
-        this.caseList2 = res.data.records.content;
-        this.totalPage = res.data.records.totalPages;
-      }
-    })
-  }
+  // pageChange(nowPage){
+  //   const hallId = window.localStorage.getItem('hallId');
+  //   getRecord1(hallId,nowPage,6).then(res => {
+  //     if(res.data.state == 100){
+  //       this.caseList2 = res.data.records.content;
+  //       this.totalPage = res.data.records.totalPages;
+  //     }
+  //   })
+  // }
   closeWindow(){
     this.baseInfoShow = false;
   }
@@ -138,7 +150,17 @@ export class RecordRoom extends Vue {
     var date = new Date(time + 8 * 3600 * 1000); // 增加8小时
     return date.toJSON().substr(0, 19).replace('T', ' ').substring(0,16);
   }
-  getRecord(id){
+  getRecord(id,index){
+    if(this.nowIndex == index){
+      this.isShow = !this.isShow;
+    }
+    if(this.nowIndex != index){
+      this.isShow = true;
+      this.nowIndex = index;
+    }
+    if(!this.isShow){
+      return;
+    }
     this.nowId = id;
     const loading = this.$loading({
       lock: true,
@@ -187,7 +209,7 @@ export class RecordRoom extends Vue {
         }
       }
     })
-    this.baseInfoShow = true;
+    // this.baseInfoShow = true;
   }
 
   download(){
@@ -225,7 +247,35 @@ export class RecordRoom extends Vue {
       this.eviListpic.push(obj);
     }
     this.picShow = true;
-    this.eviTitle = '证据名称' + No;
+    this.eviTitle = '证据名称：' + No;
   }
-  
+
+  rotate(){//图片旋转
+    this.deg += 90;
+    if(this.deg >= 360){
+        this.deg = 0
+    }
+  }
+
+  load () {
+    this.isLoading = true;
+    if(this.locked){
+      this.locked = false;
+      getRecord1(this.hallId,this.nowPage,7).then(res => {
+        this.isLoading = false;
+        this.locked = true;
+        if(res.data.state == 100){
+          if(this.nowPage > res.data.records.totalPages){
+            this.noMore = true;
+          }
+          if(this.nowPage <= res.data.records.totalPages){
+            this.nowPage = this.nowPage + 1;
+            for(const item of res.data.records.content){
+              this.caseList2.push(item);
+            }
+          }
+        }
+      })
+    }
+  }
 }

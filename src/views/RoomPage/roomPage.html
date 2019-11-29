@@ -110,16 +110,19 @@
         <RemotePlayer v-for="(item, index) in users" :class=windowIsShowClass v-if="item.userId !== userId" :id="item.userId" :key="index" />
     </div>
     <div class="pic-box" v-show="picShow">
-        <div class="exit" @click="picShow = false">
-            退出查看
-        </div>
         <div class="carousel-box">
-            <p style="font-size: 20px;color: #1F4E87;font-weight: 700;">{{eviTitle}}</p>
+            <p style="font-size: 20px;color: #1F4E87;font-weight: 700;">
+                {{eviTitle}}
+                <div class="exit2" @click="picShow = false">
+                    <img src="../../assets/img/close.png" title="退出查看" alt="">
+                </div>
+            </p>
             <el-carousel trigger="click" :autoplay="false" indicator-position="outside">
                 <el-carousel-item v-for="(item,index) in eviListpic" :key="index">
-                    <img style="width: 100%;height: 100%;" :src="item.src" alt="">
+                    <img style="width: 100%;height: 100%;" :style="{transform:'rotateZ('+deg+'deg)'}" :src="item.src" alt="">
                 </el-carousel-item>
             </el-carousel>
+            <img src="../../assets/img/rotate.png" title="点击旋转图片" style="cursor: pointer;" @click="rotate" alt="">
         </div>
     </div>
     <el-dialog

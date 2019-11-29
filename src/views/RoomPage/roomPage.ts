@@ -137,6 +137,7 @@ export class RoomPage extends Vue {
   eviListpic:Array<any> = []
   eviTitle:string = ''
   isOpen:boolean = false
+  deg:number = 0
   @Watch('mainInfo')
   onChildChanged(val: any, oldVal: any) {
       console.log(val)
@@ -315,7 +316,7 @@ created () {
         this.eviListpic.push(obj);
       }
       this.picShow = true;
-      this.eviTitle = event.data.proofName;
+      this.eviTitle = result.proofName;
       const hallId = window.localStorage.getItem('roomId');
       getRecordId(hallId).then(res => {
         if(res.data.state == 100){
@@ -463,13 +464,13 @@ created () {
       return;
     }
     if(this.isActive == '2'){
-      this.baseInfoShow = !this.baseInfoShow;
-      this.eviShow = false;
       if(this.recordId){
         this.getPantId();
       }else if(this.roleName != '法院'){
         this.getPantId();
       }
+      this.baseInfoShow = !this.baseInfoShow;
+      this.eviShow = false;
       return;
     }
     if(this.isActive == '3'){
@@ -656,6 +657,12 @@ created () {
         })
       }
     })
+  }
+  rotate(){//图片旋转
+    this.deg += 90;
+    if(this.deg >= 360){
+        this.deg = 0
+    }
   }
   opens(){
     this.dialogShow = true;
