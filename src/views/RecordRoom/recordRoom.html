@@ -82,9 +82,9 @@
                             <span>{{item.No}}</span>
                         </p> -->
                         <p class="evi-name">
-                            <span style="font-size: 14px;font-weight: 700;">证据名称：</span>
-                            <span style="display: inline-block;width: 50%;">{{item.name}}</span>
-                            <span style="cursor: pointer;vertical-align: middle;font-size: 12px;font-weight: 700;color: #1F4E87;" @click="watchEvi(index,item.name)">查看</span>
+                            <span>证据名称：</span>
+                            <span>{{item.name}}</span>
+                            <span @click="watchEvi(index,item.name)">查看</span>
                             <img src="../../assets/img/eye.png" alt="">
                         </p>
                     </li>
@@ -180,7 +180,7 @@
           </span>
         </div>
       </div> -->
-      <div class="evi-box2" v-show="eviShow">
+      <!-- <div class="evi-box2" v-show="eviShow">
         <p class="evi-box-title">证据列表</p>
         <span class="evi-close" @click="eviShow = !eviShow">
           <img src="../../assets/img/close.png" title="关闭" alt="">
@@ -188,10 +188,10 @@
         <div class="eviList-box">
           <ul>
               <li v-for="(item,index) in eviList">
-                  <!-- <p class="title-box">
+                  <p class="title-box">
                       <img src="../../assets/img/write.png" alt="">
                       <span>{{item.No}}</span>
-                  </p> -->
+                  </p>
                   <p class="evi-name">
                       <span style="font-size: 14px;font-weight: 700;">证据名称：</span>
                       <span style="display: inline-block;width: 50%;">{{item.name}}</span>
@@ -201,7 +201,7 @@
               </li>
           </ul>
         </div>
-      </div>
+      </div> -->
       <div class="pic-box" v-show="picShow">
         <div class="carousel-box">
             <p class="evi-title">

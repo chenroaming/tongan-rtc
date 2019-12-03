@@ -105,7 +105,6 @@ export class RecordRoom extends Vue {
     });
     getUserInfo().then(res => {
       loading.close();
-      console.log(res.data);
       if(res.data.state != 100){
         this.$router.push({
           name: 'login'
@@ -170,8 +169,13 @@ export class RecordRoom extends Vue {
     });
     getRecord2(id).then(res => {
       loading.close();
+      this.eviList = [];
       if(res.data.state == 100){
-        this.eviList = res.data.record.proofs;
+        for (const item of res.data.record.proofs){
+          if(item.enable){
+            this.eviList.push(item);
+          }
+        }
         if(res.data.record.participants.length > 0){
           this.caseNo = res.data.record.mediateNo;
           this.mediationTime = res.data.record.startTime ? this.time(res.data.record.startTime) : '';
@@ -207,6 +211,11 @@ export class RecordRoom extends Vue {
           this.endTime = '';
           this.justiceBureau = '';
         }
+      }else if(res.data.state == 101){
+        this.$swal({
+          type: 'error',
+          title: res.data.message
+        })
       }
     })
     // this.baseInfoShow = true;
@@ -214,7 +223,6 @@ export class RecordRoom extends Vue {
 
   download(){
     downloadPro(this.nowId).then(res => {
-      console.log(res.data);
       if(res.data.state == 100){
         // window.open(res.data.fileUrl);
         // window.open('https://view.officeapps.live.com/op/view.aspx?src='+res.data.fileUrl);
@@ -236,7 +244,6 @@ export class RecordRoom extends Vue {
   }
 
   watchEvi(index,No){
-    console.log(this.eviList[index]);
     this.eviListpic = [];
     const picArr = this.eviList[index];
     for (const item of picArr.proofUrlSet){
@@ -274,7 +281,18 @@ export class RecordRoom extends Vue {
               this.caseList2.push(item);
             }
           }
+        }else if(res.data.state == 101){
+          this.$swal({
+            type:'error',
+            title:res.data.message
+          })
         }
+      })
+      .catch(error => {
+        this.$swal({
+          type:'error',
+          title:'网络错误！请刷新重试！'
+        })
       })
     }
   }
