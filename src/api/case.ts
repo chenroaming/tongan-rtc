@@ -374,3 +374,19 @@ export function getProofImg (recordId) {
     params
   })
 }
+
+/**
+ * [实时同步证据]
+ * @param {string} caseNo [案号]
+ * @returns { state: number, message: string } [state:100 成功；101 失败]
+ */
+export function getProof (proofId) {
+  const params = {
+    proofId
+  }
+  return service({
+    url: '/mediate/proof/getProof.jhtml',
+    method: 'get',
+    params
+  })
+}

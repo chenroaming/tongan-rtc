@@ -142,6 +142,7 @@ export class LoginPage extends Vue {
       spinner: 'el-icon-loading',
       background: 'rgba(255, 255, 255, 0.7)'
     });
+    this.changeCode();
     getUserInfo().then(res => {
       console.log(res.data);
       if(res.data.state == 100){

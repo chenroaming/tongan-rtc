@@ -12,7 +12,7 @@ import { piliRTC } from '../../utils/pili'
 import { deviceManager } from 'pili-rtc-web'
 import { exportLog } from '../../api/export'
 import { getUserInfo } from '../../api/user'
-import { finish,createImg2,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId,getMaxNo,getProofByRecordId,getProofImg } from '../../api/case'
+import { finish,createImg2,startMediate,endMediate,closeRoom,intoRoom,changePar,getFileName,getRecordId,getByRoomId,getMaxNo,getProofByRecordId,getProofImg,getProof } from '../../api/case'
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
@@ -561,6 +561,11 @@ created () {
     console.log(this.eviList[index]);
     this.eviListpic = [];
     const picArr = this.eviList[index];
+    if(this.roleName == '法院' || this.roleName ==  '司法局'){
+      getProof(this.eviList[index].id).then(res => {
+        
+      })
+    }
     for (const item of picArr.proofUrlSet){
       const obj = {
         src:'https://mediate.ptnetwork001.com' + item.path,
