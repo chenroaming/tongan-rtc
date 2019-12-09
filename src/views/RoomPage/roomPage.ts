@@ -16,7 +16,6 @@ import { finish,createImg2,startMediate,endMediate,closeRoom,intoRoom,changePar,
 import { getEviNote } from '../../api/evidence'
 import RWS from '../../utils/rws'
 import swal from 'sweetalert2'
-
 import './roomPage.less'
 import { ElStep } from 'element-ui/types/step'
 
@@ -445,7 +444,8 @@ created () {
           return;
         }
         if(this.isOpen){
-          window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;//法院
+          // window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit.html?file='+fileName;//法院
+          window.open('https://mediate.ptnetwork001.com/uedit?roomId=' + res.data.roomId,'_blank');
         }else{
           // window.open('http://view.officeapps.live.com/op/view.aspx?src=http://mediate.ptnetwork001.com'+res.data.fileUrl);//议理堂司法局
           // window.location.href = 'WebOffice://|Officectrl|http://mediate.ptnetwork001.com/tartctest/edit2.html?file='+res.data.fileUrl;//议理堂司法局
@@ -466,7 +466,7 @@ created () {
     if(this.isActive == '2'){
       if(this.recordId){
         this.getPantId();
-      }else if(this.roleName != '法院'){
+      }else if(!this.isOpen){
         this.getPantId();
       }
       this.baseInfoShow = !this.baseInfoShow;
@@ -563,7 +563,7 @@ created () {
     const picArr = this.eviList[index];
     if(this.roleName == '法院' || this.roleName ==  '司法局'){
       getProof(this.eviList[index].id).then(res => {
-        
+
       })
     }
     for (const item of picArr.proofUrlSet){

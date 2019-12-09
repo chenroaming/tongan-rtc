@@ -282,6 +282,22 @@ export function getFileName () {
   })
 }
 
+
+// /**
+//  * [查询文件名]
+//  * @param {string} caseNo [案号]
+//  * @returns { state: number, message: string } [state:100 成功；101 失败]
+//  */
+// export function getFileName () {
+//   // const params = {
+//   //   recordId
+//   // }
+//   return service({
+//     url: '/mediate/protocol/getProtocolHtml.jhtml',
+//     method: 'get',
+//   })
+// }
+
 /**
  * [获取记录ID]
  * @param {string} caseNo [案号]

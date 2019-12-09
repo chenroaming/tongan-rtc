@@ -95,6 +95,7 @@ export class RecordRoom extends Vue {
   isLoading:boolean = false
   noMore:boolean = false
   locked:boolean = true
+  noRecord:boolean = false
   mounted () {
     this.hallId = window.localStorage.getItem('hallId');
     const loading = this.$loading({
@@ -120,6 +121,9 @@ export class RecordRoom extends Vue {
     getRecord1(this.hallId,this.nowPage,7).then(res => {
       if(res.data.state == 100){
         this.caseList2 = res.data.records.content;
+        if(res.data.records.content.length < 1){
+          this.noRecord = true;
+        }
         this.nowPage = this.nowPage + 1;
         if(res.data.records.totalPages == 1){
           this.noMore = true;

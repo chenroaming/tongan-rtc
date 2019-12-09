@@ -201,6 +201,7 @@ export class LoginPage extends Vue {
     logout().then(res => {
       if(res.data.state == 100){
         this.isLogin = false;
+        this.changeCode();
         this.$swal({
           type: 'success',
           title: res.data.message
